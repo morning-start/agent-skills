@@ -1,9 +1,9 @@
 ---
 name: project-management
-version: v1.0.0
+version: v1.1.0
 author: project-skill-team
-description: 全流程项目管理母技能，整合需求拆解、任务排期、技术设计、编码测试、测试验收、发布部署六大子技能，覆盖软件项目从需求到上线的完整生命周期。适用于新项目启动、阶段性推进和问题诊断。
-tags: [project-management, lifecycle, planning, development, deployment]
+description: 全流程项目管理母技能，整合需求拆解、任务排期、技术设计、编码测试、测试验收、发布部署六大子技能 + 规划子技能（ROADMAP/TODO/OKR），覆盖软件项目从规划到上线的完整生命周期。适用于新项目启动、阶段性推进和问题诊断。
+tags: [project-management, lifecycle, planning, development, deployment, roadmap, todo, okr]
 ---
 
 # 项目全流程管理
@@ -24,6 +24,8 @@ tags: [project-management, lifecycle, planning, development, deployment]
 
 | 阶段 | 子技能 | 核心职责 | 参考文档 |
 |------|--------|----------|----------|
+| 规划 | planning/1-roadmap-planner | ROADMAP/OKR/里程碑 | [详情](skills/planning/1-roadmap-planner/SKILL.md) |
+| 规划 | planning/2-todo-planner | TODO/优先级/MoSCoW | [详情](skills/planning/2-todo-planner/SKILL.md) |
 | 需求 | requirement-decomposition | 澄清→拆解→验证 | [详情](requirement-decomposition/SKILL.md) |
 | 计划 | task-scheduling | 工时评估、任务认领 | [详情](task-scheduling/SKILL.md) |
 | 设计 | tech-design | 数据库、API、UI | [详情](tech-design/SKILL.md) |

@@ -1,9 +1,9 @@
 ---
 name: software-design
-version: v1.0.0
+version: v1.1.0
 author: skill-manager
-description: 软件设计与编码规范技能系统，涵盖程序设计、状态管理、模块化、错误处理、性能优化等核心领域，支持多层级子技能调用和网络搜索
-tags: [software-design, coding-standards, architecture, best-practices, state-management]
+description: 软件设计与编码规范技能系统，涵盖程序设计、状态管理、模块化、错误处理、性能优化等核心领域 + 代码优化与设计模式子技能。已合并 code-optimizer（三层分析漏斗）和 design-pattern-advisor（23种GoF模式）
+tags: [software-design, coding-standards, architecture, best-practices, state-management, code-optimization, design-patterns]
 sub_skills:
   - terminology: 编程术语与概念
   - state-management: 状态管理
@@ -13,6 +13,8 @@ sub_skills:
   - performance: 性能优化
   - code-quality: 代码质量
   - naming: 命名与可读性
+  - code-optimizer: 代码优化（三层分析漏斗）
+  - design-pattern-advisor: 设计模式（23种GoF模式）
 network_search: enabled
 ---
 
@@ -28,50 +30,13 @@ network_search: enabled
 - **状态管理设计**: 局部/全局/共享状态、不可变状态、单向数据流
 - **函数设计原则**: 单一职责、纯函数、方法封装、高内聚低耦合
 - **模块化架构**: 分层架构、目录规范、代码组织结构
-- **错误处理机制**: 异常捕获、错误码设计、异常抛出策略
-- **性能优化**: 内存管理、资源释放、性能瓶颈分析
-- **代码质量**: 可读性、语义化命名、编码风格、可维护性
-- **设计原则**: SOLID 原则、设计模式、重构技巧
 
-### 子技能列表
+### 合并子技能
 
-| 子技能 | 用途 | 触发场景 |
-|--------|------|----------|
-| terminology | 编程术语与概念解析 | 遇到不理解的术语或概念时 |
-| state-management | 状态管理方案设计 | 需要设计状态存储和管理逻辑时 |
-| function-design | 函数设计与拆分 | 需要编写或重构函数时 |
-| modularization | 模块化与架构设计 | 需要组织代码结构或分层时 |
-| error-handling | 错误处理机制 | 需要设计异常处理策略时 |
-| performance | 性能优化 | 遇到性能瓶颈或内存问题时 |
-| code-quality | 代码质量优化 | 需要提升代码可读性和可维护性时 |
-| naming | 命名与注释规范 | 需要改进命名或添加注释时 |
-
----
-
-## 三步流程框架
-
-所有技能操作遵循统一的三步流程：
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  第一步：查阅信息 (Research)                                  │
-│  ├── 理解用户问题和场景                                      │
-│  ├── 调用相关子技能（如需要）                                │
-│  └── 网络搜索最新实践（如需要）                              │
-├─────────────────────────────────────────────────────────────┤
-│  第二步：执行操作 (Execute)                                   │
-│  ├── 应用设计原则和规范                                      │
-│  ├── 提供具体代码示例                                        │
-│  └── 解释设计决策和权衡                                      │
-├─────────────────────────────────────────────────────────────┤
-│  第三步：检查验收 (Validate)                                  │
-│  ├── 验证方案符合 SOLID 原则                                  │
-│  ├── 确认代码质量和可读性                                    │
-│  └── 提供进一步优化建议                                      │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
+| 子技能 | 来源 | 职责 | 路径 |
+|--------|------|------|------|
+| code-optimizer | 原 code-optimizer-skill | 三层分析漏斗：静态合规→逻辑结构→性能安全 | [查看](skills/code-optimizer/SKILL.md) |
+| design-pattern-advisor | 原 design-pattern-advisor-skill | 23种GoF模式识别/推荐/审查 | [查看](skills/design-pattern-advisor/SKILL.md) |
 
 ## 使用场景
 

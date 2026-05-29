@@ -1,6 +1,6 @@
 {
   "name": "agent-skills",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "AI Agent 技能集合",
   "categories": {
     "lang": {
@@ -13,11 +13,11 @@
     },
     "process": {
       "description": "流程与方法论",
-      "skills": ["six-layer-architect-skill", "python-team-skill", "pythonic-style-skill", "planning-skill", "agents-writer-skill", "software-design-skill", "project-management-skill", "code-optimizer-skill", "design-pattern-advisor-skill", "data-analytics-skill", "tutorial-writer-skill", "personal-software-dev-exploration-skill"]
+      "skills": ["project-management-skill", "six-layer-architect-skill", "software-design-skill", "python-team-skill", "pythonic-style-skill", "agents-writer-skill", "data-analytics-skill", "tutorial-writer-skill", "personal-software-dev-exploration-skill"]
     },
     "doc": {
       "description": "文档",
-      "skills": ["doc-orchestrator-skill", "project-wiki-skill", "copyright-assist-skill", "api-doc-generator-skill", "architecture-doc-generator-skill", "interface-data-doc-generator-skill", "quality-ops-doc-gen-skill", "requirements-doc-gen-skill"]
+      "skills": ["doc-orchestrator-skill", "copyright-assist-skill"]
     },
     "meta": {
       "description": "元技能",
@@ -28,5 +28,16 @@
       "skills": ["tech-comparison-skill", "side-hustle-evaluator-skill", "recruitment-processor-skill"]
     }
   },
-  "total": 40
+  "total": 32,
+  "merged": {
+    "planning-skill": "→ project-management-skill/skills/planning/",
+    "code-optimizer-skill": "→ software-design-skill/skills/code-optimizer/",
+    "design-pattern-advisor-skill": "→ software-design-skill/skills/design-pattern-advisor/",
+    "project-wiki-skill": "→ doc-orchestrator-skill/templates/project-wiki/",
+    "api-doc-generator-skill": "→ removed (deprecated)",
+    "architecture-doc-generator-skill": "→ removed (deprecated)",
+    "interface-data-doc-generator-skill": "→ removed (deprecated)",
+    "quality-ops-doc-gen-skill": "→ removed (deprecated)",
+    "requirements-doc-gen-skill": "→ removed (deprecated)"
+  }
 }

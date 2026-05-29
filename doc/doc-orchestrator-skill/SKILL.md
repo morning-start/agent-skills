@@ -1,9 +1,9 @@
 ---
 name: doc-orchestrator
-version: 0.1.0
+version: 0.2.0
 author: doc-orchestrator
-description: 文档编排操盘手，全生命周期管理软件开发文档。从需求分析、文档生成、质量校验到变更维护，支持全规模项目自适应、双轨格式（Agent结构化+人类可读）、智能绘图（TXT/Mermaid自适应）
-tags: [documentation, orchestration, lifecycle, quality, automation]
+description: 文档编排操盘手，全生命周期管理软件开发文档。从需求分析、文档生成、质量校验到变更维护，支持全规模项目自适应、双轨格式（Agent结构化+人类可读）、智能绘图（TXT/Mermaid自适应）。已合并 project-wiki（20+模板、知识库、工作流）
+tags: [documentation, orchestration, lifecycle, quality, automation, templates, project-wiki]
 ---
 
 # DocOrchestrator - 文档编排操盘手
@@ -86,6 +86,18 @@ doc-orchestrator/
 | 文档SOLID原则 | 设计原则指南 | [查看](references/solid-doc-principles.md) |
 | 模板变量系统 | 模板变量定义 | [查看](references/template-variable-system.md) |
 | 质量指标定义 | 评分规则 | [查看](references/quality-metrics.md) |
+
+### project-wiki（已合并）
+
+以下资源从 project-wiki 合并而来，提供额外的模板和工作流支持：
+
+| 资源 | 路径 |
+|------|------|
+| 20+ 标准模板（基础/架构/需求/知识库/检查清单） | [查看](templates/project-wiki/) |
+| 文档工作流指南 | [查看](references/project-wiki/WORKFLOW.md) |
+| 模板生成器与配置 | [查看](references/project-wiki/TEMPLATE_GENERATOR.md) |
+| 知识库（框架/模式/原则） | [查看](references/project-wiki/knowledge/) |
+| 文档一致性检查清单 | [查看](references/project-wiki/guides/document-consistency-checklist.md) |
 
 ## 注意事项
 

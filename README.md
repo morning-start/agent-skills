@@ -31,37 +31,28 @@ AI Agent 技能集合 — 为 AI 编程助手设计的专业技能库。
 | [echart-skill](tool/echart-skill/) | Apache ECharts 图表可视化 |
 | [dashboard-skill](tool/dashboard-skill/) | Streamlit 数据看板构建 |
 
-### 🧠 process/ — 流程与方法论（12）
+### 🧠 process/ — 流程与方法论（9）
 教你系统化的开发流程、架构方法论和编码规范。
 
 | 技能 | 说明 |
 |------|------|
+| [project-management-skill](process/project-management-skill/) | 全流程项目管理母技能（含 ROADMAP/TODO/OKR 规划子技能） |
 | [six-layer-architect-skill](process/six-layer-architect-skill/) | 六层架构全栈生成器 |
+| [software-design-skill](process/software-design-skill/) | 软件设计与编码规范（含代码优化 + 设计模式子技能） |
 | [python-team-skill](process/python-team-skill/) | Python 四角色团队协同开发 |
 | [pythonic-style-skill](process/pythonic-style-skill/) | Python 代码风格与惯用法 |
-| [planning-skill](process/planning-skill/) | 项目规划：OKR、Eisenhower 矩阵 |
 | [agents-writer-skill](process/agents-writer-skill/) | AGENTS.md 写作专家 |
-| [software-design-skill](process/software-design-skill/) | 软件设计与编码规范 |
-| [project-management-skill](process/project-management-skill/) | 全流程项目管理母技能 |
-| [code-optimizer-skill](process/code-optimizer-skill/) | 代码优化专家 |
-| [design-pattern-advisor-skill](process/design-pattern-advisor-skill/) | 智能设计模式顾问 |
 | [data-analytics-skill](process/data-analytics-skill/) | 数据分析完整技能体系 |
 | [tutorial-writer-skill](process/tutorial-writer-skill/) | 教程写作 5-Sub Router |
 | [personal-software-dev-exploration-skill](process/personal-software-dev-exploration-skill/) | 个人软件开发探索方法论 |
 
-### 📝 doc/ — 文档（8）
+### 📝 doc/ — 文档（2）
 自动化生成和管理软件文档。
 
 | 技能 | 说明 |
 |------|------|
-| [doc-orchestrator-skill](doc/doc-orchestrator-skill/) | 文档编排操盘手（推荐） |
-| [project-wiki-skill](doc/project-wiki-skill/) | 项目文档助手 |
+| [doc-orchestrator-skill](doc/doc-orchestrator-skill/) | 文档编排操盘手（已合并 project-wiki 模板库+5个废弃文档技能） |
 | [copyright-assist-skill](doc/copyright-assist-skill/) | 软著申请辅助 |
-| [api-doc-generator-skill](doc/api-doc-generator-skill/) | ⚠️ 已废弃，由 doc-orchestrator 替代 |
-| [architecture-doc-generator-skill](doc/architecture-doc-generator-skill/) | ⚠️ 已废弃 |
-| [interface-data-doc-generator-skill](doc/interface-data-doc-generator-skill/) | ⚠️ 已废弃 |
-| [quality-ops-doc-gen-skill](doc/quality-ops-doc-gen-skill/) | ⚠️ 已废弃 |
-| [requirements-doc-gen-skill](doc/requirements-doc-gen-skill/) | ⚠️ 已废弃 |
 
 ### 🔗 meta/ — 元技能（2）
 管理技能的技能 — 创建、维护、优化其他技能。

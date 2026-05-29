@@ -13,11 +13,7 @@
     },
     "process": {
       "description": "流程与方法论",
-      "skills": ["project-management-skill", "six-layer-architect-skill", "software-design-skill", "python-team-skill", "pythonic-style-skill", "agents-writer-skill", "data-analytics-skill", "tutorial-writer-skill", "personal-software-dev-exploration-skill", "doc-orchestrator-skill"]
-    },
-    "meta": {
-      "description": "元技能",
-      "skills": ["skill-lifecycle-skill"]
+      "skills": ["project-management-skill", "six-layer-architect-skill", "software-design-skill", "python-team-skill", "pythonic-style-skill", "agents-writer-skill", "data-analytics-skill", "tutorial-writer-skill", "personal-software-dev-exploration-skill", "doc-orchestrator-skill", "skill-lifecycle-skill"]
     },
     "utility": {
       "description": "辅助工具",

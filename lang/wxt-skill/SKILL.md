@@ -1,5 +1,5 @@
 ---
-name: wxt-skills
+name: wxt
 description: WXT 是现代化浏览器扩展开发框架，支持 Chrome、Firefox、Safari、Edge；提供 TypeScript 支持、HMR 热更新、多框架支持（Vanilla/Vue/React/Svelte/Solid）；适用于快速开发跨浏览器扩展。
 version: 2.0.3
 ---

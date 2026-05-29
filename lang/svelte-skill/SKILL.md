@@ -1,5 +1,5 @@
 ---
-name: svelte-skills
+name: svelte
 description: Svelte 技术栈完整技能库，涵盖 Svelte 5 核心概念、Runes 系统、模板语法、控制流、指令、样式、状态管理等，助力构建现代 Web 应用
 ---
 

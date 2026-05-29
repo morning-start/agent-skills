@@ -1,5 +1,5 @@
 ---
-name: hermes-agent-config
+name: agent
 description: Hermes Agent 配置系统技能库，掌握 Memory 持久化记忆、Context Files 上下文注入、Personality 个性化配置、AGENTS.md 工作手册和分层记忆系统的完整技能体系
 ---
 

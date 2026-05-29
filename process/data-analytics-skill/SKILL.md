@@ -1,5 +1,5 @@
 ---
-name: data-analytics-skills
+name: data-analytics
 description: 数据分析技能库，掌握从数据中发现业务价值的完整技能体系，涵盖分析流程、数据处理、可视化、报告输出等核心能力
 ---
 

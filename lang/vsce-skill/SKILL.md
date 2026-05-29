@@ -1,5 +1,5 @@
 ---
-name: vsce-skills
+name: vsce
 description: VSCode扩展开发完整技能体系，覆盖从基础入门、API使用、高级功能（TreeView/Webview）到发布部署的全流程
 tags: [vscode, extension, vsce, typescript, vscode-api]
 ---

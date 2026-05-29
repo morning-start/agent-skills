@@ -1,5 +1,5 @@
 ---
-name: tauri-skills
+name: tauri
 version: v2.0.0
 author: book-skills
 description: Tauri v2 桌面应用开发指导技能 — 提供架构决策、IPC 设计、权限安全、性能优化等生产级开发指导，覆盖项目初始化到发布全流程的最佳实践与反模式避免

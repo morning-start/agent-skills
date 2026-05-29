@@ -1,5 +1,5 @@
 ---
-name: git-skill
+name: git
 description: Git版本控制技能，掌握仓库管理、提交操作、分支协作、远程同步等核心能力，提供安全的操作指导和故障排除
 ---
 

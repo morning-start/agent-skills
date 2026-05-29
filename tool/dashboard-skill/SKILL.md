@@ -1,5 +1,5 @@
 ---
-name: dashboard-skills
+name: dashboard
 version: v3.0.0
 author: book-skills
 description: 数据看板技能库，使用 Python + Streamlit + ECharts + Pandas 快速构建数据分析和可视化应用，掌握从数据处理到界面展示的完整技能体系

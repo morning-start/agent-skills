@@ -1,5 +1,5 @@
 ---
-name: drissonpage-skills
+name: drissonpage
 description: DrissionPage Python网页自动化工具库技能
 version: 1.0.0
 ---

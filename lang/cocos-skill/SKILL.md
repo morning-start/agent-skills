@@ -1,3 +1,9 @@
+---
+name: cocos
+version: 1.0.0
+description: Cocos Creator 3.8 游戏引擎的完整技能体系，共 18 个子技能，覆盖引擎所有核心功能模块
+---
+
 # Cocos Creator 3.8 Skills
 
 本模块包含 Cocos Creator 3.8 游戏引擎的完整技能体系，共 18 个技能，覆盖引擎所有核心功能模块。

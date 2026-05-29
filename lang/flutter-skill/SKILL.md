@@ -1,5 +1,5 @@
 ---
-name: flutter-skills
+name: flutter
 version: 1.0.0
 description: Flutter开发完整指南：Clean Architecture架构规范、TDD测试工作流、BLoC状态管理、故障排除与代码生成
 dependency:

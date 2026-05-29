@@ -1,5 +1,5 @@
 ---
-name: echart-skill
+name: echart
 version: v1.0.0
 author: skill-factory
 description: Apache ECharts 技能族，掌握折线图、柱状图、饼图、散点图、关系图、地图、K线图等各类图表可视化，适用于数据可视化开发

@@ -1,5 +1,5 @@
 ---
-name: moonbit-skills
+name: moonbit
 version: v11.0.0
 description: >
   Use when user asks about MoonBit programming, creating projects,

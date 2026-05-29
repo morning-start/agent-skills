@@ -15,20 +15,16 @@
       "description": "流程与方法论",
       "skills": ["project-management-skill", "six-layer-architect-skill", "software-design-skill", "python-team-skill", "pythonic-style-skill", "agents-writer-skill", "data-analytics-skill", "tutorial-writer-skill", "personal-software-dev-exploration-skill"]
     },
-    "doc": {
-      "description": "文档",
-      "skills": ["doc-orchestrator-skill", "copyright-assist-skill"]
-    },
     "meta": {
       "description": "元技能",
       "skills": ["skill-lifecycle-skill", "agent-skill"]
     },
     "utility": {
       "description": "辅助工具",
-      "skills": ["tech-comparison-skill", "side-hustle-evaluator-skill", "recruitment-processor-skill"]
+      "skills": ["tech-comparison-skill", "side-hustle-evaluator-skill", "recruitment-processor-skill", "doc-orchestrator-skill", "copyright-assist-skill"]
     }
   },
-  "total": 32,
+  "total": 31,
   "merged": {
     "planning-skill": "→ project-management-skill/skills/planning/",
     "code-optimizer-skill": "→ software-design-skill/skills/code-optimizer/",

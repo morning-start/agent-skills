@@ -5,6 +5,8 @@
   border-radius: 8px;
 }
 
+/* ===== Track & Slider ===== */
+
 .timeline-track {
   position: relative;
   display: flex;
@@ -27,16 +29,23 @@
 
 .timeline-slider {
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   background: var(--md-primary-fg-color);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   top: 50%;
   z-index: 2;
   cursor: grab;
-  transition: left 0.3s ease;
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--md-primary-fg-color) 20%, transparent);
 }
+
+.timeline-slider:hover {
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--md-primary-fg-color) 30%, transparent);
+}
+
+/* ===== Nodes ===== */
 
 .timeline-node {
   position: relative;
@@ -44,16 +53,48 @@
   text-align: center;
   cursor: pointer;
   padding: 0.5em;
-  transition: transform 0.2s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 6px;
+  outline: none;
 }
 
-.timeline-node.active { transform: scale(1.1); }
+.timeline-node:hover {
+  transform: translateY(-2px);
+}
+
+.timeline-node:focus-visible {
+  box-shadow: 0 0 0 2px var(--md-primary-fg-color);
+}
+
+.timeline-node.active {
+  transform: scale(1.15);
+}
+
+.timeline-node::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: var(--md-default-fg-color--lightest);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.timeline-node.active::after {
+  background: var(--md-primary-fg-color);
+  transform: translate(-50%, -50%) scale(1.5);
+}
 
 .node-label {
   display: block;
   font-weight: 600;
   font-size: 0.85em;
   color: var(--md-default-fg-color);
+  margin-top: 14px;
 }
 
 .node-period {
@@ -61,6 +102,25 @@
   font-size: 0.75em;
   color: var(--md-default-fg-color--light);
 }
+
+/* ===== Content Fade-in ===== */
+
+.timeline-fade-in {
+  animation: timelineFadeIn 0.4s ease-out;
+}
+
+@keyframes timelineFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Metrics Grid ===== */
 
 .metrics-grid {
   display: grid;
@@ -73,6 +133,12 @@
   padding: 0.75em;
   background: var(--md-code-bg-color);
   border-radius: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .metric-label {
@@ -92,11 +158,53 @@
   height: 100%;
   background: var(--md-primary-fg-color);
   border-radius: 3px;
-  transition: width 0.4s ease;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .metric-value {
   font-weight: 600;
   font-size: 0.9em;
   margin-top: 0.3em;
+}
+
+/* ===== Code Block ===== */
+
+.timeline-content pre {
+  margin-top: 1em;
+  border-radius: 6px;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 768px) {
+  .rag-timeline { padding: 1em; }
+
+  .node-label { font-size: 0.75em; margin-top: 12px; }
+  .node-period { font-size: 0.65em; }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6em;
+  }
+
+  .metric-card { padding: 0.5em; }
+  .metric-value { font-size: 0.8em; }
+}
+
+@media (max-width: 480px) {
+  .timeline-node { padding: 0.3em; }
+  .node-label { font-size: 0.65em; margin-top: 10px; }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Reduced Motion ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-slider { transition: none; }
+  .timeline-fade-in { animation: none; }
+  .metric-fill { transition: none; }
+  .timeline-node { transition: none; }
 }

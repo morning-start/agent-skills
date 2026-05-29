@@ -1,7 +1,7 @@
 ---
 name: tutorial-writer-decision
-version: v3.0.0
-author: RAG 教程项目组
+version: v3.2.0
+author: skill-factory
 description: Use when configuring, reviewing, updating technical decisions across the tutorial lifecycle
 tags: [tutorial, decision, configuration, project-setup, consistency]
 ---

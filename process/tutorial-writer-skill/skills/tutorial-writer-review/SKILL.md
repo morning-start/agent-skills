@@ -1,7 +1,7 @@
 ---
 name: tutorial-writer-review
-version: v3.0.0
-author: RAG 教程项目组
+version: v3.2.0
+author: skill-factory
 description: Use when checking, reviewing, scoring finished tutorial content, or running quality gates before delivery
 tags: [tutorial, review, quality-gate, cross-chapter, validation, scorecard]
 ---

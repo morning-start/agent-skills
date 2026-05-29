@@ -1,7 +1,7 @@
 ---
 name: tutorial-writer-writing
-version: v3.0.0
-author: RAG 教程项目组
+version: v3.2.0
+author: skill-factory
 description: Use when writing, editing, or completing technical tutorial chapter content
 tags: [tutorial, writing, content-creation, code-examples, asset-management, self-check]
 ---
@@ -12,8 +12,10 @@ tags: [tutorial, writing, content-creation, code-examples, asset-management, sel
 
 本子技能负责教程创作的 **中期撰写执行阶段**（PRWRD+D 中的 WRITE），按已确认的规划产出高质量章节内容。
 
+**核心理念切换**: 传统教程写作输出的是"静态文档"，网页优先写作输出的是**交互式学习体验的蓝本**。每写一段内容，都要思考它在网页上如何呈现、如何交互、如何引导读者探索。
+
 **输入**: 已确认的章节执行计划 + 归档资料
-**输出**: 完成初稿的章节 .md 文件
+**输出**: 完成初稿的章节 .md 文件（包含交互组件占位标记）
 
 ## 核心流程
 
@@ -35,14 +37,21 @@ tags: [tutorial, writing, content-creation, code-examples, asset-management, sel
     │   └── R6: 资料归档到指定目录
     │
     ├── ④ 实时感知累计行数
-    │   ├── 60% → 正常继续
-    │   ├── 80% → 开始收尾
-    │   └── 120% → 触发过长预警
-    │
-    └── ⑤ 每小节完成后的自检
-        ├── 逻辑连贯性
-        ├── 数据准确性
-        └── 见 references/quality-self-check.md
+     │   ├── 60% → 正常继续
+     │   ├── 80% → 开始收尾
+     │   └── 120% → 触发过长预警
+     │
+     ├── ⑤ **网页优先增强**：检查每个核心概念能否用交互组件增强
+     │   ├── 概念能否用交互式图解替代静态截图？
+     │   ├── 代码能否做成可运行沙盒？
+     │   ├── 数据能否用动画图表呈现？
+     │   ├── 知识检验能否插入快速测验？
+     │   └── 步骤流程能否用滚动触发动画逐步揭示？
+     │
+     └── ⑥ 每小节完成后的自检
+         ├── 逻辑连贯性
+         ├── 数据准确性
+         └── 见 references/quality-self-check.md
 ```
 
 ## 写作过程收集资料
@@ -53,6 +62,9 @@ tags: [tutorial, writing, content-creation, code-examples, asset-management, sel
 | 代码输出 | 终端运行结果 | 内嵌在代码块后 | 直接写 |
 | Mermaid 图 | 在线工具验证语法后 | 内嵌在 Markdown 中 | mermaid 代码块 |
 | 对比数据 | 运行基准测试 | 正文表格或 `reference/` | 按分类归档 |
+| **交互组件数据** | **JSON 格式的结构化数据** | `docs/js/*-data.json` | 与组件同名 |
+| **沙盒代码示例** | **可独立运行的代码片段** | `docs/js/` 或 inline | `playground-{序号}.js` |
+| **3D 场景数据** | **Three.js 场景配置** | `docs/js/3d/` | `{场景名}.js` |
 
 ## 参考文件
 

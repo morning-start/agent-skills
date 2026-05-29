@@ -1,7 +1,7 @@
 ---
 name: tutorial-writer
-version: v3.0.0
-author: RAG 教程项目组
+version: v3.2.0
+author: skill-factory
 description: Use when creating, writing, reviewing, publishing technical tutorial content, or managing decisions across the full lifecycle
 tags: [tutorial, writing, technical-documentation, router, research, review, publishing, decision-record]
 dependency:
@@ -131,6 +131,8 @@ tutorial-writer/
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| **v3.2.0** | 2026-05-29 | **Tag 驱动发布 + skill-factory 接管**: publish 改用 tag 触发 GitHub Actions 自动部署 (validate→build→deploy)；添加 uv 项目初始化规范和 Release 自动创建；所有子技能 author 改为 skill-factory |
+| **v3.1.0** | 2026-05-29 | **Web 富交互增强**: publish 新增 CSS 动效、代码沙盒(Monaco+Pyodide)、3D 可视化(Three.js)、交互测验、动画图表(Chart.js)；writing 新增网页优先创作思维和交互组件编写规范；timeline 组件增加动画过渡和键盘/触屏支持 |
 | **v3.0.0** | 2026-05-29 | **5-Sub Router 重构**: 从扁平文档拆分为 5 个独立子技能（research/writing/review/publish/decision），每个技能自含 references/ 和阶段性决策细则；全局 references 精简为 3 个跨子技能共享文件 |
 | v2.2.0 | 2026-05-29 | Web Publishing 增强（前版本） |
 | v2.1.0 | 2026-05-29 | 跨章一致性升级（前版本） |

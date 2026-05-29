@@ -1,7 +1,7 @@
 ---
 name: tutorial-writer-research
-version: v3.0.0
-author: RAG 教程项目组
+version: v3.2.0
+author: skill-factory
 description: Use when researching technical topics, planning chapter outlines, designing chapter structure, or collecting reference materials before writing
 tags: [tutorial, research, planning, outline, length-planning, reference-collection]
 ---

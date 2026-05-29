@@ -1,0 +1,38 @@
+from fastapi import APIRouter, Depends, HTTPException, {{form_or_body}}, File, UploadFile
+from pydantic import BaseModel
+{{imports}}
+
+router = APIRouter(prefix="/{{resource}}", tags=["{{Resource}}"])
+
+# Pydantic Models
+class {{RequestModel}}(BaseModel):
+    """请求模型"""
+    {{request_fields}}
+
+class {{ResponseModel}}(BaseModel):
+    """响应模型"""
+    {{response_fields}}
+
+# API Routes
+@router.{{http_method}}("/{{action}}", response_model={{ResponseModel}})
+async def {{route_name}}(
+    {{route_params}}
+) -> {{ResponseModel}}:
+    """{{route_description}}"""
+    try:
+        # 参数验证
+        {{validation_logic}}
+        
+        # 调用服务层
+        {{service_call}}
+        
+        # 返回标准化响应
+        return {{ResponseModel}}(
+            code=200,
+            data={{response_data}},
+            message="操作成功"
+        )
+    except {{service_exception}} as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="服务器内部错误")

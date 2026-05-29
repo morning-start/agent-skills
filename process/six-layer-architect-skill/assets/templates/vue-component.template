@@ -1,0 +1,56 @@
+<template>
+  <div class="p-6">
+    <h2 class="text-2xl font-bold mb-4">{{title}}</h2>
+    
+    <!-- 表单 -->
+    <form @submit.prevent="handleSubmit" class="space-y-4">
+      {{form_fields}}
+      
+      <!-- 提交按钮 -->
+      <button 
+        type="submit" 
+        :disabled="loading"
+        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 transition-colors"
+      >
+        {{ loading ? '提交中...' : '提交' }}
+      </button>
+    </form>
+    
+    <!-- 预览区域 -->
+    {{preview_section}}
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import Swal from 'sweetalert2'
+
+// 状态定义
+const loading = ref(false)
+{{state_definitions}}
+
+// 提交处理
+const handleSubmit = async () => {
+  try {
+    loading.value = true
+    {{submit_logic}}
+    
+    Swal.fire({
+      icon: 'success',
+      title: '成功',
+      text: '{{success_message}}',
+      timer: 1500,
+      showConfirmButton: false
+    })
+  } catch (error: any) {
+    console.error('操作失败:', error)
+    Swal.fire({
+      icon: 'error',
+      title: '错误',
+      text: error.message || '{{error_message}}'
+    })
+  } finally {
+    loading.value = false
+  }
+}
+</script>

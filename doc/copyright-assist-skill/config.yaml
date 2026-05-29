@@ -1,0 +1,115 @@
+# Copyright Assist 配置文件
+# 用于软件著作权申请材料准备的配置
+
+# 忽略的目录（扫描代码时跳过）
+ignore_dirs:
+  - node_modules
+  - .git
+  - .venv
+  - venv
+  - env
+  - __pycache__
+  - dist
+  - build
+  - target
+  - .idea
+  - .vscode
+  - vendor
+  - third_party
+  - logs
+  - tmp
+  - temp
+  - cache
+  - .cache
+
+# 支持的代码文件扩展名
+code_extensions:
+  - .py
+  - .java
+  - .c
+  - .cpp
+  - .h
+  - .js
+  - .ts
+  - .jsx
+  - .tsx
+  - .go
+  - .rs
+  - .rb
+  - .php
+  - .swift
+  - .kt
+  - .scala
+  - .cs
+  - .m
+  - .mm
+  - .dart
+  - .lua
+  - .sql
+  - .sh
+  - .bat
+  - .ps1
+
+# 支持的截图文件格式
+screenshot_extensions:
+  - .png
+  - .jpg
+  - .jpeg
+  - .gif
+  - .bmp
+  - .webp
+
+# 支持的文档文件格式
+document_extensions:
+  - .md
+  - .txt
+  - .doc
+  - .docx
+  - .pdf
+  - .rst
+
+# 软著申请官方要求
+copyright_requirements:
+  min_total_lines: 3000        # 总行数≥3000行才需提交60页
+  pages_per_section: 30         # 每个部分的页数
+  lines_per_page: 50           # 每页行数（含空行和注释）
+  
+  # 说明书要求
+  manual_min_pages: 60          # 说明书最少页数
+
+# 资源检查阈值
+resource_thresholds:
+  code_min_files: 1             # 最少代码文件数
+  screenshot_min_count: 5        # 最少截图数量
+  screenshot_min_size_kb: 50     # 最少截图大小（KB），小于此值可能分辨率不足
+  screenshot_recommended_size_kb: 100  # 推荐截图大小（KB）
+
+# 日志配置
+logging:
+  level: INFO                  # 日志级别: DEBUG, INFO, WARNING, ERROR
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+
+# 输出配置
+output:
+  # 代码提取输出
+  code:
+    encoding: utf-8
+    line_number_width: 4        # 行号宽度
+    
+  # 检查报告输出
+  report:
+    format: json                # 报告格式: json, text
+    indent: 2                  # JSON缩进
+
+# 版本管理（支持多版本软著申请）
+version:
+  default: "1.0.0"            # 默认版本号
+  enabled: true                 # 是否启用版本管理
+  organize_by_version: true      # 是否按版本组织资源目录
+
+# 参考文档链接（用于问题解决方案）
+reference_links:
+  source_code_format: "references/source-code-format.md"
+  user_manual_guide: "references/user-manual-guide.md"
+  design_manual_guide: "references/design-manual-guide.md"
+  operation_manual_guide: "references/operation-manual-guide.md"

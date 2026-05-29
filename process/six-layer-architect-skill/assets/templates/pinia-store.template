@@ -1,0 +1,33 @@
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+import { {{api_function}} } from '@/api/{{module}}'
+
+interface {{StateInterface}} {
+  {{state_fields}}
+}
+
+export const use{{StoreName}}Store = defineStore('{{storeName}}', () => {
+  // State
+  {{state_initialization}}
+
+  // Actions
+  async {{action_name}}({{action_params}}) {
+    try {
+      const response = await {{api_function}}({{api_call_params}})
+      {{action_logic}}
+      return response
+    } catch (error) {
+      console.error('{{action_name}} 失败:', error)
+      throw error
+    }
+  }
+
+  // Getters
+  {{getters}}
+
+  return {
+    {{export_fields}}
+  }
+}, {
+  persist: {{persist_option}}  // 是否持久化到 localStorage
+})

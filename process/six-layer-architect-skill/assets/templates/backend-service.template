@@ -1,0 +1,43 @@
+from typing import Optional
+from fastapi import UploadFile, HTTPException
+import os
+import uuid
+from datetime import datetime
+
+{{imports}}
+
+class {{ServiceName}}Service:
+    """{{ServiceName}} 服务层"""
+    
+    def __init__(self, db_session):
+        self.db = db_session
+        self.{{service_name}}_repository = {{RepositoryName}}(db_session)
+    
+    async def {{method_name}}({{method_params}}):
+        """{{method_description}}"""
+        
+        # 业务验证
+        {{business_validation}}
+        
+        # 业务逻辑处理
+        {{business_logic}}
+        
+        # 返回结果
+        {{return_statement}}
+    
+    def _validate_file(self, file: UploadFile, allowed_types: list, max_size: int = 5 * 1024 * 1024):
+        """验证文件类型和大小"""
+        if file.content_type not in allowed_types:
+            raise HTTPException(status_code=400, detail=f"不支持的文件类型: {file.content_type}")
+        
+        content = file.file.read()
+        if len(content) > max_size:
+            raise HTTPException(status_code=400, detail=f"文件大小超过限制（{max_size} 字节）")
+        
+        file.file.seek(0)  # 重置文件指针
+        return content
+    
+    def _generate_unique_filename(self, original_filename: str) -> str:
+        """生成唯一文件名"""
+        ext = os.path.splitext(original_filename)[1]
+        return f"{uuid.uuid4()}_{datetime.now().strftime('%Y%m%d_%H%M%S')}{ext}"

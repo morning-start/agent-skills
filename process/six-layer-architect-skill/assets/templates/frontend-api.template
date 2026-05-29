@@ -1,0 +1,52 @@
+import axios from 'axios'
+
+// API 基础 URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1'
+
+// 请求拦截器：自动添加 Token
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => Promise.reject(error)
+)
+
+// 响应拦截器：统一处理错误
+axios.interceptors.response.use(
+  (response) => response.data,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token 过期，清除 Token 并跳转登录
+      localStorage.removeItem('token')
+      window.location.href = '/login'
+    }
+    return Promise.reject(error.response?.data || error.message)
+  }
+)
+
+// TypeScript 接口定义
+export interface {{RequestInterface}} {
+  {{request_fields}}
+}
+
+export interface {{ResponseInterface}} {
+  {{response_fields}}
+}
+
+// API 函数
+export async function {{function_name}}(
+  {{function_params}}
+): Promise<{{ResponseInterface}}> {
+  const url = `{{api_endpoint}}`
+  const config = {
+    method: '{{http_method}}',
+    url,
+    {{request_config}}
+  }
+  
+  return axios(config)
+}

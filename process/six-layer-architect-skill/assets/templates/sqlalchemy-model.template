@@ -1,0 +1,60 @@
+from sqlalchemy import Column, String, Integer, DateTime, {{other_types}}
+from sqlalchemy.ext.declarative import declarative_base
+from datetime import datetime
+
+Base = declarative_base()
+
+class {{ModelName}}(Base):
+    """{{ModelName}} 数据模型"""
+    __tablename__ = "{{table_name}}"
+    
+    # 主键
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    
+    # 字段定义
+    {{model_fields}}
+    
+    # 时间戳
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f"<{{ModelName}}(id={self.id}, {{repr_fields}})>"
+
+# Alembic 迁移命令
+# alembic revision --autogenerate -m "Add {{ModelName}} model"
+# alembic upgrade head
+
+# Repository 模式（可选）
+class {{RepositoryName}}:
+    """{{ModelName}} 数据仓库"""
+    
+    def __init__(self, db_session):
+        self.db = db_session
+    
+    async def get_by_id(self, id: int) -> Optional[{{ModelName}}]:
+        """根据 ID 查询"""
+        return self.db.query({{ModelName}}).filter({{ModelName}}.id == id).first()
+    
+    async def create(self, {{create_params}}) -> {{ModelName}}:
+        """创建记录"""
+        {{model_instance}} = {{ModelName}}({{model_init}})
+        self.db.add({{model_instance}})
+        self.db.commit()
+        self.db.refresh({{model_instance}})
+        return {{model_instance}}
+    
+    async def update(self, {{model_instance}}: {{ModelName}}) -> {{ModelName}}:
+        """更新记录"""
+        self.db.commit()
+        self.db.refresh({{model_instance}})
+        return {{model_instance}}
+    
+    async def delete(self, id: int) -> bool:
+        """删除记录"""
+        {{model_instance}} = await self.get_by_id(id)
+        if {{model_instance}}:
+            self.db.delete({{model_instance}})
+            self.db.commit()
+            return True
+        return False

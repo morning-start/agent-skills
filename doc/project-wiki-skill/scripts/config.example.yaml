@@ -1,0 +1,48 @@
+# 项目配置示例
+# 复制此文件为 config.yaml 并修改为实际值
+
+# 项目基本信息
+project_name: "我的项目"
+username: "your-github-username"
+description: "项目描述"
+version: "1.0.0"
+
+# 联系信息
+contact_email: "contact@example.com"
+author: "作者姓名"
+
+# 许可证信息
+license_type: "MIT"
+year: "2024"
+
+# 技术栈
+tech_stack:
+  - "React"
+  - "TypeScript"
+  - "Node.js"
+
+# 部署信息
+base_url: "https://api.example.com"
+port: "3000"
+
+# 数据库配置
+database_url: "postgresql://localhost:5432/mydb"
+redis_url: "redis://localhost:6379"
+
+# 功能模块
+features:
+  - "用户认证"
+  - "数据管理"
+  - "API 接口"
+
+# 里程碑
+milestones:
+  - name: "MVP 版本"
+    date: "2024-06-30"
+    description: "完成核心功能"
+  - name: "Beta 版本"
+    date: "2024-09-30"
+    description: "公开测试"
+  - name: "正式发布"
+    date: "2024-12-31"
+    description: "v1.0 正式发布"

@@ -18,15 +18,23 @@ tags: [tutorial, publishing, mkdocs, github-pages, web, mermaid, interactive]
 ## 核心流程
 
 ```
-章节内容已通过 REVIEW
+章节内容已通过 REVIEW（在 book/ 中完成）
     │
-    ├── ① 将 .md 文件放入 docs/chapters/
+    ├── ① 同步 book/ → web/chapters/
+    │   └── cp book/ch*.md web/chapters/
+    │
     ├── ② 更新 mkdocs.yml 的 nav 配置
-    ├── ③ 如需交互组件 → 添加 JS/CSS 文件
+    │   └── nav 路径相对于 web/ 目录
+    │
+    ├── ③ 如需交互组件 → 添加 JS/CSS 文件到 web/js/ 或 web/css/
+    │
     ├── ④ 本地验证：uv run mkdocs build --strict（无 error/warning）
+    │   └── mkdocs.yml 中 docs_dir: web 已正确配置
+    │
     ├── ⑤ 提交并打 tag
     │   ├── git add . && git commit -m "feat: 第X章"
     │   └── git tag v{major}.{minor}.{patch}
+    │
     └── ⑥ 发布
         ├── git push && git push --tags
         │   └── GitHub Actions 自动: validate → build → deploy

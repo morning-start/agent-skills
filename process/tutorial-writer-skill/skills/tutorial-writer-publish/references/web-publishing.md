@@ -48,22 +48,31 @@
 
 ## 1. 整体架构
 
-### 1.1 三层模型
+### 1.1 四层内容管道
 
 ```
-┌──────────────────────────────────────────────┐
-│          表示层 (Presentation)                 │
-│  MkDocs Material 主题 + 自定义 CSS/JS         │
-│  导航 / 搜索 / 响应式 / 暗色模式              │
-├──────────────────────────────────────────────┤
-│          内容层 (Content)                     │
-│  Markdown (.md) 章节文件                      │
-│  Mermaid 图表 / 表格 / 代码块 / 交互组件      │
-├──────────────────────────────────────────────┤
-│          构建层 (Build)                       │
-│  uv + MkDocs build → 静态 HTML               │
-│  GitHub Actions → GitHub Pages                │
-└──────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│  ① 规范层 (Canonical Source)                        │
+│  book/ — 唯一内容编辑源，章节 Markdown 文件          │
+│  编辑在此，review 在此，不涉及网页构建细节             │
+├──────────────────────────────────────────────────────┤
+│  ② 网页源 (Web Source)                              │
+│  web/ — MkDocs 构建源目录（docs_dir）                 │
+│  web/chapters/ ← 从 book/ 同步                          │
+│  web/css/ + web/js/ ← 直接维护（交互组件专用）        │
+├──────────────────────────────────────────────────────┤
+│  ③ 构建层 (Build)                                   │
+│  uv + mkdocs build → site/                           │
+│  mkdocs.yml 中 docs_dir: web                         │
+├──────────────────────────────────────────────────────┤
+│  ④ 发布层 (Deploy)                                  │
+│  GitHub Actions (tag 触发) → GitHub Pages            │
+└──────────────────────────────────────────────────────┘
+
+数据流:
+  book/ch0x-*.md  ──(手动同步)──▶  web/chapters/  ──(mkdocs build)──▶  site/
+                                                          ▲
+                                              mkdocs.yml + web/css/ + web/js/
 ```
 
 ### 1.2 技术栈速查
@@ -71,63 +80,98 @@
 | 层 | 技术 | 作用 |
 |----|------|------|
 | 包管理 | `uv` | Python 依赖管理，替代 pip/poetry |
-| SSG | MkDocs + Material 主题 | 将 Markdown 编译为静态网站 |
+| SSG | MkDocs + Material 主题 | 将 `web/` 编译为静态网站 |
 | 图解 | Mermaid.js | 流程图/时序图/架构图/甘特图 |
 | 交互 | 自定义 JS (D3.js / vanilla) | 可拖拽时间轴等动态组件 |
-| 部署 | GitHub Actions + Pages | 推送即自动构建发布 |
+| 部署 | GitHub Actions + Pages | tag 推送即自动构建发布 |
 | 自定义 | extra_css / extra_javascript | 主题覆盖和脚本注入 |
 
-## 2. 快速启动（5 分钟）
+### 1.3 关键约定
 
-### 2.1 初始化
+| 规则 | 说明 |
+|------|------|
+| `book/` 是唯一规范源 | 编辑内容先改 `book/`，再同步到 `web/chapters/` |
+| `web/` 是 MkDocs 的 `docs_dir` | `mkdocs.yml` 中设置 `docs_dir: web` |
+| `web/` 包含所有网页专属素材 | CSS/JS/图片直接维护在 `web/`，不随 `book/` 同步 |
+| `reference/` 不发布到网页 | 仅开发查阅，`mkdocs.yml` 排除在外 |
+| `site/` 不手工修改 | 完全由 `mkdocs build` 生成，`.gitignore` 中排除 |
 
-```bash
-# 使用 uv 初始化项目（已有 Python 项目则跳过）
-uv init tutorial-web
-cd tutorial-web
+## 2. 项目结构规范
 
-# 添加核心依赖
-uv add mkdocs-material
+> 真实项目采用 **book/ + web/ 双目录结构**，`book/` 是唯一编辑源，`web/` 是 MkDocs 构建源。
 
-# 创建标准目录结构
-mkdir -p docs/chapters docs/assets docs/js docs/overrides
-```
-
-### 2.2 目录结构规范
+### 2.1 标准目录结构
 
 ```
 {项目根目录}/
-├── mkdocs.yml                     # 核心配置文件
-├── pyproject.toml                 # uv 依赖管理
-├── uv.lock                        # 锁定版本
-├── docs/
-│   ├── index.md                   # 首页（教程简介）
-│   ├── chapters/                  # 各章节 Markdown
+│
+├── book/                         # ① 规范内容源 (唯一编辑源)
+│   ├── ch01-概述.md              # 全书 16 章（含拆分子章 ch05a, ch09a 等）
+│   ├── ch02-架构演进.md
+│   ├── ch03-环境准备.md
+│   ├── ch04-基础组件.md
+│   ├── ch05-向量数据库.md
+│   ├── ch05a-Embedding模型.md    # 拆分章
+│   ├── ch06-检索策略.md
+│   ├── ch07-生成优化.md
+│   ├── ch08-评估框架.md
+│   ├── ch09-RAG实践.md
+│   ├── ch09a-多模态RAG.md        # 拆分章
+│   ├── ch10-进阶主题.md
+│   ├── ch11-项目实战.md
+│   ├── ch12-性能调优.md
+│   ├── ch12a-企业级部署.md       # 拆分章
+│   └── chXX-*.md
+│
+├── web/                          # ② MkDocs 构建源目录 (docs_dir)
+│   ├── index.md                  # 首页（教程简介，直接维护）
+│   ├── chapters/                 # 从 book/ 同步的章节副本
 │   │   ├── ch01-概述.md
 │   │   ├── ch02-架构演进.md
 │   │   └── ...
-│   ├── assets/                    # 静态资源
-│   │   ├── images/                # 截图/示意图
-│   │   └── diagrams/              # 复杂 SVG/图表
-│   ├── js/                        # 自定义 JavaScript
-│   │   ├── timeline.js            # 时间轴交互组件
-│   │   ├── timeline-data.json     # 时间轴数据
-│   │   └── extra.js               # 其他增强脚本
-│   ├── css/                       # 自定义样式覆盖
+│   ├── assets/                   # 图片/静态资源
+│   │   ├── images/               # 截图/示意图
+│   │   └── diagrams/             # 复杂 SVG/图表
+│   ├── js/                       # 自定义交互组件
+│   │   ├── extra.js              # 通用增强脚本
+│   │   ├── timeline.js           # 时间轴组件
+│   │   ├── timeline-data.json    # 时间轴数据
+│   │   ├── benchmark-chart.js    # 基准测试图表
+│   │   └── vector-viz.js         # 3D Embedding 可视化
+│   ├── css/                      # 自定义样式
 │   │   └── extra.css
-│   └── overrides/                 # 主题模板覆盖
-└── .github/
-    └── workflows/
-        └── deploy.yml             # GitHub Actions 工作流
+│   └── overrides/                # 主题模板覆盖（可选）
+│
+├── site/                         # ③ mkdocs build 输出 (gitignored)
+│
+├── reference/                    # ④ 参考资料 (仅开发用，不发布)
+│   ├── 00-资源索引与链接.md
+│   ├── 01-大模型基础/
+│   ├── 02-RAG基础原理/
+│   └── ...
+│
+├── mkdocs.yml                    # MkDocs 核心配置
+├── pyproject.toml                # uv 依赖管理
+├── uv.lock                       # 锁定版本
+├── .python-version               # Python 版本锁定 (3.12)
+├── .gitignore                    # 排除 site/ .venv/
+├── 大纲.md                       # 全书大纲
+├── 质量评分卡.md                  # 质量门禁评分
+│
+└── .github/workflows/
+    └── deploy.yml                 # GitHub Actions 工作流
 ```
 
-### 2.3 最小配置 mkdocs.yml
+### 2.2 mkdocs.yml 配置（docs_dir 指向 web/）
 
 ```yaml
+# mkdocs.yml — docs_dir 必须指向 web/
 site_name: RAG 从入门到生产实践
 site_description: 检索增强生成全链路学习指南
 site_url: https://你的用户名.github.io/仓库名/
 repo_url: https://github.com/你的用户名/仓库名
+
+docs_dir: web                      # ★ 关键：构建源指向 web/ 而非默认的 docs/
 
 theme:
   name: material
@@ -192,14 +236,69 @@ extra_javascript:
   - js/extra.js
 ```
 
-### 2.4 本地开发
+### 2.3 初始化命令
 
 ```bash
-# 启动开发服务器（自动热更新）
+# 1. 创建项目目录
+mkdir rag-tutorial && cd rag-tutorial
+
+# 2. uv 初始化 Python 项目
+uv init --python 3.12
+
+# 3. 添加核心依赖
+uv add mkdocs-material
+
+# 4. 添加可选插件
+uv add mkdocs-git-revision-date-localized-plugin
+
+# 5. 创建 book/ + web/ 双目录
+mkdir -p book
+mkdir -p web/chapters web/assets/images web/js web/css web/overrides
+mkdir -p reference
+mkdir -p .github/workflows
+
+# 6. 创建 Python 版本锁
+echo "3.12" > .python-version
+
+# 7. 创建 .gitignore
+cat > .gitignore << 'EOF'
+site/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+EOF
+
+# 8. 创建首页
+cat > web/index.md << 'EOF'
+# RAG 从入门到生产实践
+
+> 检索增强生成全链路学习指南
+EOF
+```
+
+### 2.4 book/ → web/ 同步命令
+
+```bash
+# 编辑内容在 book/ 中完成，完成后同步到 web/chapters/
+cp book/ch01-概述.md web/chapters/ch01-概述.md
+cp book/ch02-架构演进.md web/chapters/ch02-架构演进.md
+
+# 批量同步所有章节
+cp book/ch*.md web/chapters/
+
+# 验证同步后网页构建
+uv run mkdocs build --strict
+```
+
+### 2.5 本地开发
+
+```bash
+# 启动开发服务器（自动热更新，监听 web/）
 uv run mkdocs serve
 
-# 构建静态站点
-uv run mkdocs build
+# 构建静态站点到 site/
+uv run mkdocs build --strict
 ```
 
 ## 3. Mermaid 图解集成
@@ -253,7 +352,7 @@ sequenceDiagram
 ### 3.4 自定义 Mermaid 加载（使用 CDN 版本锁定）
 
 ```yaml
-# mkdocs.yml
+# mkdocs.yml — 路径相对于 web/
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js
 ```
@@ -288,11 +387,9 @@ extra_javascript:
 拖动下方时间轴查看各阶段的关键指标和核心技术差异：
 
 <div id="rag-timeline"></div>
-
-<script src="js/timeline.js"></script>
 ```
 
-确保 `mkdocs.yml` 的 `extra_javascript` 包含 `js/timeline.js`，`extra_css` 包含 `css/extra.css`。
+确保 `mkdocs.yml` 的 `extra_javascript` 包含 `js/timeline.js`，`extra_css` 包含 `css/extra.css`（路径相对于 `web/`）。
 
 ## 5. uv 项目初始化
 
@@ -302,7 +399,7 @@ extra_javascript:
 
 ```bash
 # 创建项目目录
-mkdir tutorial-web && cd tutorial-web
+mkdir rag-tutorial && cd rag-tutorial
 
 # 使用 uv 初始化 Python 项目（生成 pyproject.toml + uv.lock）
 uv init --python 3.12
@@ -313,10 +410,10 @@ uv add mkdocs-material
 # 添加可选插件
 uv add mkdocs-git-revision-date-localized-plugin  # 最后更新日期
 
-# 创建标准目录结构
-mkdir -p docs/chapters docs/assets/images docs/js docs/css docs/overrides
-
-# 创建 GitHub Actions 目录
+# 创建 book/ + web/ 双目录 + GitHub Actions
+mkdir -p book
+mkdir -p web/chapters web/assets/images web/js web/css web/overrides
+mkdir -p reference
 mkdir -p .github/workflows
 
 # 创建 .python-version 锁定 Python 版本
@@ -428,8 +525,8 @@ jobs:
         run: echo "tag=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
       - name: Inject version into site
         run: |
-          mkdir -p docs/assets
-          echo '{"version": "${{ steps.version.outputs.tag }}", "buildDate": "${{ github.event.repository.updated_at }}"}' > docs/assets/version.json
+          mkdir -p web/assets
+          echo '{"version": "${{ steps.version.outputs.tag }}", "buildDate": "${{ github.event.repository.updated_at }}"}' > web/assets/version.json
       - name: Build site
         run: uv run mkdocs build --strict
       - name: Upload artifact
@@ -458,16 +555,19 @@ jobs:
 
 ```
 作者工作流：
-  ┌──────────────────────────────────────────────────────┐
-  │  ① 完成章节内容，本地验证通过                          │
-  │  ② git add . && git commit -m "feat: 完成第X章"      │
-  │  ③ git tag v1.2.3     ← 语义化版本号                  │
-  │  ④ git push && git push --tags                        │
-  │  ⑤ GitHub Actions 自动：                              │
-  │     ├─ validate: uv sync --frozen + mkdocs build      │
-  │     ├─ build: 注入版本号 → 构建 site/                  │
-  │     └─ deploy: 部署到 Pages + 创建 Release             │
-  └──────────────────────────────────────────────────────┘
+  ┌──────────────────────────────────────────────────────────┐
+  │  ① 在 book/ 中编辑/修改章节内容                           │
+  │  ② 同步 book/ → web/chapters/                            │
+  │     cp book/ch*.md web/chapters/                         │
+  │  ③ 本地验证：uv run mkdocs build --strict                │
+  │  ④ git add . && git commit -m "feat: 完成第X章"         │
+  │  ⑤ git tag v1.2.3         ← 语义化版本号                  │
+  │  ⑥ git push && git push --tags                            │
+  │  ⑦ GitHub Actions 自动：                                  │
+  │     ├─ validate: uv sync --frozen + mkdocs build --strict │
+  │     ├─ build: 注入版本号 → mkdocs build → site/            │
+  │     └─ deploy: 部署到 Pages + 创建 Release                 │
+  └──────────────────────────────────────────────────────────┘
 ```
 
 ### 6.3 Tag 命名规范
@@ -514,6 +614,7 @@ gh workflow run deploy.yml -f version=v1.0.0
 - [ ] 版本号正确：访问 `/assets/version.json`
 - [ ] 导航结构完整：所有章节可达
 - [ ] 交互组件正常：时间轴/沙盒/测验功能可用
+- [ ] book/ ↔ web/ 一致：确认 `web/chapters/` 中内容与 `book/` 同步
 - [ ] GitHub Release 已创建：`https://github.com/{user}/{repo}/releases`
 
 ### 6.7 GitHub Pages 配置
@@ -528,12 +629,17 @@ gh workflow run deploy.yml -f version=v1.0.0
 
 ### 7.1 图片路径管理
 
+图片存储在 `web/assets/images/`，引用时使用相对于 `web/` 的路径：
+
 ```markdown
-<!-- 正确：引用 docs/assets/images/ 下的图片 -->
-![RAG 架构图](./assets/images/rag-architecture.png)
+<!-- 正确：引用 web/assets/images/ 下的图片（Markdown 在 web/chapters/ 下） -->
+![RAG 架构图](../assets/images/rag-architecture.png)
 
 <!-- 正确：引用绝对路径（网站部署后） -->
 ![RAG 架构图](/assets/images/rag-architecture.png)
+
+<!-- 错误：引用 book/ 目录（book/ 不发布） -->
+![RAG 架构图](../../book/assets/rag.png)
 
 <!-- 错误：引用项目外部路径 -->
 ![RAG 架构图](../../../somewhere/rag.png)

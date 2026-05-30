@@ -1,10 +1,26 @@
 # 网页发布指南 — Web Publishing (Astro + Starlight)
 
-> **版本**: v4.1.0 — 模块化配置 + 插件生态 + 社区最佳实践
+> **版本**: v5.0.0 — 模块化配置 + 插件生态 + 社区最佳实践
 >
-> 本文档提供基于 Astro 框架 + Starlight 文档主题的 GitHub Pages 教程网站从初始化到部署的完整参考。
+> **定位**: 🏗️ **构建阶段详细参考** — 本文档专注于 Astro + Starlight 的项目构建、配置、内容管理和插件生态。
+>
+> **所属阶段**: 主要服务于 `/website-build` 子技能（构建阶段）
+>
+> **发布阶段参考**: GitHub Pages 部署、CI/CD、Actions 工作流等详见 → [website-deploy 子技能](../skills/website-deploy/SKILL.md)
+>
+> **使用场景**: 当需要深入了解 Starlight 配置细节、插件用法、内容组织、组件开发等构建相关主题时读取本文档。
 
-## 1. 技术栈
+---
+
+## 文档导航
+
+| 章节 | 内容 | 所属子技能 |
+|------|------|-----------|
+| **§1-5** | 技术栈、模块化配置、内容管理、插件、项目初始化 | `/website-build` ✅ |
+| **§6** | 部署基础配置（精简版） | `/website-deploy` (完整版) → [查看](../skills/website-deploy/SKILL.md) |
+| **§7-8** | 社区经验、质量门禁 | `/website-build` + `/website-deploy` |
+
+---
 
 | 层 | 技术 | 作用 |
 |----|------|------|

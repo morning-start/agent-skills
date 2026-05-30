@@ -1,412 +1,758 @@
 ---
 name: tutorial-writer-publish
-version: v4.1.0
+version: v6.1.0
 author: skill-factory
-description: Use when deploying technical tutorial content as a web site via GitHub Pages using Astro + Starlight — project planning, modular configuration, community plugins, content conventions, and deployment
-tags: [tutorial, publishing, astro, github-pages, web, starlight, ssg, plugins]
+description: >
+  Use when deploying tutorial websites to GitHub Pages, configuring CI/CD workflows,
+  setting up GitHub Actions, managing deployment configurations, or troubleshooting
+  static site deployment issues for Astro + Starlight sites. Triggers on "部署到 GitHub",
+  "GitHub Pages", "Actions 工作流", "CI-CD", "网站发布", or "自动部署".
+  Covers GitHub Actions integration, base path configuration, custom domains,
+  SSL/TLS, and production monitoring for Astro + Starlight sites.
+  This is a low-frequency skill typically called after build phase completion.
+tags: [tutorial, publishing, astro, starlight, github-pages, web, deployment, ci-cd]
+dependency:
+  parent: tutorial-writer
+  structure: "Type 1 (重+厚): 单文件 + references"
+  pattern: "Self-contained"
+meta:
+  complexity: intermediate
+  standalone: true
+  can_invoke_directly: true
+  astro_version: "6.3"
+  call_frequency: "low"  # 低频调用：预计每项目 2-3 次
 ---
 
-# Tutorial Writer — 🌐 网页发布（Astro + Starlight）
+# Tutorial Writer — 🚀 网页发布（GitHub Pages）v6.1
 
-## 技能定位
+> **父技能**: [tutorial-writer](../SKILL.md)
+> **独立可用**: ✅ 可通过 `/publish` 直接触发（L1 直达）
+> **架构**: 自含型单文件技能 — 包含完整的 GitHub Pages 发布指南
+> **使用频率**: 🟢 **低频** — 通常在构建完成后调用（每项目 2-3 次）
 
-本子技能负责教程创作的 **交付与发布阶段**，基于 Astro 框架 + Starlight 文档主题将 Markdown 教程输出为 GitHub Pages 静态网站。提供从项目规划、模块化配置、社区生态到部署的完整指南。
+---
 
-**输入**: 已通过质量门禁的章节 .md 文件
-**输出**: Astro + Starlight 项目的完整规划、配置方案、目录结构约定、部署配置
+## 🎯 职责范围
 
-**为什么选择 Astro + Starlight**:
-| 特性 | 说明 |
-|------|------|
-| 零 JS 默认输出 | 教程页面默认不加载 JS，Lighthouse 评分 97-100 |
-| Islands 架构 | 仅在需要交互的地方加载框架组件（React/Vue/Svelte） |
-| Content Collections | 类型安全的 Markdown 内容管理，Zod 检验 frontmatter |
-| Starlight 主题 | 内置搜索 / 侧边栏导航 / 暗色模式 / 代码高亮 / i18n |
-| 搜索 | 默认 Pagefind 构建时搜索，零外部依赖, 无额外成本 |
-| 组件覆盖 | 可覆盖 Starlight 任意内置组件，深度定制 UI |
-| 插件生态 | 官方 + 社区插件体系，功能可扩展 |
-| 部署 | `withastro/action` 一键部署到 GitHub Pages |
-| 社区案例 | Cloudflare 文档、Astro 官方文档、WP Engine 案例 |
+| ✅ 负责 | ❌ 不负责 |
+|---------|----------|
+| GitHub Pages 专用配置和部署 | Astro 项目构建 → `/build` |
+| GitHub Actions 工作流设置 | Starlight 主题配置 → `/build` |
+| base 路径 / trailingSlash 配置 | Content Collections → `/build` |
+| 自定义域名 / DNS / SSL | 组件开发 → `/build` |
+| CI/CD 流水线和自动化 | 性能优化（构建时）→ `/build` |
+| 部署监控、回滚、通知 | 本地开发环境 → `/build` |
 
-## 启动流程
+**设计理念**: 本技能是 Tutorial Writer 流程中的**低频操作**，但内容完整详尽。Agent 在需要部署时一次性获取所有所需信息。
 
-```
-① 项目初始化 ──────────────────────────
-   npm create astro@latest -- --template starlight
+---
 
-② 配置基础信息 ────────────────────────
-   astro.config.mjs: title / description / logo / social / site / base
+## 前置条件
 
-③ 配置侧边栏导航 ──────────────────────
-   手动分组 / 自动生成 / 混合模式
+在开始配置前，确认以下构建阶段交付物已就绪：
 
-④ 配置 Content Collections ───────────
-   src/content.config.ts: docsSchema + 自定义 frontmatter 字段
+- [ ] 已完成 `/build` 阶段（Astro 项目构建完成）
+- [ ] `npm run build` 成功，无错误输出
+- [ ] `dist/` 目录结构正确（包含 `_astro/`、HTML 文件）
+- [ ] 本地 `npm run preview` 页面显示正常
+- [ ] 浏览器控制台无 404 错误（CSS/JS/图片）
+- [ ] 响应式布局验证通过（375px / 768px / 1280px）
 
-⑤ 迁移章节内容 ────────────────────────
-   book/ → src/content/docs/
+⚠️ 如果上述条件未满足，请先执行 `/build` 完成网站构建。
 
-⑥ 添加插件（按需）─────────────────────
-   官方插件 / 社区插件
+---
 
-⑦ 添加交互组件（按需）─────────────────
-   React/Vue/Svelte Islands
+## 🚀 快速发布：4 步部署到 GitHub Pages
 
-⑧ 部署 ────────────────────────────────
-   GitHub Actions → GitHub Pages
+### Step 1: 关键部署配置
 
-⑨ 质量验证 ────────────────────────────
-   构建检查 + Lighthouse + 链接验证 + 响应式
-```
+**astro.config.mjs**（必须正确设置的 3 个关键项）：
 
-## 模块化配置
+```javascript
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
 
-### 配置分层结构
+export default defineConfig({
+  // ⭐ 关键 1：完整站点 URL（影响 SEO、sitemap、OG 图片路径）
+  site: 'https://username.github.io',
 
-```
-astro.config.mjs（主配置）
-├── site / base          # 部署 URL 配置
-├── integrations         # Starlight 集成 + 其他 Astro 集成
-│   └── starlight({...}) # Starlight 主题配置
-│       ├── 基础: title / description / logo / favicon
-│       ├── 社交: social（github / twitter / mastodon / discord / youtube）
-│       ├── 导航: sidebar（手动 / 自动 / 混合）
-│       ├── 搜索: 默认 Pagefind / 可替换 DocSearch
-│       ├── 插件: plugins[]（官方 + 社区）
-│       ├── 组件覆盖: components（覆盖内置组件）
-│       ├── 页面元素: head / editLink / lastUpdated / pagination
-│       └── 多语言: locales / defaultLocale
-└── 其他 Astro 配置: output / adapter / vite / markdown / image
+  // ⭐ 关键 2：项目路径前缀（GitHub Pages 项目站点必填！）
+  // 用户站点（username.github.io）可不填或设为 '/'
+  base: '/repo-name/',
+
+  // ⭐ 关键 3：避免 GitHub Pages 404 问题
+  trailingSlash: 'always',    // 输出 /about/index.html 而非 /about.html
+
+  integrations: [
+    starlight({
+      // ... Starlight 配置（见 /build）
+    }),
+  ],
+});
 ```
 
-### Starlight 配置全景
+**两种场景的配置差异**：
 
-| 配置项 | 类型 | 说明 | 必要性 |
-|--------|------|------|--------|
-| `title` | string | 站点标题（浏览器标签 + meta） | ✅ 必填 |
-| `description` | string | 站点描述（SEO meta） | 推荐 |
-| `logo` | object | Logo 图片（支持 light/dark 双版本） | 可选 |
-| `favicon` | string | Favicon 路径 | 可选 |
-| `social` | object | 社交链接（显示在导航栏） | 可选 |
-| `sidebar` | array | 侧边栏导航配置 | ✅ 推荐 |
-| `tableOfContents` | object/false | 目录层级（默认 h2-h3） | 可选 |
-| `editLink` | object | "编辑此页"链接 | 推荐 |
-| `lastUpdated` | boolean | 显示最后更新时间 | 推荐 |
-| `pagination` | boolean | 上一页/下一页导航 | 可选 |
-| `search` | object | 搜索配置 | 可选 |
-| `plugins` | array | Starlight 插件列表 | 可选 |
-| `components` | object | 覆盖内置组件 | 可选 |
-| `head` | array | 自定义 <head> 标签 | 可选 |
-| `locales` | object | 多语言配置 | 可选 |
-| `defaultLocale` | string | 默认语言 | 可选 |
+| 场景 | `site` 值 | `base` 值 | 最终 URL 示例 |
+|------|----------|----------|--------------|
+| **用户/组织站点** | `https://username.github.io` | 不填或 `'/'` | `https://username.github.io/` |
+| **项目站点**（推荐） | `https://username.github.io` | `'/repo-name'` | `https://username.github.io/repo/` |
 
-### 侧边栏导航模式
+⚠️ **常见错误**：忘记设置 `base` 导致所有静态资源（CSS/JS/图片）404！
 
-Starlight 支持三种侧边栏配置策略，可按章节混合使用：
+### Step 2: 创建 GitHub Actions 工作流
 
-**手动模式** — 精确控制章节顺序和结构：
-```
-sidebar: [
-  { label: '第一章', slug: 'ch01-概述' },
-  { label: '第二章', slug: 'ch02-入门' },
-  { label: '进阶', items: [
-    { label: '第三章', slug: 'ch03-进阶' },
-    { label: '第四章', slug: 'ch04-深入' },
-  ]},
-]
-```
+**文件位置**: `.github/workflows/deploy.yml`
 
-**自动生成** — 基于文件系统自动生成：
-```
-sidebar: [
-  { label: '入门', autogenerate: { directory: 'getting-started' }},
-  { label: '进阶', autogenerate: { directory: 'advanced' }},
-]
-```
-
-**混合模式** — 手动项与自动生成混合：
-```
-sidebar: [
-  { label: '首页', slug: 'index' },
-  { label: '教程', autogenerate: { directory: 'tutorial' }},
-  { label: '附录', items: [
-    { slug: 'appendix/faq' },
-    { slug: 'appendix/changelog' },
-  ]},
-]
-```
-
-### Content Collections 方案
-
-通过 `src/content.config.ts` 定义教程章节的 frontmatter schema：
-
-**基础方案**（Starlight 默认）:
-```
-docsSchema() 自动处理: title / description / slug / draft / sidebar
-```
-
-**扩展方案**（添加自定义字段）:
-```
-docsSchema({ schema: z.object({
-  tags: z.array(z.string()).optional(),
-  difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
-  readingTime: z.number().optional(),
-  coverImage: z.string().optional(),
-})})
-```
-
-**适用场景**:
-- 按标签分类检索 → 添加 `tags` 字段
-- 按难度分级 → 添加 `difficulty` 字段
-- 显示预估阅读时间 → 添加 `readingTime` 字段
-- SEO 优化 → 利用 Starlight 内置的 `description` 和 `head` frontmatter
-
-## 插件与组件生态
-
-### 官方插件
-
-| 插件 | 用途 | 适用场景 |
-|------|------|---------|
-| `@astrojs/starlight-docsearch` | 替换 Pagefind 为 Algolia DocSearch | 需要搜索分析/建议的站点 |
-| `@astrojs/starlight-tailwind` | Tailwind CSS v4 兼容 | 使用 Tailwind 定制样式 |
-| `@astrojs/starlight-markdoc` | 启用 Markdoc 格式 | 需要比 MDX 更灵活的内容格式 |
-
-### 社区插件（按人气排序）
-
-| 插件 | Stars | 用途 | 教程场景 |
-|------|-------|------|---------|
-| **starlight-blog** | ⭐264 | 在文档站点中添加博客 | 教程更新日志、发布公告 |
-| **starlight-links-validator** | ⭐109 | 构建时验证内部链接 | 确保跨章链接不失效 |
-| **starlight-openapi** | — | 从 OpenAPI/Swagger 生成文档 | API 教程自动生成 |
-| **starlight-obsidian** | — | 发布 Obsidian 知识库 | 从 Obsidian 直接发布教程 |
-| **starlight-versions** | — | 多版本文档管理 | 教程不同版本切换 |
-| **starlight-sidebar-topics** | — | 多分区独立侧边栏 | 不同模块 / 不同课程的分区 |
-| **starlight-image-zoom** | — | 图片点击缩放 | 架构图 / 截图放大查看 |
-| **starlight-heading-badges** | — | 标题徽章 | 标注"新"、"已更新"、"实验性" |
-| **starlight-site-graph** | — | 交互式站点图谱 | 教程知识图谱可视化 |
-| **starlight-utils** | — | 通用工具集合 | 多页面共享工具函数 |
-| **starlight-view-modes** | — | 不同视图模式切换 | 阅读/演示/全屏模式 |
-| **starlight-spell-checker** | — | 拼写检查（多语言） | 文档质量保障 |
-| **starlight-showcases** | — | 作品展示组件集 | 教程案例 / 学员作品展示 |
-| **star-warp** | — | 搜索体验增强 | 更快的搜索导航体验 |
-| **starlight-sidebar-swipe** | — | 移动端侧边栏滑动 | 移动端用户体验优化 |
-| **starlight-contributor-list** | — | 贡献者列表组件 | 多人协作教程致谢 |
-| **starlight-save-file-component** | — | 文件下载组件 | 提供示例代码下载 |
-| **starlight-cooler-credit** | — | 美化 Starlight 版权声明 | 页脚美化 |
-| **starlight-plugin-show-latest-version** | — | 显示最新版本号 | 教程配套项目的版本展示 |
-
-### 社区主题
-
-| 主题 | 说明 |
-|------|------|
-| **starlight-nextjs-theme** | 类 Next.js 文档风格的 Starlight 主题 |
-
-### 插件选择策略
-
-```
-教程需要...
-├── 链接质量保障             → starlight-links-validator
-├── 多版本文档               → starlight-versions
-├── 模块化分区               → starlight-sidebar-topics
-├── 发布日志 / 新闻          → starlight-blog
-├── API 自动生成             → starlight-openapi
-├── 从 Obsidian 发布         → starlight-obsidian
-├── 图片放大查看             → starlight-image-zoom
-├── 标题标注状态             → starlight-heading-badges
-├── 知识图谱可视化           → starlight-site-graph
-├── 多视图模式               → starlight-view-modes
-├── 拼写检查                 → starlight-spell-checker
-├── 展示案例                 → starlight-showcases
-├── 贡献者列表               → starlight-contributor-list
-├── 下载按钮                 → starlight-save-file-component
-├── 自定义搜索               → @astrojs/starlight-docsearch
-└── Tailwind 样式            → @astrojs/starlight-tailwind
-```
-
-### 交互组件框架选择
-
-需要交互功能时，选择 Islands 组件框架：
-
-| 框架 | 熟悉度 | 包体积 | 适用场景 |
-|------|--------|--------|---------|
-| **React** | 最广泛 | ~130KB | 通用交互，生态最丰富 |
-| **Vue** | 较广 | ~100KB | Vue 技术栈教程 |
-| **Svelte** | 新兴 | ~30KB | 极致性能，最小包体积 |
-| **Solid** | 小众 | ~20KB | 极致性能，响应式粒度最细 |
-| **Preact** | 中等 | ~10KB | React 兼容，超轻量 |
-
-> 交互组件的具体实现 → 调用对应 UI 框架技能。
-
-## 项目结构规范
-
-### 推荐目录组织
-
-```
-tutorial-site/
-│
-├── astro.config.mjs          # Astro + Starlight 核心配置
-├── tsconfig.json             # TypeScript 配置
-├── package.json              # 依赖管理
-│
-├── src/
-│   ├── content/
-│   │   ├── docs/             # 教程章节 (Markdown/MDX)
-│   │   │   ├── index.md      # 首页 / 概览
-│   │   │   ├── ch01-概述.md
-│   │   │   ├── ch02-入门/
-│   │   │   │   ├── index.md
-│   │   │   │   ├── 01-安装.md
-│   │   │   │   └── 02-配置.md
-│   │   │   └── ...
-│   │   └── config.ts         # Content Collections 配置
-│   │
-│   ├── components/           # 自定义组件
-│   │   ├── react/            # React Islands 组件
-│   │   │   ├── Quiz.tsx
-│   │   │   └── CodeSandbox.tsx
-│   │   ├── ui/               # 通用 UI 组件
-│   │   │   └── Badge.astro
-│   │   └── overrides/        # Starlight 内置组件覆盖
-│   │       └── Header.astro
-│   │
-│   ├── layouts/              # 布局覆盖
-│   ├── assets/               # 图片等资源
-│   │   └── images/
-│   └── styles/               # 自定义 CSS
-│       └── custom.css
-│
-├── public/                   # 直接复制的资源
-│   ├── favicon.svg
-│   └── og-default.png        # 默认 OG 图片 (1200×630)
-│
-├── book/                     # （可选）原始编辑源
-│
-└── .github/workflows/
-    └── deploy.yml            # GitHub Actions 部署
-```
-
-### 大型教程的模块化组织
-
-超过 20 章的教程推荐按模块拆分目录：
-
-```
-src/content/docs/
-├── index.md                          # 教程首页
-├── 01-基础篇/
-│   ├── index.md                      # 模块概览
-│   ├── 01-环境准备.md
-│   ├── 02-核心概念.md
-│   └── 03-快速上手.md
-├── 02-进阶篇/
-│   ├── index.md
-│   ├── 01-性能优化.md
-│   └── ...
-├── 03-实战篇/
-│   ├── index.md
-│   ├── 01-项目一.md
-│   └── ...
-└── appendix/
-    ├── faq.md
-    ├── changelog.md
-    └── references.md
-```
-
-侧边栏配置对应：
-```
-sidebar: [
-  { label: '教程简介', slug: 'index' },
-  { label: '基础篇', autogenerate: { directory: '01-基础篇' }},
-  { label: '进阶篇', autogenerate: { directory: '02-进阶篇' }},
-  { label: '实战篇', autogenerate: { directory: '03-实战篇' }},
-  { label: '附录', autogenerate: { directory: 'appendix' }},
-]
-```
-
-### 命名规范
-
-| 类型 | 规范 | 示例 |
-|------|------|------|
-| 内容文件 | 数字前缀排序 + kebab-case | `01-环境准备.md` |
-| 组件文件 | PascalCase | `CodeSandbox.tsx`, `QuizCard.astro` |
-| 样式文件 | kebab-case | `custom.css` |
-| 资源文件 | 语义化命名 | `rag-architecture.png` |
-| 目录名 | kebab-case | `01-基础篇/` |
-
-## 社区构建经验
-
-### 内容组织最佳实践
-
-- **每章一个文件**：章节内容 ≤ 2000 行，超长则拆分子章节
-- **Frontmatter 完整**：每页必填 `title` + `description`（SEO + 搜索）
-- **图片统一管理**：`src/assets/images/`，WebP 格式，宽度 800-1200px
-- **代码块有语言标注**：` ```python ` 而非 ` ``` `，启用行号
-- **跨章节链接使用相对路径**：`../02-进阶/01-配置.md`
-- **将 frontmatter schema 作为合同**：Zod schema 定义所有页面必须遵守的字段契约
-
-### 性能优化
-
-- 图片使用 WebP / AVIF 格式，利用 Astro 内置的 `astro:assets` 处理
-- 避免在每页加载全局 JS，交互组件仅在需要页面加载
-- 使用 Starlight 内置的分页代替自定义导航组件
-- 合理设置 `tableOfContents` 层级，避免过深目录（默认 h2-h3 足够）
-- 构建时链接验证防止 404 → `starlight-links-validator`
-
-### i18n 多语言策略
-
-需要多语言教程时，利用 Starlight 内置多语言支持：
-- `locales` 配置定义支持的语言
-- `src/content/docs/` 下按语言分区（en/ zh/ ja/ 等）
-- 配置 `defaultLocale` 指定默认语言
-- 参考 [Starlight i18n 文档](https://starlight.astro.build/guides/i18n/)
-
-### 版本化文档
-
-教程有多个版本（如 v1/v2）时：
-- **推荐方案**: 每个大版本独立仓库 + 独立部署
-- **备选方案**: 使用 `starlight-versions` 插件
-- **文档内标注**: 使用 `starlight-heading-badges` 标注"新"、"已弃用"
-
-## 部署
-
-### GitHub Actions（withastro/action）
+#### 方案 A：官方 withastro/action（推荐，最简）
 
 ```yaml
-# .github/workflows/deploy.yml
-# 官方推荐方式：使用 withastro/action
-# push 到 main 分支自动部署
-# 也可手动触发 workflow_dispatch
-# 配置前提: astro.config.mjs 中 site + base 正确
-# GitHub Pages 设置 Source → GitHub Actions
+name: Deploy to GitHub Pages
+
+on:
+  # 推送到 main 分支时自动触发
+  push:
+    branches: ['main']
+  # 支持手动触发（可选）
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: withastro/action@v3
+        # withastro/action 自动处理：
+        # ✅ 构建产物上传
+        # ✅ GitHub Pages 部署
+        # ✅ 部署 URL 输出
 ```
 
-### 部署前检查清单
+#### 方案 B：标准 Actions 工作流（更可控）
 
-| # | 检查项 | 方式 |
-|---|--------|------|
-| 1 | `npm run build` 无错误 | 终端执行 |
-| 2 | `astro.config.mjs` 中 `site` 和 `base` 正确 | 检查配置 |
-| 3 | GitHub Pages 源设为 GitHub Actions | 仓库 Settings |
-| 4 | 自定义域名 DNS 配置（如有） | DNS 验证 |
-| 5 | 构建后 `dist/` 文件结构正确 | `npm run preview` 预览 |
+```yaml
+name: Deploy to GitHub Pages
 
-## 质量门禁
+on:
+  push:
+    branches: ['main']
+  workflow_dispatch:
 
-| # | 检查项 | 标准 | 工具/方式 |
-|---|--------|------|----------|
-| W1 | 构建无错误 | `npm run build` 返回 0 | CI |
-| W2 | 资源可访问 | 无 404 图片/CSS/JS | `starlight-links-validator` |
-| W3 | 跨章链接有效 | 无内部死链 | `starlight-links-validator` |
-| W4 | 导航结构完整 | 所有章节在侧边栏可达 | 人工巡查 |
-| W5 | 交互组件可运行 | 浏览器控制台 error = 0 | 手动测试 |
-| W6 | 响应式布局 | 375px / 768px / 1280px 可用 | 浏览器 DevTools |
-| W7 | 暗色模式兼容 | 文字/背景对比度 ≥ 4.5:1 | 手动切换验证 |
-| W8 | 搜索可用 | 关键词可搜索到对应页面 | 手动测试 |
-| W9 | Lighthouse | Performance ≥ 90, Accessibility ≥ 90 | Chrome DevTools |
-| W10 | SEO | 每页有 title + description meta | 构建后检查 HTML |
-| W11 | 无敏感信息 | API Key / 密码 / 内网地址已脱敏 | 代码审查 |
-| W12 | 无障碍 | 键盘导航 + 屏幕阅读器 | NVDA / VoiceOver |
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-## 参考文件
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
-- [网页发布完整指南](references/web-publishing.md) — Astro + Starlight 配置详解 + 插件使用 + 内容管理 + 部署
-- [本阶段决策细则](references/decision-record-rules.md) — publish 阶段涉及的决策项
+jobs:
+  # Job 1: 构建
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096  # 大型项目防 OOM
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  # Job 2: 部署（依赖构建完成）
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+**方案对比**：
+
+| 维度 | 方案 A (withastro/action) | 方案 B (标准工作流) |
+|------|--------------------------|-------------------|
+| 配置复杂度 | ⭐ 简单（~30 行） | ⭐⭐ 中等（~60 行） |
+| 可控性 | 中等 | 高（可自定义每一步） |
+| 适用场景 | 标准教程站点 | 需要额外构建步骤的大型项目 |
+| 官方推荐 | ✅ 是 | ✅ 也是标准做法 |
+
+### Step 3: 配置 GitHub 仓库 Settings
+
+1. 进入目标仓库 → **Settings**（设置）
+2. 左侧菜单找到 **Pages**（页面）
+3. **Source**（源）选择 **GitHub Actions**
+   - ⚠️ 不要选择 "Deploy from a branch"（旧方式，不推荐）
+4. 等待首次 Actions 运行完成（约 2-5 分钟）
+5. 访问显示的 URL 验证部署成功：
+   ```
+   https://username.github.io/repo-name/
+   ```
+
+### Step 4: 部署后验证
+
+**必查项目**：
+
+- [ ] 首页可正常打开，样式加载正确
+- [ ] 所有导航链接可点击，无 404
+- [ ] 图片、CSS、JS 文件路径正确（浏览器控制台无红色错误）
+- [ ] 搜索功能可用（Pagefind 索引正常）
+- [ ] 暗色模式切换正常
+- [ ] 移动端响应式布局正常
+- [ ] Lighthouse 评分 ≥ 90（Performance + Accessibility）
+
+**快速验证命令**（本地模拟 GitHub Pages 环境）：
+
+```bash
+# 模拟 base 路径环境
+GH_PAGES_BASE=/repo-name npm run build
+
+# 使用 serve 模拟静态服务器
+npx serve dist -l 3000
+
+# 访问测试地址
+# http://localhost:3000/repo-name/
+```
+
+---
+
+## 🔧 详细配置指南
+
+### base 路径深度解析
+
+**为什么必须设置 base？**
+
+GitHub Pages 项目站点的 URL 结构：
+```
+https://username.github.io/<repository-name>/
+```
+
+Astro 默认假设网站位于根路径 `/`，但实际在 `/<repo>/` 下。导致：
+- ❌ CSS/JS 请求 `/_astro/style.css` → 实际应为 `/<repo>/_astro/style.css`
+- ❌ 图片请求 `/images/bg.png` → 404
+- ❌ 导航链接跳转到错误地址
+
+**base 的作用**：为所有相对路径添加前缀。
+
+**动态 base 配置**（本地开发 + 生产环境兼容）：
+
+```javascript
+// astro.config.mjs
+export default defineConfig({
+  base: process.env.GH_PAGES_BASE || '/',
+  // 开发环境：base = '/'（默认）
+  // 生产环境：GH_PAGES_BASE='/repo-name/' npm run build
+});
+```
+
+**package.json 脚本**：
+
+```json
+{
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "build:gh": "GH_PAGES_BASE=/repo-name astro build",
+    "preview": "astro preview"
+  }
+}
+```
+
+### trailingSlash 必须设置为 'always'
+
+**原因**：GitHub Pages 的行为机制
+
+| 请求路径 | GitHub Pages 查找 | Astro 默认输出 | 结果 |
+|---------|------------------|---------------|------|
+| `/about` | `/about/index.html` | `/about.html` | **404 ❌** |
+| `/about/` | `/about/index.html` | `/about/index.html` | **200 ✅** |
+
+**配置方法**：
+
+```javascript
+trailingSlash: 'always',  // ✅ 正确
+// trailingSlash: 'ignore',  // ❌ 错误：导致 GitHub Pages 404
+```
+
+### outDir 配置选项
+
+**选项 A: 使用默认 `dist/` 目录（推荐）**
+
+```javascript
+// 不设置 outDir（默认值即可）
+// GitHub Actions 使用 actions/upload-pages-artifact 上传 dist/
+```
+
+优点：
+- ✅ 符合 Astro 惯例
+- ✅ 官方 Action 最佳支持
+- ✅ 无需 `.nojekyll` 文件
+
+**选项 B: 输出到 `docs/` 目录（传统方式）**
+
+```javascript
+outDir: './docs',
+```
+
+适用场景：
+- 不使用 GitHub Actions（手动部署）
+- 在 Settings 中选择 "Deploy from branch" → `gh-pages` 分支或 `/docs` 文件夹
+
+⚠️ **必须在 `docs/` 目录中创建 `.nojekyll` 文件**：
+
+```bash
+# 方式一：构建后自动创建
+echo "" > docs/.nojekyll
+
+# 方式二：在 public/ 中放置（每次构建自动复制）
+echo "" > public/.nojekyll
+```
+
+原因：GitHub Pages 默认使用 Jekyll 处理，会忽略以 `_` 开头的目录（如 `_astro/`），导致所有 JS/CSS 丢失！
+
+---
+
+## 🌐 自定义域名配置
+
+### 方法一：通过 GitHub Settings（推荐）
+
+1. **Settings** → **Pages** → **Custom domain**
+2. 输入域名（如 `www.example.com` 或 `example.com`）
+3. 等待 GitHub 自动创建 DNS 记录提示
+4. 到域名注册商处添加 DNS 记录：
+
+**Apex 域名配置**（example.com）：
+
+| 类型 | 名称 | 值 | TTL |
+|------|------|-----|-----|
+| A | @ | `185.199.108.153` | 3600 |
+| A | @ | `185.199.109.153` | 3600 |
+| A | @ | `185.199.110.153` | 3600 |
+| A | @ | `185.199.111.153` | 3600 |
+| CNAME | www | `username.github.io` | 3600 |
+
+**子域名配置**（www.example.com / blog.example.com）：
+
+| 类型 | 名称 | 值 | TTL |
+|------|------|-----|-----|
+| CNAME | www/blog | `username.github.io` | 3600 |
+
+5. 等待 DNS 生效（通常几分钟，最长 48 小时）
+6. 启用 **Enforce HTTPS**（强制 HTTPS，提高安全性）
+
+### 方法二：CNAME 文件
+
+在 `public/CNAME` 中添加：
+
+```
+www.example.com
+```
+
+或 Apex 域名：
+
+```
+example.com
+```
+
+### 更新 astro.config.mjs
+
+```javascript
+site: 'https://www.example.com',  // 更新为自定义域名
+base: '/',                        // 自定义域名通常不需要 base（根路径）
+trailingSlash: 'always',
+```
+
+### SSL/TLS 证书
+
+✅ **GitHub Pages 自动提供 Let's Encrypt 证书**：
+- 免费、自动续期
+- 支持 HTTP/2
+- 在 Settings → Pages → Enforce HTTPS 启用强制跳转
+
+---
+
+## 🔄 CI/CD 进阶配置
+
+### 多环境部署（Staging / Production）
+
+**分支策略**：
+
+```
+main          → Production 部署（正式站点）
+staging       → Staging 部署（预发布测试）
+develop       → 开发环境（开发者日常验证）
+```
+
+**`.github/workflows/deploy-staging.yml`**：
+
+```yaml
+name: Deploy to Staging
+
+on:
+  push:
+    branches: ['staging']
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages-staging  # 单独的环境名称
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: withastro/action@v3
+```
+
+⚠️ **注意**：GitHub 免费版仅支持 **1 个 GitHub Pages 环境**。Staging 和 Production 共享同一个 URL。如需完全隔离的环境，考虑使用 Cloudflare Pages 或 Vercel（免费支持多环境）。
+
+### 部署通知（Slack / Discord / Email）
+
+在 `deploy.yml` 末尾添加通知步骤：
+
+```yaml
+      - name: Notify Success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{
+            "text": "✅ 教程站点部署成功!\n仓库: ${{ github.repository }}\n提交: ${{ github.sha }}\n作者: ${{ github.actor }}\nURL: ${{ steps.deploy.outputs.page_url }}"
+          }' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Failure
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{
+            "text": "❌ 部署失败!\n仓库: ${{ github.repository }}\n查看: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          }' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+```
+
+### 自动回滚机制（高级）
+
+基于健康检查的自动回滚（在 deploy job 后添加）：
+
+```yaml
+  health-check:
+    runs-on: ubuntu-latest
+    needs: [build-and-deploy]  # 依赖部署完成
+    if: always()               # 即使部署成功也执行检查
+    steps:
+      - name: Wait for Deployment
+        run: sleep 30  # 等待 CDN 生效
+
+      - name: Health Check
+        id: health
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "${{ needs.build-and-deploy.outputs.page_url }}")
+
+          if [ "$STATUS" != "200" ]; then
+            echo "❌ Health check failed! Status: $STATUS"
+            echo "rollback_needed=true" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          echo "✅ Site healthy"
+          echo "rollback_needed=false" >> $GITHUB_OUTPUT
+
+      - name: Create Rollback Issue
+        if: failure()
+        run: |
+          gh issue create \
+            --title "🚨 部署失败 - 需要回滚" \
+            --body "部署未通过健康检查。\n\n**操作建议**:\n1. \`git revert HEAD\`\n2. 推送到 main 触发重新部署\n3. 或手动回滚到上一个稳定版本" \
+            --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+---
+
+## 🐛 常见问题排查手册
+
+### 问题 1: 静态资源全部 404
+
+**症状**：
+- 页面 HTML 加载成功，但样式丢失、图片不显示
+- 控制台报错：`GET https://username.github.io/_astro/style.css 404`
+
+**原因**：未设置 `base` 或 `base` 值错误
+
+**解决方案**：
+```javascript
+// astro.config.mjs
+base: '/your-repo-name/',  // 必须与仓库名完全一致
+```
+
+**验证方法**：
+```bash
+# 检查生成的 HTML 中的资源路径
+cat dist/index.html | grep '_astro'
+# 应该看到：/_astro/style.abc123.css
+# 如果是 /your-repo-name/_astro/style.abc123.css 则正确
+```
+
+### 问题 2: 点击导航链接后 404
+
+**症状**：
+- 首页正常，点击侧边栏或内部链接后 404
+- 直接刷新页面也 404
+
+**原因**：未设置 `trailingSlash: 'always'`
+
+**解决方案**：
+```javascript
+trailingSlash: 'always',
+```
+
+### 问题 3: `_astro/` 目录被忽略（所有 JS/CSS 缺失）
+
+**症状**：
+- 构建成功，但网站完全无样式、无交互功能
+- 浏览器 Network 面板显示所有 `/_astro/*` 请求 404
+
+**原因**：GitHub Pages 使用 Jekyll 处理，忽略了 `_` 开头的目录
+
+**解决方案**（按优先级）：
+
+1. **使用 GitHub Actions**（推荐）：自动绕过 Jekyll
+2. **添加 `.nojekyll` 文件**：
+   ```bash
+   touch public/.nojekyll  # 或 touch docs/.nojekyll
+   ```
+
+### 问题 4: 构建内存不足（OOM）
+
+**症状**：
+- GitHub Actions 报错：`FATAL ERROR: Ineffective mark-compacts near heap limit`
+- 大型教程站点（100+ 章）容易触发
+
+**解决方案**：
+```yaml
+# deploy.yml 的 build step 中添加环境变量
+- name: Build
+  run: npm run build
+  env:
+    NODE_OPTIONS: --max-old-space-size=4096  # 增加到 4GB
+```
+
+**长期优化**：
+- 减少单次构建的内容量（分批构建）
+- 启用 Astro 6.0+ 实验性 Queued Rendering（渲染速度提升 2x）
+- 清理未使用的依赖和插件
+
+### 问题 5: 部署缓慢（>10 分钟）
+
+**优化策略**：
+
+1. ✅ **启用依赖缓存**（已在模板中配置）
+2. ✅ **减少 Content Collections 数量**：如有数百篇内容，考虑分批
+3. ✅ **启用实验性 Queued Rendering**（Astro 6.0+）：
+   ```javascript
+   experimental: {
+     queuedRendering: { enabled: true },
+   },
+   ```
+4. ✅ **优化图片**：使用 WebP 格式，减少图片数量和尺寸
+5. ✅ **精简插件**：移除不必要的 Starlight 插件
+
+---
+
+## 📋 完整部署检查清单
+
+### 部署前（构建阶段交付物验证）
+
+- [ ] `npm run build` 无错误（exit 0）
+- [ ] `astro.config.mjs` 中 `site` 和 `base` 正确设置
+- [ ] `trailingSlash: 'always'` 已配置
+- [ ] 本地 `npm run preview` 显示正常
+- [ ] 浏览器控制台无 404/500 错误
+- [ ] 所有图片、CSS、JS 资源加载成功
+- [ ] 内部链接均可点击且不 404
+- [ ] 响应式布局验证通过（375px / 768px / 1280px）
+- [ ] 暗色模式切换正常
+- [ ] 搜索功能可用
+- [ ] Lighthouse Performance ≥ 90, Accessibility ≥ 90
+
+### 配置验证
+
+- [ ] `.github/workflows/deploy.yml` 存在且语法正确
+- [ ] Actions 权限配置正确（contents: read, pages: write, id-token: write）
+- [ ] Node.js 版本 ≥ 18（推荐 20）
+- [ ] 如使用自定义域名，DNS 记录已配置
+
+### 部署后（生产环境验证）
+
+- [ ] GitHub Actions 工作流运行成功（绿色 ✓）
+- [ ] 访问 GitHub Pages URL 可正常打开
+- [ ] 首页样式、布局、图片显示正确
+- [ ] 导航菜单可点击，所有章节可达
+- [ ] 页面内搜索可用
+- [ ] 移动端显示正常
+- [ ] 无敏感信息泄露（API Key、密码等）
+- [ ] 自定义域名 HTTPS 正常（如已配置）
+- [ ] Lighthouse 评分达标（在线版）
+
+---
+
+## 📊 监控与维护
+
+### Uptime 监控（免费方案）
+
+| 服务 | 特点 | 价格 |
+|------|------|------|
+| **UptimeRobot** | 每 5 分钟检查，邮件/Slack 通知 | 免费 |
+| **Better Uptime** | 包含状态页面，电话/SMS 告警 | 免费基础版 |
+| **GitHub Status** | 有限监控（仅查看部署历史） | 免费 |
+
+**UptimeRobot 配置示例**：
+- 监控 URL: `https://username.github.io/repo/`
+- 检查频率: 5 分钟
+- 关键词检测: `<title>` 标签中的站点名称
+- 通知: Slack Webhook / Email
+
+### Core Web Vitals 监控（可选）
+
+在布局组件中添加：
+
+```astro
+---
+// src/layouts/BaseLayout.astro（如果自定义布局）
+---
+
+<script>
+  import { onCLS, onFID, onINP, onLCP } from 'web-vitals';
+
+  function sendToAnalytics(metric) {
+    const body = JSON.stringify(metric);
+    navigator.sendBeacon('/api/vitals', body);
+  }
+
+  onCLS(sendToAnalytics);
+  onFID(sendToAnalytics);
+  onINP(sendToAnalytics);
+  onLCP(sendToAnalytics);
+</script>
+```
+
+---
+
+## 🔗 与构建阶段的衔接
+
+**从构建进入发布的流程**：
+
+```
+构建阶段 (/build)           发布阶段 (/publish)
+─────────────────────              ──────────────
+① npm create astro                 ① 配置 base/site/trailingSlash
+② 配置 astro.config.mjs            ② 创建 .github/workflows/deploy.yml
+③ 编写内容 (Markdown)               ③ 配置 GitHub Settings → Pages
+④ 开发组件                          ④ 首次部署 & 验证
+⑤ npm run build                    ⑤ 配置自定义域名（可选）
+⑥ npm run preview                  ⑥ 设置监控和通知（可选）
+⑦ 通过所有质量门禁                  ⑦ 生产环境持续维护
+         ↓                                  ↓
+   触发: /publish                        完成！✅
+```
+
+**触发条件**：当构建产物 (`dist/`) 就绪且本地验证通过后，调用本技能进入部署流程。
+
+---
+
+## 📂 本技能结构
+
+```
+skills/tutorial-writer-publish/
+├── SKILL.md                              ← 本文件（自含型 ~500行）
+└── references/
+    ├── web-publishing.md                 ← Starlight 构建参考（遗留）
+    ├── decision-record-rules.md          ← 决策细则
+    └── github-pages-guide.md             ← 高级部署场景详解
+```
+
+---
+
+## 📚 参考文档索引
+
+| 文档 | 内容 | 何时读取 |
+|------|------|---------|
+| [web-publishing.md](references/web-publishing.md) | Starlight 完整配置参考 + 插件生态 | 需要 Starlight 构建细节时 |
+| [github-pages-guide.md](references/github-pages-guide.md) | 多环境部署、回滚策略、安全加固、迁移指南 | 需要进阶部署场景时 |
+
+> 💡 **加载时机**: 仅在需要额外细节时读取，本文件已覆盖主要部署流程
+
+---
+
+## 🔗 相关资源
+
+| 资源 | 路径/链接 | 用途 |
+|------|----------|------|
+| 父技能 | [../SKILL.md](../SKILL.md) | Tutorial Writer 主路由器 |
+| 构建子技能 | [../skills/tutorial-writer-build/SKILL.md](../skills/tutorial-writer-build/SKILL.md) | Astro 构建流程 |
+| Astro 官方部署文档 | https://docs.astro.build/guides/deploy/github/ | 官方权威指南 |
+| withastro/action | https://github.com/withastro/action | 官方 Action 仓库 |
+| GitHub Pages 文档 | https://docs.github.com/en/pages | GitHub Pages 完整文档 |
+
+---
+
+## 版本历史
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| **v6.1.0** | 2026-05-30 | **🎯 扁平化重构**: 从 1-Sub Router 升级为**自含型单文件技能**；移除 skills/website-deploy/ 子目录；将完整部署指南（~450行）合并到主 SKILL.md；结构简化为 Type 1（单文件 + references）；保留所有功能和内容 |
+| **v6.0.0** | 2026-05-30 | 1-Sub Router（publish → website-deploy）（前版本） |

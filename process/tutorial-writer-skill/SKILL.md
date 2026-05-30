@@ -2,8 +2,8 @@
 name: tutorial-writer
 version: v3.2.0
 author: skill-factory
-description: Use when creating, writing, reviewing, publishing technical tutorial content, or managing decisions across the full lifecycle
-tags: [tutorial, writing, technical-documentation, router, research, review, publishing, decision-record]
+description: Use when creating, writing, reviewing, publishing technical tutorial content via GitHub Pages, or managing decisions across the full lifecycle
+tags: [tutorial, writing, technical-documentation, router, research, review, publishing, decision-record, github-pages, astro, starlight]
 dependency:
   parent: none
   children:
@@ -60,7 +60,7 @@ dependency:
 "搜索/调研/规划/找资料/设计章节结构"       → 📚 /research    (调研与规划)
 "写/撰写/创作/编写章节"                    → ✍️ /writing     (撰写执行)
 "检查/校对/质量/门禁/评分"                → ✅ /review      (质量校验)
-"发布/部署/网页/mkdocs/网站"              → 🌐 /publish     (网页发布)
+"发布/部署/网页/astro/starlight/网站"       → 🌐 /publish     (Astro 网页发布)
 "配置/决策/改决策/看看决策/冲突"           → 📐 /decision    (决策系统)
 ```
 
@@ -88,7 +88,7 @@ dependency:
 | [research](skills/tutorial-writer-research/SKILL.md) | 调研规划 | 搜索/规划/设计结构 | 搜索方法论+长度规划+标准概览 |
 | [writing](skills/tutorial-writer-writing/SKILL.md) | 撰写执行 | 写/撰写/完成章节 | 写作流程+素材管理+规范R1-R6 |
 | [review](skills/tutorial-writer-review/SKILL.md) | 质量校验 | 检查/校对/门禁 | 14项质量门禁+评分卡 |
-| [publish](skills/tutorial-writer-publish/SKILL.md) | 网页发布 | 发布/部署/网页 | MkDocs+交互组件+GitHub Pages |
+| [publish](skills/tutorial-writer-publish/SKILL.md) | Astro 网页发布 | 发布/部署/网页/astro/网站 | Astro+Starlight 项目规划+起步+部署 |
 | [decision](skills/tutorial-writer-decision/SKILL.md) | 决策贯穿 | 配置/决策 | 决策方法论+阶段映射+冲突解决 |
 
 > 每个子技能完全自含：独立 SKILL.md + references/ + 阶段性决策细则
@@ -111,7 +111,7 @@ tutorial-writer/
     ├── tutorial-writer-research/         ← 📚 调研规划
     ├── tutorial-writer-writing/          ← ✍️ 撰写执行
     ├── tutorial-writer-review/           ← ✅ 质量校验
-    ├── tutorial-writer-publish/          ← 🌐 网页发布
+    ├── tutorial-writer-publish/          ← 🌐 Astro 网页发布
     └── tutorial-writer-decision/         ← 📐 决策贯穿
 ```
 
@@ -131,12 +131,14 @@ tutorial-writer/
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
-| **v3.2.0** | 2026-05-29 | **Tag 驱动发布 + skill-factory 接管**: publish 改用 tag 触发 GitHub Actions 自动部署 (validate→build→deploy)；添加 uv 项目初始化规范和 Release 自动创建；所有子技能 author 改为 skill-factory |
-| **v3.1.0** | 2026-05-29 | **Web 富交互增强**: publish 新增 CSS 动效、代码沙盒(Monaco+Pyodide)、3D 可视化(Three.js)、交互测验、动画图表(Chart.js)；writing 新增网页优先创作思维和交互组件编写规范；timeline 组件增加动画过渡和键盘/触屏支持 |
+| **v4.1.0** | 2026-05-30 | **模块化配置 + 插件生态**: publish 新增模块化配置分层(基础/社交/导航/搜索/插件)、Starlight 配置全景表(18项)、Content Collections 扩展方案；新增 19 个社区插件和 3 个官方插件的选择策略和配置示例；新增交互组件框架选择表(React/Vue/Svelte/Solid/Preact)；新增社区构建经验(内容组织/性能/多语言/版本化/常见陷阱)；新增章节 Frontmatter 完整示例 |
+| **v4.0.0** | 2026-05-30 | Astro + Starlight 发布方案（前版本） |
+| **v3.2.0** | 2026-05-29 | Tag 驱动发布 + skill-factory 接管（前版本） |
+| **v3.1.0** | 2026-05-29 | Web 富交互增强（前版本） |
 | **v3.0.0** | 2026-05-29 | **5-Sub Router 重构**: 从扁平文档拆分为 5 个独立子技能（research/writing/review/publish/decision），每个技能自含 references/ 和阶段性决策细则；全局 references 精简为 3 个跨子技能共享文件 |
 | v2.2.0 | 2026-05-29 | Web Publishing 增强（前版本） |
 | v2.1.0 | 2026-05-29 | 跨章一致性升级（前版本） |
 
 ---
 
-**最后更新**: 2026-05-29
+**最后更新**: 2026-05-30

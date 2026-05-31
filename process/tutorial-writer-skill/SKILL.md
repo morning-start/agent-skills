@@ -1,9 +1,9 @@
 ---
 name: tutorial-writer
-version: v6.0.0
+version: v6.1.0
 author: skill-factory
-description: Use when creating, writing, reviewing, building, publishing technical tutorial content via GitHub Pages, or managing decisions across the full tutorial lifecycle
-tags: [tutorial, writing, technical-documentation, router, research, review, build, publishing, decision-record, github-pages, astro, starlight]
+description: Use when creating, writing, reviewing, building, publishing technical tutorial content via GitHub Pages with Content-First v2 architecture, or managing decisions across the full tutorial lifecycle
+tags: [tutorial, writing, technical-documentation, router, research, review, build, publishing, decision-record, github-pages, astro, starlight, content-first]
 dependency:
   parent: none
   children:
@@ -13,13 +13,18 @@ dependency:
     - tutorial-writer-build
     - tutorial-writer-publish
     - tutorial-writer-decision
+meta:
+  architecture_version: "content-first-v2"
+  build_version_requirement: ">=2.0.0"
+  publish_version_requirement: ">=7.0.0"
 ---
 
-# Tutorial Writer v6 — 6-Sub Router
+# Tutorial Writer v6.1 — 6-Sub Router (Content-First v2)
 
 > **定位**: 轻量路由枢纽 — 将教程创作请求分发到 6 个独立子技能
 > **架构**: 6-Entry Router (root → skills/ = Layer 0 → Layer 1)
 > **升级亮点**: 构建与发布分离，高频操作路径优化
+> **架构版本**: **Content-First v2**（内容优先 + 增强层分离）
 
 ## 目标
 
@@ -33,6 +38,51 @@ dependency:
 **不能做什么**:
 - 不包含具体操作步骤（各子技能负责）
 - 不执行校验或构建或发布（→ `/review` `/build` `/publish`）
+
+---
+
+## 🏗️ Content-First v2 架构概览
+
+> **设计来源**: [tutorial-writer-suggest.md](.trae/documents/tutorial-writer-suggest.md)
+> **核心哲学**: **内容是主角，代码是配角**
+
+### 架构核心理念
+
+| 传统做法 | Content-First v2 |
+|---------|-----------------|
+| 内容藏在 `src/content/docs/` 深处 | **内容在根目录 `content/`，一目了然** |
+| 可能维护 book/ 和 site/ 两份内容 | **只有一份内容源，通过管道生成多形态产物** |
+| 文件名随意（中文），URL 丑陋 | **英文 slug 文件名 + 中文标题，URL 干净** |
+| 组件和样式混杂 | **增强层分离：components/scripts/styles 各司其职** |
+| 仅能生成网站 | **天然支持网站 + PDF/EPUB + 其他格式** |
+
+### 目标项目结构
+
+```
+tutorial-project/
+├── content/                       ← 📝 内容层（唯一真相源）
+│   ├── chapters/
+│   │   ├── 01-rag-overview.md     ← 英文 slug 文件名
+│   │   └── 02-rag-evolution.md
+│   ├── index.mdx                  ← 首页
+│   └── config.ts                  ← Content Collections schema
+├── src/                           ← 🔧 增强层
+│   ├── components/                ← 按功能分组 (interactive/charts/code/ui)
+│   ├── layouts/
+│   ├── styles/
+│   └── scripts/                   ← 构建时增强管道
+├── astro.config.mjs
+└── package.json
+```
+
+### 版本兼容性要求
+
+| 子技能 | 最低版本 | 当前版本 | 架构支持 |
+|--------|---------|---------|---------|
+| **build** | **v2.0.0+** | v2.0.0 | ✅ Content-First v2 |
+| **publish** | **v7.0.0+** | v7.0.0 | ✅ Content-First v2 + 多形态发布 |
+
+⚠️ **重要**: 本路由器要求 build ≥ v2.0.0 且 publish ≥ v7.0.0。旧版子技能（build v1.x / publish ≤ v6.1.0）使用传统架构，与本版本不兼容。
 
 ---
 
@@ -88,18 +138,20 @@ dependency:
 
 ## 📂 子技能一览
 
-| 子技能 | 职责 | 触发词 | 关键文件 | 频率 |
-|--------|------|--------|---------|------|
-| [research](skills/tutorial-writer-research/SKILL.md) | 调研规划 | 搜索/规划/设计结构 | 搜索方法论+长度规划+标准概览 | 低 |
-| [writing](skills/tutorial-writer-writing/SKILL.md) | 撰写执行 | 写/撰写/完成章节 | 写作流程+素材管理+规范R1-R6 | 中 |
-| [review](skills/tutorial-writer-review/SKILL.md) | 质量校验 | 检查/校对/门禁 | 14项质量门禁+评分卡 | 中 |
-| **[build](skills/tutorial-writer-build/SKILL.md)** | **网站构建** | **构建/Astro/Starlight/组件/配置** | **Astro 6.3 + Starlight 完整指南** | **🔴 高** |
-| [publish](skills/tutorial-writer-publish/SKILL.md) | 网站发布 | 部署/GitHub Pages/Actions/CI-CD | GitHub Pages 部署+CI/CD 工作流 | 🟢 低 |
-| [decision](skills/tutorial-writer-decision/SKILL.md) | 决策贯穿 | 配置/决策 | 决策方法论+阶段映射+冲突解决 | 贯穿 |
+| 子技能 | 版本 | 职责 | 触发词 | 关键特性 | 频率 |
+|--------|------|------|--------|---------|------|
+| [research](skills/tutorial-writer-research/SKILL.md) | - | 调研规划 | 搜索/规划/设计结构 | 搜索方法论+长度规划+标准概览 | 低 |
+| [writing](skills/tutorial-writer-writing/SKILL.md) | - | 撰写执行 | 写/撰写/完成章节 | 写作流程+素材管理+规范R1-R6 | 中 |
+| [review](skills/tutorial-writer-review/SKILL.md) | - | 质量校验 | 检查/校对/门禁 | 14项质量门禁+评分卡 | 中 |
+| **[build](skills/tutorial-writer-build/SKILL.md)** | **v2.0.0** | **网站构建** | **构建/Astro/Starlight/组件/配置** | **Content-First v2 + 增强管道 + 组件分组** | **🔴 高** |
+| [publish](skills/tutorial-writer-publish/SKILL.md) | **v7.0.0** | 网站发布 | 部署/GitHub Pages/Actions/CI-CD/PDF | **Content-First v2 + 多形态发布(PDF/EPUB)** | 🟢 低 |
+| [decision](skills/tutorial-writer-decision/SKILL.md) | - | 决策贯穿 | 配置/决策 | 决策方法论+阶段映射+冲突解决 | 贯穿 |
 
 > 每个子技能完全自含：独立 SKILL.md + references/ + 阶段性决策细则
 >
 > **频率说明**: build 为高频子技能（预计每项目 10-20 次调用），publish 为低频（2-3 次）
+>
+> **架构说明**: build (v2.0.0+) 和 publish (v7.0.0+) 已升级至 Content-First v2 架构，确保两者完全对齐
 
 ---
 
@@ -133,6 +185,12 @@ tutorial-writer/
 - **全局 references/ 仅放跨子技能公共内容**: 设计原则/跨章规则/阶段映射
 - **职能归属明确**: 搜索规划在 research，撰写在 writing，校验在 review，发布在 publish，决策在 decision
 - **决策贯穿所有阶段**: 每个子技能内有独立的 `decision-record-rules.md` 定义本阶段决策细则
+- **🆕 架构一致性要求 (Content-First v2)**:
+  - build 和 publish **必须使用匹配的架构版本**
+  - 当前要求: **build ≥ v2.0.0** 且 **publish ≥ v7.0.0**
+  - 内容目录必须使用 `content/chapters/`（根目录），**禁止**使用旧版 `src/content/docs/`
+  - 文件命名必须遵循：英文 slug + 中文标题（Frontmatter）
+  - 如需使用旧版架构，请降级到 tutorial-writer v6.0.0
 
 ---
 
@@ -140,6 +198,8 @@ tutorial-writer/
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| **v6.1.0** | 2026-05-31 | **🎯 Content-First v2 架构对齐**: 新增 `architecture_version: "content-first-v2"` 元数据；新增完整的 **Content-First v2 架构概览** 章节（核心理念对比表、目标项目结构、版本兼容性要求）；子技能一览表增强（新增版本列、更新 build/publish 关键特性描述、添加架构对齐说明）；注意事项新增架构一致性要求（版本匹配、目录规范、命名规范）；description 和 tags 更新（新增 content-first）；标题标注架构版本 |
+| **v6.0.0** | 2026-05-30 | **6-Sub Router 重构**: 从 5-Sub 升级为 6-Sub Router；新增独立 L1 子技能 tutorial-writer-build（网站构建，高频操作）；publish 简化为纯发布职责；路由表和复合场景更新；项目结构图更新 |
 | **v4.1.0** | 2026-05-30 | **模块化配置 + 插件生态**: publish 新增模块化配置分层(基础/社交/导航/搜索/插件)、Starlight 配置全景表(18项)、Content Collections 扩展方案；新增 19 个社区插件和 3 个官方插件的选择策略和配置示例；新增交互组件框架选择表(React/Vue/Svelte/Solid/Preact)；新增社区构建经验(内容组织/性能/多语言/版本化/常见陷阱)；新增章节 Frontmatter 完整示例 |
 | **v4.0.0** | 2026-05-30 | Astro + Starlight 发布方案（前版本） |
 | **v3.2.0** | 2026-05-29 | Tag 驱动发布 + skill-factory 接管（前版本） |
@@ -150,4 +210,4 @@ tutorial-writer/
 
 ---
 
-**最后更新**: 2026-05-30
+**最后更新**: 2026-05-31

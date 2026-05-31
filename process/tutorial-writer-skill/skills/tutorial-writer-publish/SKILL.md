@@ -1,16 +1,17 @@
 ---
 name: tutorial-writer-publish
-version: v6.1.0
+version: v7.0.0
 author: skill-factory
 description: >
   Use when deploying tutorial websites to GitHub Pages, configuring CI/CD workflows,
   setting up GitHub Actions, managing deployment configurations, or troubleshooting
-  static site deployment issues for Astro + Starlight sites. Triggers on "部署到 GitHub",
-  "GitHub Pages", "Actions 工作流", "CI-CD", "网站发布", or "自动部署".
+  static site deployment issues for Astro + Starlight sites built with Content-First v2 architecture.
+  Triggers on "部署到 GitHub", "GitHub Pages", "Actions 工作流", "CI-CD", "网站发布",
+  "自动部署", "PDF 生成", "多形态发布".
   Covers GitHub Actions integration, base path configuration, custom domains,
-  SSL/TLS, and production monitoring for Astro + Starlight sites.
-  This is a low-frequency skill typically called after build phase completion.
-tags: [tutorial, publishing, astro, starlight, github-pages, web, deployment, ci-cd]
+  SSL/TLS, production monitoring, and multi-format publishing (PDF/EPUB) for Astro + Starlight sites.
+  This is a low-frequency skill typically called after build phase completion (build v2.0.0+ required).
+tags: [tutorial, publishing, astro, starlight, github-pages, web, deployment, ci-cd, content-first, multi-format]
 dependency:
   parent: tutorial-writer
   structure: "Type 1 (重+厚): 单文件 + references"
@@ -21,14 +22,16 @@ meta:
   can_invoke_directly: true
   astro_version: "6.3"
   call_frequency: "low"  # 低频调用：预计每项目 2-3 次
+  architecture_version: "content-first-v2"  # 内容优先架构 v2（与 build v2.0.0 对齐）
 ---
 
-# Tutorial Writer — 🚀 网页发布（GitHub Pages）v6.1
+# Tutorial Writer — 🚀 网页发布（GitHub Pages + 多形态）v7.0
 
 > **父技能**: [tutorial-writer](../SKILL.md)
 > **独立可用**: ✅ 可通过 `/publish` 直接触发（L1 直达）
-> **架构**: 自含型单文件技能 — 包含完整的 GitHub Pages 发布指南
+> **架构**: 自含型单文件技能 — 包含完整的 GitHub Pages 发布指南 + 多形态发布支持
 > **使用频率**: 🟢 **低频** — 通常在构建完成后调用（每项目 2-3 次）
+> **架构版本**: **Content-First v2**（要求 build v2.0.0+）
 
 ---
 
@@ -51,12 +54,23 @@ meta:
 
 在开始配置前，确认以下构建阶段交付物已就绪：
 
-- [ ] 已完成 `/build` 阶段（Astro 项目构建完成）
+### ✅ 架构一致性检查（Content-First v2）
+
+- [ ] 项目采用**内容优先架构**（`content/` 在根目录，非 `src/content/`）
+- [ ] `content/chapters/` 目录存在且包含 Markdown 文件
+- [ ] 文件命名符合规范：英文 slug（如 `01-rag-overview.md`）+ 中文标题（Frontmatter）
+- [ ] `content/config.ts` 已配置 Content Collections schema
+
+### ✅ 构建产物验证
+
+- [ ] 已完成 `/build` 阶段（Astro 项目构建完成，使用 content-first 架构 v2.0.0）
 - [ ] `npm run build` 成功，无错误输出
 - [ ] `dist/` 目录结构正确（包含 `_astro/`、HTML 文件）
 - [ ] 本地 `npm run preview` 页面显示正常
 - [ ] 浏览器控制台无 404 错误（CSS/JS/图片）
 - [ ] 响应式布局验证通过（375px / 768px / 1280px）
+
+⚠️ **架构版本要求**: 本技能基于 **content-first-v2** 架构设计，与 `build v2.0.0` 完全对齐。如果项目仍使用旧版 `src/content/docs/` 结构，请先执行 `/build` 进行架构升级。
 
 ⚠️ 如果上述条件未满足，请先执行 `/build` 完成网站构建。
 
@@ -66,7 +80,7 @@ meta:
 
 ### Step 1: 关键部署配置
 
-**astro.config.mjs**（必须正确设置的 3 个关键项）：
+**astro.config.mjs**（必须正确设置的 3 个关键项 — **Content-First v2 架构版**）：
 
 ```javascript
 import { defineConfig } from 'astro/config';
@@ -85,11 +99,40 @@ export default defineConfig({
 
   integrations: [
     starlight({
-      // ... Starlight 配置（见 /build）
+      title: '教程标题',
+      description: '教程描述',
+
+      social: {
+        github: 'https://github.com/username/repo',
+      },
+
+      sidebar: [
+        { label: '首页', slug: 'index' },
+        {
+          label: '章节',
+          autogenerate: { directory: 'chapters' },  // ⭐ 指向 content/chapters/（Content-First 架构）
+        },
+      ],
+
+      editLink: {
+        baseUrl: 'https://github.com/username/repo/edit/main/',
+      },
+      lastUpdated: true,
+      pagination: true,
+      search: { mode: 'auto' },
     }),
   ],
 });
 ```
+
+**关键配置项说明**（Content-First v2 架构）：
+
+| 配置项 | 值 | 说明 |
+|--------|-----|------|
+| `site` | 完整 URL | 影响 SEO、sitemap、OG 图片路径 |
+| `base` | `'/repo-name/'` | GitHub Pages 项目站点必填 |
+| `trailingSlash` | `'always'` | 避免 GitHub Pages 404 |
+| `autogenerate.directory` | `'chapters'` | **指向 `content/chapters/` 目录**（非 `src/content/docs/`） |
 
 **两种场景的配置差异**：
 
@@ -244,9 +287,13 @@ jobs:
 - [ ] 移动端响应式布局正常
 - [ ] Lighthouse 评分 ≥ 90（Performance + Accessibility）
 
-**快速验证命令**（本地模拟 GitHub Pages 环境）：
+**快速验证命令**（本地模拟 GitHub Pages 环境 — Content-First v2 架构）：
 
 ```bash
+# ✅ 检查 content-first 架构目录结构
+ls content/chapters/                    # 应该看到 *.md 文件
+cat content/config.ts                   # 应该有 Content Collections 定义
+
 # 模拟 base 路径环境
 GH_PAGES_BASE=/repo-name npm run build
 
@@ -256,6 +303,8 @@ npx serve dist -l 3000
 # 访问测试地址
 # http://localhost:3000/repo-name/
 ```
+
+> 💡 **Content-First 架构验证要点**: 确认构建产物 `dist/` 中的链接都正确指向 `/repo-name/chapters/xxx` 而非 `/repo-name/docs/xxx`
 
 ---
 
@@ -523,6 +572,170 @@ jobs:
 
 ---
 
+## 📚 多形态发布支持（Content-First 架构优势）
+
+> **架构优势**: Content-First v2 架构的 `content/chapters/` 作为**纯 Markdown 源**，天然支持多渠道发布，无需维护多份内容。
+
+### 发布形态总览
+
+```
+content/chapters/*.md
+       │
+       ├──→ Astro 构建 → 交互式网站（GitHub Pages）✅ 主力
+       ├──→ Pandoc      → PDF / EPUB / Word 🆕 可选
+       ├──→ mdbook      → 备用静态站 🆕 可选
+       └──→ Notion API  → 协作平台同步 🆕 可选
+```
+
+### 🆕 方案 1: PDF 自动生成（Pandoc + CI/CD）
+
+**适用场景**: 需要提供离线阅读版本、打印版教程、或存档用途
+
+#### 前置准备
+
+```bash
+# 安装 Pandoc（CI 环境通常会预装）
+# Windows: choco install pandoc
+# Mac: brew install pandoc
+# Ubuntu: sudo apt-get install pandoc
+
+# 安装 LaTeX 引擎（PDF 生成必需）
+# Windows: 安装 MiKTeX 或 TeX Live
+# Mac: brew install --cask mactex
+```
+
+#### PDF 生成脚本
+
+创建 `scripts/generate-pdf.sh`：
+
+```bash
+#!/bin/bash
+set -e
+
+echo "📄 开始生成 PDF..."
+
+# 从 content/chapters/ 读取所有 Markdown（按文件名排序）
+pandoc content/chapters/*.md \
+  --from markdown \
+  --to pdf \
+  --output dist/tutorial.pdf \
+  --pdf-engine=xelatex \
+  --metadata title="教程完整版" \
+  --metadata author="作者名称" \
+  --toc \                          # 自动生成目录
+  --toc-depth=3 \                  # 目录深度 3 级
+  --highlight-style=tango \        # 代码高亮主题
+  --resource-path=. \              # 资源路径
+  -V geometry:a4paper \            # A4 纸张
+  -V geometry:margin=2.5cm \       # 页边距 2.5cm
+  -V mainfont="Noto Sans CJC SC" \ # 中文字体（需系统安装）
+  -V monofont="Noto Sans Mono CJC SC"
+
+echo "✅ PDF 生成完成: dist/tutorial.pdf"
+```
+
+#### package.json 脚本配置
+
+```json
+{
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "build:pdf": "./scripts/generate-pdf.sh",
+    "build:all": "npm run build && npm run build:pdf",
+    "preview": "astro preview"
+  }
+}
+```
+
+#### GitHub Actions 集成（自动生成 + 发布 PDF）
+
+在 `.github/workflows/deploy.yml` 的 build job 中添加 PDF 生成步骤：
+
+```yaml
+      - name: Generate PDF (Optional)
+        if: success()
+        run: |
+          echo "📄 Installing Pandoc..."
+          sudo apt-get update && sudo apt-get install -y pandoc texlive-xetex texlive-fonts-recommended
+
+          echo "📄 Generating PDF from content/chapters/..."
+          chmod +x scripts/generate-pdf.sh
+          npm run build:pdf
+
+          echo "✅ PDF generated successfully"
+          ls -lh dist/tutorial.pdf
+
+      - name: Upload PDF Artifact (Optional)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tutorial-pdf
+          path: dist/tutorial.pdf
+          retention-days: 30  # 保留 30 天
+```
+
+**下载 PDF**: 在 GitHub Actions 运行页面底部的 **Artifacts** 区域下载生成的 PDF 文件。
+
+### 🆕 方案 2: EPUB 电子书生成
+
+修改脚本支持 EPUB 输出：
+
+```bash
+# 生成 EPUB（适合电子阅读器）
+pandoc content/chapters/*.md \
+  --from markdown \
+  --to epub \
+  --output dist/tutorial.epub \
+  --metadata title="教程电子书版" \
+  --toc \
+  --toc-depth=3 \
+  --epub-cover-image=cover.png \  # 封面图片（可选）
+  --css=styles/epub.css           # 自定义样式（可选）
+```
+
+### 🆕 方案 3: GitHub Releases 自动发布（PDF + Source）
+
+在部署成功后自动创建 Release 并上传 PDF：
+
+```yaml
+      - name: Create GitHub Release (Optional)
+        if: success() && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="v$(date +'%Y.%m.%d')"
+          
+          gh release create "$VERSION" \
+            --title "教程发布 $VERSION" \
+            --notes "## 📦 发布内容
+
+          ### 🌐 在线版本
+          - GitHub Pages: https://username.github.io/repo/
+
+          ### 📄 离线版本
+          - **tutorial.pdf**: 完整离线 PDF 版本
+          - **tutorial.epub**: 电子书格式（适配 Kindle/iBooks）
+
+          ---
+          *由 Content-First 架构自动生成*" \
+            dist/tutorial.pdf \
+            dist/tutorial.epub
+```
+
+### 多形态发布对比
+
+| 形态 | 工具 | 适用场景 | 维护成本 | CI/CD 支持 |
+|------|------|---------|----------|-----------|
+| **交互网站** | Astro + Starlight | 在线浏览、搜索、响应式 | 低（主力）| ✅ 自动部署 |
+| **PDF** | Pandoc + XeLaTeX | 离线阅读、打印、存档 | 中（需 LaTeX）| ✅ 可选 |
+| **EPUB** | Pandoc | Kindle、iBooks 等阅读器 | 低 | ✅ 可选 |
+| **Word** | Pandoc | 编辑、审阅、协作 | 低 | ✅ 可选 |
+
+> 💡 **推荐策略**: 以 **GitHub Pages 网站**为主力发布渠道，**PDF** 作为可选项按需生成。Content-First 架构确保所有格式从同一内容源生成，无需手动同步。
+
+---
+
 ## 🐛 常见问题排查手册
 
 ### 问题 1: 静态资源全部 404
@@ -692,25 +905,95 @@ trailingSlash: 'always',
 
 ---
 
-## 🔗 与构建阶段的衔接
+## 🔗 与构建阶段的衔接（Content-First v2 对齐）
 
-**从构建进入发布的流程**：
+### 版本兼容性矩阵
+
+| publish 版本 | 兼容 build 版本 | 架构版本 | 状态 |
+|-------------|----------------|---------|------|
+| **v7.0.0** | **v2.0.0+** | **content-first-v2** | ✅ **当前推荐** |
+| v6.1.0 | v1.0.0 - v1.x.x | 传统架构 | ⚠️ 已弃用 |
+
+> ⚠️ **重要**: 本版本 (**v7.0.0**) 要求 **build v2.0.0+** (Content-First v2 架构)。如果使用旧版 build (v1.x)，请先升级 build 或使用 publish v6.1.0。
+
+### 完整工作流（Content-First v2 架构）
 
 ```
-构建阶段 (/build)           发布阶段 (/publish)
-─────────────────────              ──────────────
-① npm create astro                 ① 配置 base/site/trailingSlash
-② 配置 astro.config.mjs            ② 创建 .github/workflows/deploy.yml
-③ 编写内容 (Markdown)               ③ 配置 GitHub Settings → Pages
-④ 开发组件                          ④ 首次部署 & 验证
-⑤ npm run build                    ⑤ 配置自定义域名（可选）
-⑥ npm run preview                  ⑥ 设置监控和通知（可选）
-⑦ 通过所有质量门禁                  ⑦ 生产环境持续维护
-         ↓                                  ↓
-   触发: /publish                        完成！✅
+┌─────────────────────────────────────────────────────────────────┐
+│                    Content-First v2 完整流程                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────────────────┐      ┌──────────────────────┐        │
+│  │   🏗️ Build v2.0.0    │      │   🚀 Publish v7.0.0  │        │
+│  │   (高频: 10-20次/项目)│ ───→ │   (低频: 2-3次/项目) │        │
+│  └──────────────────────┘      └──────────────────────┘        │
+│                                                                 │
+│  ① npm create astro@latest          ① 配置 base/site/trailingSlash │
+│     --template starlight            ② 创建 .github/workflows/    │
+│ ② 重构为 content/ 结构              ③ 配置 GitHub Settings       │
+│     └── content/chapters/           ④ 首次部署 & 验证             │
+│     └── src/components/             ⑤ 可选: 多形态发布            │
+│ ③ 编写内容 (Markdown)                  ├── PDF (Pandoc)          │
+│     └── 英文 slug 文件名                 ├── EPUB                │
+│     └── 中文标题 (Frontmatter)           └── GitHub Releases     │
+│ ④ 开发组件 (按功能分组)             ⑥ 可选: 自定义域名            │
+│     └── interactive/                ⑦ 可选: 监控和通知            │
+│     └── charts/                     ⑧ 生产环境持续维护            │
+│     └── code/                           ├── Uptime 监控         │
+│ ⑤ 配置 Content Collections             └── 自动回滚             │
+│ ⑥ 内容增强管道 (可选)                                           │
+│     ├── Mermaid 预渲染                    ↓                      │
+│     └── 组件插槽注入                完成！✅                       │
+│ ⑦ npm run build                                                  │
+│ ⑧ npm run preview                                                │
+│ ⑨ 通过所有质量门禁                                                │
+│         ↓                                                        │
+│    触发: /publish                                                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-**触发条件**：当构建产物 (`dist/`) 就绪且本地验证通过后，调用本技能进入部署流程。
+### 构建阶段交付物清单（Content-First v2）
+
+publish 期望从 build 接收以下交付物：
+
+| # | 交付物 | 路径 | 验证方式 | 必需 |
+|---|--------|------|---------|------|
+| 1 | **内容目录** | `content/chapters/*.md` | `ls content/chapters/` | ✅ 是 |
+| 2 | **配置文件** | `content/config.ts` | 存在且含 schema 定义 | ✅ 是 |
+| 3 | **构建产物** | `dist/` 目录 | `npm run build` 成功 | ✅ 是 |
+| 4 | **HTML 文件** | `dist/**/*.html` | 包含正确 base 路径 | ✅ 是 |
+| 5 | **静态资源** | `dist/_astro/*` | CSS/JS/字体文件完整 | ✅ 是 |
+| 6 | **PDF（可选）** | `dist/tutorial.pdf` | `npm run build:pdf` 成功 | 🔵 可选 |
+| 7 | **EPUB（可选）** | `dist/tutorial.epub` | Pandoc 生成成功 | 🔵 可选 |
+
+### 触发条件
+
+当以下条件**全部满足**时，调用本技能进入部署流程：
+
+```bash
+# ✅ 架构检查通过
+test -d content/chapters && echo "Content-First v2 架构确认"
+
+# ✅ 构建成功
+npm run build && echo "Exit code: $?"
+
+# ✅ 本地预览正常
+npm run preview &
+# 浏览器访问 http://localhost:4321 确认无误
+
+# 准备就绪，调用发布技能
+→ /publish               # 进入 GitHub Pages + 多形态发布流程
+```
+
+### 常见衔接问题
+
+| 问题 | 原因 | 解决方案 |
+|------|------|---------|
+| publish 找不到内容 | 使用旧版 `src/content/docs/` | 升级到 build v2.0.0，迁移到 `content/chapters/` |
+| PDF 生成失败 | 未安装 Pandoc/LaTeX | CI 脚本中添加安装步骤，或跳过 PDF 生成 |
+| URL 路径 404 | `base` 配置与仓库名不匹配 | 确保 `base: '/repo-name/'` 与 GitHub 仓库名一致 |
+| 中文文件名乱码 | 未使用英文 slug | 遵循 build v2.0.0 命名规范：`01-slug.md` |
 
 ---
 
@@ -754,5 +1037,6 @@ skills/tutorial-writer-publish/
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| **v7.0.0** | 2026-05-31 | **🎯 Content-First v2 对齐升级**: 全面对齐 build v2.0.0 架构；新增 `architecture_version: "content-first-v2"` 元数据；前置条件增加架构一致性检查（content/chapters/ 目录、英文 slug 命名规范）；astro.config.mjs 示例更新为完整 Content-First 版本（含 sidebar autogenerate 配置）；验证命令增加架构目录检查；**新增多形态发布支持章节**（PDF/EPUB/Word 生成 + Pandoc + CI/CD 集成 + GitHub Releases 自动发布）；衔接说明全面重写（版本兼容性矩阵、完整工作流图、交付物清单、常见问题表）；description 更新（新增 content-first/multi-format 触发词）；标题更新为"GitHub Pages + 多形态" |
 | **v6.1.0** | 2026-05-30 | **🎯 扁平化重构**: 从 1-Sub Router 升级为**自含型单文件技能**；移除 skills/website-deploy/ 子目录；将完整部署指南（~450行）合并到主 SKILL.md；结构简化为 Type 1（单文件 + references）；保留所有功能和内容 |
 | **v6.0.0** | 2026-05-30 | 1-Sub Router（publish → website-deploy）（前版本） |

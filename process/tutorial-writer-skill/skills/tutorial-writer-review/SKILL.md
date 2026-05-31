@@ -1,9 +1,11 @@
 ---
 name: tutorial-writer-review
-version: v3.2.0
+version: v1.0.0
 author: skill-factory
 description: Use when checking, reviewing, scoring finished tutorial content, or running quality gates before delivery
 tags: [tutorial, review, quality-gate, cross-chapter, validation, scorecard]
+meta:
+  architecture: "monorepo-v1"
 ---
 
 # Tutorial Writer — ✅ 质量校验
@@ -54,7 +56,7 @@ tags: [tutorial, review, quality-gate, cross-chapter, validation, scorecard]
 | Q11 | DATA | **P0-阻塞** | 数据格式与相邻兼容 |
 | Q12 | COVERAGE | P1-警告 | 大纲要点全覆盖 |
 | Q13 | DEPTH | P1-警告 | 核心概念 S5 ≥ 4/6 |
-| **Q14** | **WEB** | **P1-警告** | **mkdocs build 无报错** |
+| **Q14** | **WEB** | **P1-警告** | **`/web` 构建无报错（Astro 预览通过）** |
 
 ## 参考文件
 

@@ -1,9 +1,11 @@
 ---
 name: tutorial-writer-decision
-version: v3.2.0
+version: v1.0.0
 author: skill-factory
 description: Use when configuring, reviewing, updating technical decisions across the tutorial lifecycle
 tags: [tutorial, decision, configuration, project-setup, consistency]
+meta:
+  architecture: "monorepo-v1"
 ---
 
 # Tutorial Writer — 📐 决策贯穿
@@ -38,15 +40,20 @@ tags: [tutorial, decision, configuration, project-setup, consistency]
         └── 其他子技能按需读取
 ```
 
-## 各阶段决策映射
+## 各阶段决策映射（Monorepo 7-Sub 架构）
 
-| 触发阶段 | 需要检查的决策                      | 详见                                       |
-| -------- | ----------------------------------- | ------------------------------------------ |
-| research | 目标用户/深度级别/图文比例          | `references/decision-data-model.md`        |
-| writing  | 编程语言/框架选型/向量数据库/LLM    | `references/decision-data-model.md`        |
-| review   | 质量标准/数据引用严格度             | `references/decision-data-model.md`        |
-| publish  | 交付格式/SSG 选型/交互需求/部署方式 | `references/decision-data-model.md`        |
-| decision | 所有决策的管理/创建/修改            | `references/decision-discussion.md`        |
+| 触发阶段 | 子技能 | 决策类型 | 决策记录位置 | 详见 |
+| -------- | ------ | -------- | ------------ | ---- |
+| 调研规划 | /research | 方案选型 | `decisions/research/*.md` | `references/decision-data-model.md` |
+| 撰写内容 | /writing | 写作决策 | `decisions/writing/*.md` | `references/decision-data-model.md` |
+| **内容管理** | **/content** 🆕 | **Schema/结构决策** | **decisions/content/*** 🆕 | `references/decision-data-model.md` |
+| **网站构建** | **/web** ✏️ | **技术决策** | **decisions/web/*** ✏️ | `references/decision-data-model.md` |
+| **电子书生成** | **/book** 🆕 | **格式决策** | **decisions/book/*** 🆕 | `references/decision-data-model.md` |
+| 质量校验 | /review | 质量标准 | `decisions/review/*.md` | `references/decision-data-model.md` |
+| **部署发布** | **/github-pages** ✏️ | **运维决策** | **decisions/github-pages/*** ✏️ | `references/decision-data-model.md` |
+| 全局 | /decision | 跨阶段决策 | `decisions/global/*.md` | `references/decision-discussion.md` |
+
+> ✏️ = 从旧 publish 拆分/重命名　🆕 = 新增子技能
 
 ## 决策项速查（共 19 项）
 
@@ -76,4 +83,3 @@ cp ../../assets/decision-record-template.json ./decision-record.json
 - [双存储方案](references/decision-storage.md) — JSON + Memory 双轨制
 - [讨论与交互](references/decision-discussion.md) — Agent 讨论引导、动态更新、冲突解决
 - [系统集成](references/decision-integration.md) — PRWRD 集成、快速启动、最佳实践
-- [阶段映射](/references/phase-mapping.md) — 全局阶段→决策项映射

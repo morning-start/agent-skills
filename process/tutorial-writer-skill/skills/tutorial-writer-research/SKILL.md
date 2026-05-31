@@ -1,9 +1,11 @@
 ---
 name: tutorial-writer-research
-version: v3.2.0
+version: v1.0.0
 author: skill-factory
 description: Use when researching technical topics, planning chapter outlines, designing chapter structure, or collecting reference materials before writing
 tags: [tutorial, research, planning, outline, length-planning, reference-collection]
+meta:
+  architecture: "monorepo-v1"
 ---
 
 # Tutorial Writer — 📚 调研与规划
@@ -43,6 +45,13 @@ tags: [tutorial, research, planning, outline, length-planning, reference-collect
 - [搜索方法论](references/research-methodology.md) — 搜索策略、质量判断、归档规范
 - [长度规划规则](references/length-planning.md) — 阶段基准、小节数微调、密度因子
 - [本阶段决策细则](references/decision-record-rules.md) — research 阶段涉及的决策项
+
+## 输出物与下游对接
+
+调研结果将用于：
+- `packages/content/src/chapters/` 中的 Markdown 文件（由 `/writing` 撰写）
+- 后续经 `/web` 构建为网站 或 `/book` 转换为电子书
+- 最终由 `/github-pages` 部署发布
 
 ## 质量自检
 

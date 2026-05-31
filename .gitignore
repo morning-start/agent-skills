@@ -16,3 +16,4 @@ Thumbs.db
 
 # Skill build artifacts
 *.skill
+.trae/

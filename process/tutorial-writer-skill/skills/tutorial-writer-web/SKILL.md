@@ -43,8 +43,9 @@ meta:
 - [ ] Monorepo 项目已初始化（含 `turbo.json`, `pnpm-workspace.yaml`）
   详见根路由器 SKILL.md **Step 1**
 - [ ] `apps/web/` 已通过 Starlight 模板创建
-  - 推荐命令: 在 `apps/web/` 下运行
-    `bunx create astro@latest . --template starlight`
+  - 推荐命令: 在项目根目录运行
+    `bun create astro apps/web --template starlight --install --yes`
+  - 该命令会自动创建 `apps/web/` 目录并安装依赖
   - 详见根路由器 SKILL.md **Step 3**
 - [ ] `@repo/content` 包存在且已在 package.json 中声明依赖
   ```json

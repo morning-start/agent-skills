@@ -316,14 +316,8 @@ touch packages/content/src/chapters/.gitkeep
 ### Step 3: 创建 web 应用（网站层）
 
 ```bash
-# 在 apps/web 下创建 Astro + Starlight 项目
-mkdir -p apps/web && cd apps/web
-
-# 使用 Astro 官方脚手架（自动获取最新 Starlight 模板）
-bunx create astro@latest . --template starlight
-
-# 返回项目根目录
-cd ../..
+# 在项目根目录运行，自动在 apps/web 下创建 Astro + Starlight 项目
+bun create astro apps/web --template starlight --install --yes
 ```
 
 > **注意**: `create-astro` 会生成完整的 Astro 项目结构。

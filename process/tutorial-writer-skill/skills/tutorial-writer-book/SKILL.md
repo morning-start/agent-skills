@@ -19,7 +19,7 @@ meta:
   can_invoke_directly: true
   role: "format-producer-ebook"
   depends_on: ["init-script", "content-package"]
-  input_source: "@tutorial/content"
+  input_source: "@repo/content"
   output_formats: ["pdf"]
 ---
 
@@ -27,7 +27,7 @@ meta:
 
 > **定位**: 电子书的出版商 (Format Producer - Ebook)
 > **核心价值**: 将 Markdown 内容转换为专业排版的 PDF/EPUB 电子书
-> **依赖**: @tutorial/content 包（唯一数据源）
+> **依赖**: @repo/content 包（唯一数据源）
 
 ## 📖 目录
 
@@ -52,12 +52,12 @@ meta:
   详见根路由器 SKILL.md **Step 1**
 - [ ] `packages/book/` 已创建
   - 推荐命令:
-    `turbo gen workspace --name @<project>/book --type package`
+    `turbo gen workspace --name @repo/book --type package`
   - 详见根路由器 SKILL.md **Step 4**
 - [ ] Pandoc (>=2.0) 和 XeLaTeX 已安装
   - 检查: `pandoc --version` && `xelatex --version`
   - 未安装时见 [troubleshooting.md](./references/troubleshooting.md)
-- [ ] `@<project>/content` 包存在且已在 book/package.json 中声明依赖
+- [ ] `@repo/content` 包存在且已在 book/package.json 中声明依赖
 
 > **注意**: PDF 生成需要 LaTeX 环境。
 > 如未安装，可跳过此子技能或使用 CI/CD 中的 Docker 容器。
@@ -68,7 +68,7 @@ meta:
 
 ```bash
 cd your-tutorial-project
-pnpm --filter @tutorial/book build:pdf
+bun run --filter @repo/book build:pdf
 ```
 
 **预期输出**:
@@ -1004,7 +1004,7 @@ $$
 
 **方法 1: 使用脚本**:
 ```bash
-pnpm --filter @tutorial/book preview
+bun run --filter @repo/book preview
 # 自动打开 dist/tutorial.pdf
 ```
 
@@ -1029,7 +1029,7 @@ code dist/tutorial.pdf  # 需要 PDF 预览扩展
 # 终端 1: 监听文件变化并自动重建
 while true; do
   inotifywait -r -e modify packages/content/src/chapters/
-  pnpm --filter @tutorial/book build:pdf
+  bun run --filter @repo/book build:pdf
 done
 
 # 终端 2: 编辑 Markdown 文件
@@ -1077,7 +1077,7 @@ echo "✅ 构建完成"
 {
   "tasks": {
     "build:book": {
-      "dependsOn": ["@tutorial/content#build"],
+      "dependsOn": ["@repo/content#build"],
       "outputs": ["dist/**/*.pdf"],
       "inputs": ["packages/content/src/chapters/**/*.md"]
     }
@@ -1091,7 +1091,7 @@ echo "✅ 构建完成"
 
 ```bash
 # 生成单个 PDF（包含所有章节）
-pnpm --filter @tutorial/book build:pdf
+bun run --filter @repo/book build:pdf
 
 # 输出: dist/tutorial.pdf
 ```
@@ -1250,7 +1250,7 @@ jobs:
         cache: 'pnpm'
         
     - name: Install dependencies
-      run: pnpm install
+      run: bun install
       
     - name: Cache TeX Live
       id: cache-tex
@@ -1278,7 +1278,7 @@ jobs:
         
     - name: Generate PDF
       run: |
-        pnpm --filter @tutorial/book build:pdf
+        bun run --filter @repo/book build:pdf
         
     - name: Upload PDF artifact
       uses: actions/upload-artifact@v4
@@ -1371,11 +1371,11 @@ v<主版本>.<次版本>.<修订>-pdf
 {
   "tasks": {
     "build:web": {
-      "dependsOn": ["@tutorial/content#build"],
+      "dependsOn": ["@repo/content#build"],
       "cache": false
     },
     "build:book": {
-      "dependsOn": ["@tutorial/content#build"],
+      "dependsOn": ["@repo/content#build"],
       "cache": false
     },
     "build:all": {
@@ -1389,12 +1389,12 @@ v<主版本>.<次版本>.<修订>-pdf
 **并行执行命令**:
 
 ```bash
-# 同时构建 web 和 book
-turbo run build:web build:book
+# 同时构建 tutorial 和 book
+bun run build
 
 # 或分别启动
-turbo run build:web &
-turbo run build:book &
+bun run --filter @repo/tutorial build &
+bun run --filter @repo/book build &
 wait
 ```
 
@@ -1406,13 +1406,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - ...
-      - run: pnpm --filter @tutorial/web build
+      - run: bun run --filter @repo/tutorial build
       
   build-book:
     runs-on: ubuntu-latest
     steps:
       - ...
-      - run: pnpm --filter @tutorial/book build:pdf
+      - run: bun run --filter @repo/book build:pdf
       
   deploy:
     needs: [build-web, build-book]
@@ -1430,7 +1430,7 @@ jobs:
 
 ```
 ┌─────────────────────────────────────────┐
-│         @tutorial/content               │
+│         @repo/content               │
 │    (唯一数据源: Markdown 章节内容)        │
 └──────────────┬──────────────────────────┘
                │
@@ -1448,7 +1448,7 @@ jobs:
   └─────────┘   └──────────────┘
 ```
 
-### 读取 @tutorial/content（唯一数据源）
+### 读取 @repo/content（唯一数据源）
 
 **输入来源**:
 ```
@@ -1468,8 +1468,8 @@ CONTENT_DIR="packages/content/src/chapters"
 CHAPTERS=$(find "$CONTENT_DIR" -name "*.md" -type f | sort)
 
 # 方式 2: 通过 workspace 依赖
-# package.json 中声明: "@tutorial/content": "workspace:*"
-# 运行时: pnpm --filter @tutorial/book build:pdf
+# package.json 中声明: "@repo/content": "workspace:*"
+# 运行时: bun run --filter @repo/book build:pdf
 ```
 
 **内容约定**:
@@ -1481,7 +1481,7 @@ CHAPTERS=$(find "$CONTENT_DIR" -name "*.md" -type f | sort)
 ### 与 web 的平行关系
 
 **共同点**:
-- ✅ 都消费 @tutorial/content
+- ✅ 都消费 @repo/content
 - ✅ 都是输出格式（Format Producer）
 - ✅ 可以并行构建
 - ✅ 都有自己的样式系统
@@ -1518,13 +1518,13 @@ CHAPTERS=$(find "$CONTENT_DIR" -name "*.md" -type f | sort)
 **场景 1: 完整发布流程**
 ```bash
 # Step 1: 生成 PDF
-pnpm --filter @tutorial/book build:pdf
+bun run --filter @repo/book build:pdf
 
 # Step 2: 构建网站
-pnpm --filter @tutorial/web build
+bun run --filter @repo/tutorial build
 
 # Step 3: 部署到 GitHub Pages
-pnpm --filter @tutorial/github-pages deploy
+bun run --filter @repo/github-pages deploy
 ```
 
 **场景 2: CI/CD 自动化**
@@ -1535,12 +1535,12 @@ jobs:
     outputs:
       pdf_path: dist/tutorial.pdf
     steps:
-      - run: pnpm --filter @tutorial/book build:pdf
+      - run: bun run --filter @repo/book build:pdf
       
   deploy-site:
     needs: generate-ebook
     steps:
-      - run: pnpm --filter @tutorial/github-pages deploy
+      - run: bun run --filter @repo/github-pages deploy
       
   release-pdf:
     needs: generate-ebook
@@ -1566,11 +1566,11 @@ jobs:
 **预留接口**:
 ```bash
 # 当前: 只有 PDF
-pnpm --filter @tutorial/book build:pdf
+bun run --filter @repo/book build:pdf
 
 # 未来: 多格式
-pnpm --filter @tutorial/book build:all  # PDF + EPUB
-pnpm --filter @tutorial/book build:epub  # 仅 EPUB
+bun run --filter @repo/book build:all  # PDF + EPUB
+bun run --filter @repo/book build:epub  # 仅 EPUB
 ```
 
 **扩展设计原则**:
@@ -1844,7 +1844,7 @@ docker run --memory=8g pandoc-image pandoc ...
 - 选择 Pandoc 作为核心转换器（而非纯 LaTeX 手写）
 - 选择 XeLaTeX 作为 PDF 引擎（Unicode + 中文支持）
 - 聚焦 PDF 生成，EPUB 作为 v1.1.0 功能
-- 明确声明对 @tutorial/content 的依赖
+- 明确声明对 @repo/content 的依赖
 - 采用 Format Producer 角色（与 web 平行）
 
 **已知限制**:
@@ -1877,13 +1877,13 @@ docker run --memory=8g pandoc-image pandoc ...
 
 ```bash
 # 生成 PDF（默认配置）
-pnpm --filter @tutorial/book build:pdf
+bun run --filter @repo/book build:pdf
 
 # 手动执行 Pandoc
 pandoc chapters/*.md --to pdf -o output.pdf --pdf-engine=xelatex
 
 # 预览 PDF
-pnpm --filter @tutorial/book preview
+bun run --filter @repo/book preview
 
 # 质量检查
 ./scripts/check-pdf-quality.sh dist/tutorial.pdf

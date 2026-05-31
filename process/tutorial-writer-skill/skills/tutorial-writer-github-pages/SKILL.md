@@ -65,9 +65,9 @@ meta:
 ### ✅ 构建产物验证（基础）
 
 - [ ] 已完成 `/web` 阶段（Astro 项目构建完成）
-- [ ] `turbo run build:web` 成功，无错误输出
-- [ ] `packages/web/dist/` 目录结构正确
-- [ ] 本地 `turbo run dev` 页面显示正常
+- [ ] `bun run --filter @repo/tutorial build` 成功，无错误输出
+- [ ] `apps/tutorial/dist/` 目录结构正确
+- [ ] 本地 `bun run dev` 页面显示正常
 
 > ⚠️ 本技能仅处理网站部署到 GitHub Pages。
 > PDF/EPUB 生成请使用 `/book` 子技能。

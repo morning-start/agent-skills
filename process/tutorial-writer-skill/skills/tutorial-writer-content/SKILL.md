@@ -35,10 +35,12 @@ meta:
 作为 Tutorial Writer v1.0.0 架构中的 **第④号子技能**，content 承担着数据层的核心角色：
 
 ```
-content (数据层) ← 唯一真相源
-    │
-    ├──→ web (表示层 A): 消费 content 数据构建网站
-    └──→ book (表示层 B): 消费 content 数据生成电子书
+packages/
+├── content/ (数据层) ← 唯一真相源
+├── web/     (表示层 A): 消费 content 数据构建网站
+└── book/    (表示层 B): 消费 content 数据生成电子书
+
+依赖方向: content ← web, content ← book
 ```
 
 **关键职责边界**:
@@ -64,7 +66,7 @@ content (数据层) ← 唯一真相源
   - 推荐命令: `bunx create-turbo@latest <project-name>`
   - 或手动创建（详见根路由器 SKILL.md 的 **"🚀 项目初始化"** 章节 Step 0-1）
 - [ ] 已添加 content 包:
-  `turbo gen workspace --name @<project>/content --type package`
+  `turbo gen workspace --name @repo/content --type package`
   详见根路由器 Step 2
 - [ ] `packages/content/src/` 目录存在
 - [ ] Node.js >= 18 已安装
@@ -141,7 +143,7 @@ packages/content/
 │   │
 │   └── config.ts                    ← ⚙️ Content Collections Schema 定义
 │
-├── package.json                     ← {"name": "@tutorial/content"}
+├── package.json                     ← {"name": "@repo/content"}
 ├── tsconfig.json                    ← TypeScript 配置
 └── README.md                        ← 包说明文档（可选）
 ```
@@ -583,7 +585,7 @@ const { frontmatter } = Astro.props;
 
 ```typescript
 /**
- * @tutorial Content Collections Configuration
+ * @repo Content Collections Configuration
  * @description 定义教程章节的数据结构和验证规则
  * @version 1.0.0
  */
@@ -701,7 +703,7 @@ Error: Invalid enum value. Expected 'beginner' | 'intermediate' | 'advanced', re
 Starlight 会根据 `chapters/` 目录自动生成侧边栏：
 
 ```javascript
-// packages/web/astro.config.mjs
+// apps/tutorial/astro.config.mjs
 starlight({
   sidebar: [
     {
@@ -801,11 +803,11 @@ Mermaid 图表在服务端渲染（SSR）场景下可能失败，预渲染可确
 **方案 A: 使用 astro-mermaid 集成** (推荐)
 
 ```bash
-pnpm add astro-mermaid
+cd apps/tutorial && bun add astro-mermaid
 ```
 
 ```javascript
-// packages/web/astro.config.mjs
+// apps/tutorial/astro.config.mjs
 import mermaid from 'astro-mermaid';
 
 export default defineConfig({
@@ -890,7 +892,7 @@ Astro Content Loader 加载
 
 ```astro
 ---
-// packages/web/src/components/InteractiveSlot.astro
+// apps/tutorial/src/components/InteractiveSlot.astro
 interface Props {
   type: string;
   options?: Record<string, string>;
@@ -984,7 +986,7 @@ enhanceContent().catch(console.error);
 #### Astro 集成钩子
 
 ```typescript
-// packages/web/src/enhance-plugin.ts
+// apps/tutorial/src/enhance-plugin.ts
 import type { AstroIntegration } from 'astro';
 
 export function createEnhancePlugin(): AstroIntegration {
@@ -1015,7 +1017,7 @@ export function createEnhancePlugin(): AstroIntegration {
     },
     "build:web": {
       "cache": false,
-      "dependsOn": ["@tutorial/content#build", "enhance"]
+      "dependsOn": ["@repo/content#build", "enhance"]
     }
   }
 }
@@ -1024,8 +1026,8 @@ export function createEnhancePlugin(): AstroIntegration {
 **使用方式**:
 
 ```bash
-# 先增强内容，再构建
-turbo run enhance build:web
+# 先增强内容，再构建（需在 turbo.json 中定义 enhance 任务）
+bunx turbo run enhance build:web
 ```
 
 ---
@@ -1384,7 +1386,7 @@ review 技能需要检查的内容维度：
 #### web 技能如何使用 content
 
 ```javascript
-// packages/web/astro.config.mjs
+// apps/tutorial/astro.config.mjs
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
@@ -1392,7 +1394,7 @@ export default defineConfig({
   integrations: [
     starlight({
       // 直接引用 content 包的章节
-      contentDir: '../../content/src',
+      contentDir: '../../packages/content',
       
       sidebar: [{
         label: '教程',
@@ -1407,7 +1409,7 @@ export default defineConfig({
 ```json
 {
   "dependencies": {
-    "@tutorial/content": "workspace:*"
+    "@repo/content": "workspace:*"
   }
 }
 ```
@@ -1434,7 +1436,7 @@ done
 ```json
 {
   "dependencies": {
-    "@tutorial/content": "workspace:*"
+    "@repo/content": "workspace:*"
   }
 }
 ```

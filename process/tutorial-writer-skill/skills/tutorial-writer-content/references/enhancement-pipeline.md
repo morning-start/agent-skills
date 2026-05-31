@@ -148,12 +148,12 @@ classDiagram
 
 **安装**:
 ```bash
-pnpm add astro-mermaid
+cd apps/tutorial && bun add astro-mermaid
 ```
 
 **配置**:
 ```javascript
-// packages/web/astro.config.mjs
+// apps/tutorial/astro.config.mjs
 import mermaid from 'astro-mermaid';
 
 export default defineConfig({
@@ -224,7 +224,7 @@ node scripts/pre-render-mermaid.ts packages/content/src/chapters/*.md
 
 ```astro
 ---
-// packages/web/src/layouts/ChapterLayout.astro
+// apps/tutorial/src/layouts/ChapterLayout.astro
 const { chapter } = Astro.props;
 ---
 
@@ -530,7 +530,7 @@ $$
 
 **安装**:
 ```bash
-pnpm add @astrojs/katex
+cd apps/tutorial && bun add @astrojs/katex
 ```
 
 **Astro 配置**:
@@ -750,19 +750,19 @@ enhanceContent().catch((error) => {
 
 ```bash
 # 方式 1: 手动增强后构建
-turbo run enhance build:web
+bunx turbo run enhance build:web
 
 # 方式 2: 在 package.json 中组合脚本
 {
   "scripts": {
-    "build:web:full": "turbo run enhance && turbo run build:web"
+    "build:web:full": "bunx turbo run enhance && bunx turbo run build:web"
   }
 }
 
 # 方式 3: CI/CD 中使用
 - name: Enhance & Build
   run: |
-    pnpm turbo run enhance build:web
+    bunx turbo run enhance build
 ```
 
 ## 6. 构建时钩子集成
@@ -770,7 +770,7 @@ turbo run enhance build:web
 ### 6.1 Astro Integration 钩子
 
 ```typescript
-// packages/web/src/enhance-plugin.ts
+// apps/tutorial/src/enhance-plugin.ts
 import type { AstroIntegration, HookParameters } from 'astro';
 import { execSync } from 'child_process';
 
@@ -826,7 +826,7 @@ function generateEnhanceReport(logger: any) {
 ### 6.2 使用方式
 
 ```javascript
-// packages/web/astro.config.mjs
+// apps/tutorial/astro.config.mjs
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import { createEnhancePlugin } from '../src/enhance-plugin.ts';

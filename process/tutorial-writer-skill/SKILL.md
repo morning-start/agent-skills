@@ -17,17 +17,17 @@ dependency:
     - tutorial-writer-decision
 meta:
   architecture_version: "monorepo-v1"
-  sub_skills_count: 7
+  sub_skills_count: 8
   web_version_requirement: ">=v1.0.0"
   book_version_requirement: ">=v1.0.0"
   github_pages_version_requirement: ">=v1.0.0"
 ---
 
-# Tutorial Writer v1.0.0 — 7-Sub Router (Monorepo Edition)
+# Tutorial Writer v1.0.0 — 8-Sub Router (Monorepo Edition)
 
-> **定位**: 轻量路由枢纽 — 将教程创作请求分发到 7 个独立子技能
-> **架构**: 7-Entry Router (root → skills/ = Layer 0 → Layer 1)
-> **工具链**: Turborepo | **方案**: 方案 C (7-Sub Hybrid + Independent Init)
+> **定位**: 轻量路由枢纽 — 将教程创作请求分发到 8 个独立子技能
+> **架构**: 8-Entry Router (root → skills/ = Layer 0 → Layer 1)
+> **工具链**: Turborepo | **方案**: 方案 C (8-Sub Hybrid + Independent Init)
 > **架构版本**: **Monorepo-v1**（内容-格式解耦 + 三层分离）
 
 ## 目标
@@ -35,7 +35,7 @@ meta:
 将教程创作的完整生命周期（调研规划 → 撰写执行 → 内容管理 → 质量校验 → 网站构建 → 电子书生成 → 部署发布 → 决策贯穿）通过统一入口分发，每个阶段有独立的技能文件和细则。
 
 **能做什么**:
-- 智能路由用户请求到 7 个自含型子技能
+- 智能路由用户请求到 8 个自含型子技能
 - 提供全局速查（铁律/分类）
 - 展示子技能概览和相互依赖关系
 - 引导项目初始化流程
@@ -59,10 +59,13 @@ Layer 1: 路由层 (SKILL.md)          → 纯请求分发
 Layer 2: 技能层 (skills/*)           → 每个技能只关注核心职责
 Layer 3: 工具层 (scripts+templates)  → 初始化、模板、共享工具
 
-packages/content (数据层)     ← 唯一真相源
-    │
-    ├──→ packages/web        ← 网站 (Astro + Starlight)
-    └──→ packages/book       ← 电子书 (Pandoc + PDF)
+apps/                            ← 应用层
+├── tutorial/ (表示层 A)         ← 网站 (Astro + Starlight, 依赖 content)
+packages/                        ← 库层
+├── content/ (数据层)             ← 唯一真相源
+└── book/    (表示层 B)          ← 电子书 (Pandoc + PDF, 依赖 content)
+
+依赖关系: content ← tutorial, content ← book (禁止反向)
 ```
 
 ### 三大设计原则
@@ -70,18 +73,18 @@ packages/content (数据层)     ← 唯一真相源
 | 原则 | 说明 |
 |------|------|
 | **单一职责** | 每个子技能只回答一个问题 |
-| **依赖方向正确** | content ← 被 web/book 依赖，禁止反向 |
+| **依赖方向正确** | content ← 被 tutorial/book 依赖，禁止反向 |
 | **初始化解耦** | init 脚本负责创建项目骨架，子技能假设包已存在 |
 
 ### 版本兼容性要求
 
 | 子技能 | 最低版本 | 架构支持 |
 |--------|---------|---------|
-| **web** | **v1.0.0+** | ✅ Monorepo (移除初始化逻辑) |
-| **book** | **v1.0.0+** | ✅ 全新电子书生成 |
+| **web** (apps/tutorial) | **v1.0.0+** | ✅ Monorepo (移除初始化逻辑) |
+| **book** (packages/book) | **v1.0.0+** | ✅ 全新电子书生成 |
 | **github-pages** | **v1.0.0+** | ✅ 仅部署 (移除 PDF/EPUB) |
 
-⚠️ **重要**: 本路由器要求 web ≥ v1.0.0、book ≥ v1.0.0、github-pages ≥ v1.0.0。旧版子技能使用传统架构，与本版本不兼容。
+> **本路由器要求 web (apps/tutorial) ≥ v1.0.0、book ≥ v1.0.0、github-pages ≥ v1.0.0**。旧版子技能使用传统架构，与本版本不兼容。
 
 ---
 
@@ -103,7 +106,7 @@ packages/content (数据层)     ← 唯一真相源
 
 ---
 
-## 🧭 7-Sub 路由表
+## 🧭 8-Sub 路由表
 
 ```
 用户说...                                        → 调用
@@ -147,13 +150,13 @@ packages/content (数据层)     ← 唯一真相源
 | ① | [research](skills/tutorial-writer-research/SKILL.md) | v1.0.0 | ✅ 保持 | 调研规划 | 搜索/规划/设计结构 | 搜索方法论+长度规划+标准概览 | 低 |
 | ② | [writing](skills/tutorial-writer-writing/SKILL.md) | v1.0.0 | ⚠️ 精简 | 撰写执行 | 写/撰写/完成章节 | 写作流程+素材管理+规范R1-R6（已移除内容管理部分） | 中 |
 | ③ | [review](skills/tutorial-writer-review/SKILL.md) | v1.0.0 | ✅ 保持 | 质量校验 | 检查/校对/门禁 | 14项质量门禁+评分卡 | 中 |
-| 🆕④ | [content](skills/tutorial-writer-content/SKILL.md) | v1.0.0 | 🆕 新增 | **内容管理** | **内容结构/schema/命名规范** | **文件组织+Frontmatter schema+Content Collections+增强管道** | 中 |
-| ✏️⑤ | [web](skills/tutorial-writer-web/SKILL.md) | v1.0.0 | 重命名 | **网站构建** | **构建/Astro/Starlight/组件/配置** | **Astro+Starlight配置+组件开发+构建优化（已移除初始化）** | 🔴 高 |
-| 🆕⑥ | [book](skills/tutorial-writer-book/SKILL.md) | v1.0.0 | 🆕 新增 | **电子书生成** | **PDF/电子书/Pandoc/排版/EPUB** | **PDF/EPUB生成+Pandoc配置+LaTeX模板+电子书样式** | 🟡 中 |
-| ✏️⑦ | [github-pages](skills/tutorial-writer-github-pages/SKILL.md) | v1.0.0 | 重命名 | **Pages 部署** | **部署/GitHub Pages/Actions/CI-CD** | **GitHub Actions+Pages部署+域名/DNS/SSL+监控（已移除PDF/EPUB）** | 🟢 低 |
+| ④ | [content](skills/tutorial-writer-content/SKILL.md) | v1.0.0 | 🆕 新增 | **内容管理** | **内容结构/schema/命名规范** | **文件组织+Frontmatter schema+Content Collections+增强管道** | 中 |
+| ⑤ | [web](skills/tutorial-writer-web/SKILL.md) | v1.0.0 | ✏️ 重命名 | **网站构建** | **构建/Astro/Starlight/组件/配置** | **Astro+Starlight配置+组件开发+构建优化（已移除初始化）** | 🔴 高 |
+| ⑥ | [book](skills/tutorial-writer-book/SKILL.md) | v1.0.0 | 🆕 新增 | **电子书生成** | **PDF/电子书/Pandoc/排版/EPUB** | **PDF/EPUB生成+Pandoc配置+LaTeX模板+电子书样式** | 🟡 中 |
+| ⑦ | [github-pages](skills/tutorial-writer-github-pages/SKILL.md) | v1.0.0 | ✏️ 重命名 | **Pages 部署** | **部署/GitHub Pages/Actions/CI-CD** | **GitHub Actions+Pages部署+域名/DNS/SSL+监控（已移除PDF/EPUB）** | 🟢 低 |
 | ⑧ | [decision](skills/tutorial-writer-decision/SKILL.md) | v1.0.0 | ✅ 保持 | 决策贯穿 | 配置/决策 | 决策方法论+阶段映射+冲突解决 | 贯穿 |
 
-> 每个子技能完全自含：独立 SKILL.md + references/ + 阶段性决策细则
+> 8 个子技能完全自含：独立 SKILL.md + references/ + 阶段性决策细则
 >
 > **频率说明**: web 为高频子技能（预计每项目 10-20 次调用），github-pages 为低频（2-3 次），book 为中频（3-5 次）
 >
@@ -161,7 +164,7 @@ packages/content (数据层)     ← 唯一真相源
 > - **✅ 保持**: 职责不变，仅更新版本号和引用
 > - **⚠️ 精简**: 移除了内容管理相关部分（→ content 子技能）
 > - **🆕 新增**: 全新子技能，填补职责空白
-> - **重命名**: 目录重命名 + 职责聚焦（如 publish → github-pages 仅保留部署）
+> - **✏️ 重命名**: 目录重命名 + 职责聚焦（如 publish → github-pages 仅保留部署）
 
 ---
 
@@ -169,7 +172,7 @@ packages/content (数据层)     ← 唯一真相源
 
 ```
 tutorial-writer/
-├── SKILL.md                              ← 本文件 (7-Sub 路由器)
+├── SKILL.md                              ← 本文件 (8-Sub 路由器)
 ├── references/                           ← 全局共享参考
 │   ├── design-principles.md              ← 铁律+分类+架构说明
 │   ├── cross-chapter-rules.md            ← R7-R10 跨章一致性规则
@@ -178,7 +181,7 @@ tutorial-writer/
 ├── assets/                               ← 全局共享模板
 │   ├── decision-record-schema.json
 │   └── decision-record-template.json
-└── skills/                               ← Layer 1: 7个独立子技能
+└── skills/                               ← Layer 1: 8个独立子技能
     ├── ① tutorial-writer-research/       ← 📚 调研规划 (保持)
     ├── ② tutorial-writer-writing/        ← ✍️ 撰写执行 (精简)
     ├── ③ tutorial-writer-review/         ← ✅ 质量校验 (保持)
@@ -218,7 +221,7 @@ tutorial-writer/
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
-| **v1.0.0** | 2026-05-31 | **🔄 Monorepo 架构重大重构 (6→7 Sub)**: 版本重置为 v1.0.0；子技能从 6 个扩展至 7 个（新增 content/book，build→web 重命名，publish→github-pages 重命名）；新增 `meta.architecture_version: "monorepo-v1"` 和 `meta.sub_skills_count: 7` 元数据；路由表从 6 行扩展至 7 行（新增 content/book 触发路径）；子技能一览表新增「版本号」和「变更类型」两列；复合场景更新（新增电子书生成、并行构建等场景）；新增「🚀 项目初始化 (Official Tools)」章节（使用官方 CLI 工具链）；注意事项全面更新为 Monorepo 架构约束；description 和 tags 更新（新增 monorepo/turborepo/pdf/epub/content-management） |
+| **v1.0.0** | 2026-05-31 | **🔄 Monorepo 架构重大重构 (6→8 Sub)**: 版本重置为 v1.0.0；子技能从 6 个扩展至 8 个（新增 content、book；build→web，publish→github-pages 重命名）；新增 `meta.architecture_version: "monorepo-v1"` 和 `meta.sub_skills_count: 8` 元数据；路由表从 6 行扩展至 8 行（新增 content/book 触发路径）；子技能一览表新增「版本号」和「变更类型」两列；复合场景更新（新增电子书生成、并行构建等场景）；新增「🚀 项目初始化 (Official Tools)」章节（使用官方 CLI 工具链）；注意事项全面更新为 Monorepo 架构约束；description 和 tags 更新（新增 monorepo/turborepo/pdf/epub/content-management） |
 | **v6.1.0** | 2026-05-31 | Content-First v2 架构对齐（前版本，已终止维护） |
 | **v6.0.0** | 2026-05-30 | 6-Sub Router 重构（前版本，已终止维护） |
 | **v4.1.0** | 2026-05-30 | 模块化配置 + 插件生态（前版本） |
@@ -260,12 +263,12 @@ graph LR
 node --version  # 需要 v18+
 
 # 确保包管理器可用（任选其一）
-pnpm --version   # 推荐
+bun --version    # 推荐（教程项目使用 bun）
+# 或 pnpm --version
 # 或 npm --version
-# 或 bun --version
 
 # 可选：安装 Turborepo CLI（如果需要全局命令）
-pnpm add -D turbo
+bun add -D turbo
 # 或 npx turbo  （推荐，无需安装）
 ```
 
@@ -277,23 +280,23 @@ pnpm add -D turbo
 # 方式 A: 使用 create-turbo（推荐，交互式）
 bunx create-turbo@latest <project-name>
 # 会提示选择:
-# - Package manager: pnpm (推荐) / yarn / npm / bun
+# - Package manager: bun (推荐) / pnpm / yarn / npm
 # - App type: 根据需求选择
 
 cd <project-name>
-pnpm install
+bun install
 
 # 方式 B: 手动创建（更可控）
 mkdir <project-name> && cd <project-name>
-pnpm init
-# 创建 pnpm-workspace.yaml, turbo.json, package.json
-# （详见 Turborepo 官方文档）
+bun init
+# 在 package.json 中添加 workspaces: ["apps/*", "packages/*"]
+# 创建 turbo.json（详见 Turborepo 官方文档）
 ```
 
 **验证**:
 ```bash
-ls turbo.json pnpm-workspace.yaml package.json
-# 这三个文件必须存在
+ls turbo.json package.json
+# 然后检查 package.json 包含 workspaces 配置
 ```
 
 ### Step 2: 添加 content 包（数据层）
@@ -301,7 +304,7 @@ ls turbo.json pnpm-workspace.yaml package.json
 ```bash
 # 使用 turbo gen 添加空包
 turbo gen workspace \
-  --name @<project-name>/content \
+  --name @repo/content \
   --type package \
   --destination packages/content
 
@@ -310,11 +313,11 @@ mkdir -p packages/content/src/chapters
 touch packages/content/src/chapters/.gitkeep
 ```
 
-### Step 3: 创建 web 包（网站层）
+### Step 3: 创建 tutorial 应用（网站层）
 
 ```bash
-# 在 packages/web 下创建 Astro + Starlight 项目
-mkdir -p packages/web && cd packages/web
+# 在 apps/tutorial 下创建 Astro + Starlight 项目
+mkdir -p apps/tutorial && cd apps/tutorial
 
 # 使用 Astro 官方脚手架（自动获取最新 Starlight 模板）
 bunx create astro@latest . --template starlight
@@ -325,12 +328,14 @@ cd ../..
 
 > **注意**: `create-astro` 会生成完整的 Astro 项目结构。
 > 我们不需要手动复制任何模板文件！
+>
+> **Turbo 约定**: 可运行的应用放在 `apps/` 目录，共享库放在 `packages/` 目录。`apps/tutorial` 是新增的教程站点，与 `create-turbo` 默认生成的 `apps/web`、`apps/docs` 并列。
 
 ### Step 4: 添加 book 包（电子书层）
 
 ```bash
 turbo gen workspace \
-  --name @<project-name>/book \
+  --name @repo/book \
   --type package \
   --destination packages/book
 ```
@@ -340,17 +345,17 @@ turbo gen workspace \
 编辑各包的 `package.json`，声明依赖关系：
 
 ```json
-// packages/web/package.json
+// apps/tutorial/package.json
 {
   "dependencies": {
-    "@<project-name>/content": "workspace:*"
+    "@repo/content": "workspace:*"
   }
 }
 
 // packages/book/package.json
 {
   "dependencies": {
-    "@<project-name>/content": "workspace:*"
+    "@repo/content": "workspace:*"
   }
 }
 ```
@@ -401,17 +406,17 @@ EOF
 初始化完成后，确认以下文件存在：
 
 - [ ] `turbo.json` (根目录)
-- [ ] `pnpm-workspace.yaml` (根目录)
+- [ ] `package.json` 包含 `workspaces: ["apps/*", "packages/*"]`
 - [ ] `packages/content/package.json`
 - [ ] `packages/content/src/config.ts`
-- [ ] `packages/web/package.json`
-- [ ] `packages/web/astro.config.mjs` (Starlight 配置)
+- [ ] `apps/tutorial/package.json`
+- [ ] `apps/tutorial/astro.config.mjs` (Starlight 配置)
 - [ ] `packages/book/package.json`
 
 ### 常见问题
 
-**Q: 可以用 npm/yarn/bun 吗？**
-A: 可以！Turborepo 支持所有主流包管理器。`create-turbo` 会让你选择。
+**Q: 可以用 pnpm/npm/yarn 吗？**
+A: 可以！Turborepo 支持所有主流包管理器。本教程示例使用 `bun` 和 npm workspaces（`"workspaces"` 字段配置在 `package.json` 中）。
 
 **Q: 必须按顺序执行吗？**
 A: Step 2-4 可以并行执行（如果用多个终端），但 Step 5 必须在它们之后。

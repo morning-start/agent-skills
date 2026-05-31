@@ -2,7 +2,12 @@
 name: tutorial-writer-writing
 version: "1.0.0"
 author: skill-factory
-description: 教程章节的撰写执行——专注写作流程、文风规范、代码示例与素材使用，输出高质量 Markdown 初稿
+description: >
+  Use when writing tutorial chapter drafts, executing the writing workflow,
+  following style guides and language conventions, creating code examples,
+  managing source materials, or applying web-first writing principles
+  for Monorepo tutorial projects. Triggers on "撰写", "写作", "写章节",
+  "编写内容", "writing", "draft", "chapter content", "代码示例".
 tags: [tutorial, writing, style-guide, code-examples, markdown, self-check]
 meta:
   focus: "writing-only"

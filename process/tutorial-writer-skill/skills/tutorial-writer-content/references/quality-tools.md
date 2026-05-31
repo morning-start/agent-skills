@@ -670,7 +670,7 @@ main().catch(console.error);
 ```
 
 ```bash
-turbo run quality
+bunx turbo run quality
 ```
 
 ### 6.3 VS Code 集成
@@ -712,13 +712,13 @@ jobs:
           cache: 'pnpm'
       
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
         
       - name: Run validation
-        run: pnpm quality:ci
+        run: bun run quality:ci
         
       - name: Generate report
-        run: pnpm quality:stats
+        run: bun run quality:stats
         if: always()
         
       - name: Upload report

@@ -33,11 +33,11 @@
 
 ### 1.2 包职责定义
 
-| 包 | 职责 | 技术栈 | 说明 |
-|----|------|--------|------|
-| **content** | 数据层：内容 + Schema | Astro Content Collections | 唯一真相源 |
-| **web** | 展示层：网站渲染 | Astro + Starlight | 消费 content |
-| **book** | 格式层：PDF/ePub | Pandoc + XeLaTeX | 消费 content |
+| 包 | 位置 | 职责 | 技术栈 | 说明 |
+|----|------|------|--------|------|
+| **tutorial** | `apps/tutorial/` | 展示层：网站渲染 | Astro + Starlight | 消费 content |
+| **content** | `packages/content/` | 数据层：内容 + Schema | Astro Content Collections | 唯一真相源 |
+| **book** | `packages/book/` | 格式层：PDF/ePub | Pandoc + XeLaTeX | 消费 content |
 
 ### 1.3 推荐的 turbo.json 配置
 
@@ -68,19 +68,19 @@
 ### 2.1 正确的依赖声明
 
 ```json
-// packages/web/package.json
+// apps/tutorial/package.json
 {
-  "name": "@my-project/web",
+  "name": "@repo/tutorial",
   "dependencies": {
-    "@my-project/content": "workspace:*"
+    "@repo/content": "workspace:*"
   }
 }
 
 // packages/book/package.json
 {
-  "name": "@my-project/book",
+  "name": "@repo/book",
   "dependencies": {
-    "@my-project/content": "workspace:*"
+    "@repo/content": "workspace:*"
   }
 }
 ```
@@ -89,20 +89,23 @@
 
 | 反向依赖 | 状态 | 原因 |
 |---------|------|------|
-| ❌ content → web | 禁止 | 数据层不应依赖展示层 |
+| ❌ content → tutorial | 禁止 | 数据层不应依赖展示层 |
 | ❌ content → book | 禁止 | 数据层不应依赖格式层 |
-| ❌ web ↔ book | 禁止 | 两个输出格式应独立 |
-| ✅ web → content | 允许 | 展示层数据来源 |
+| ❌ tutorial ↔ book | 禁止 | 两个输出格式应独立 |
+| ✅ tutorial → content | 允许 | 展示层数据来源 |
 | ✅ book → content | 允许 | 格式层数据来源 |
 
 ### 2.3 pnpm-workspace.yaml 示例
 
+标准 Turbo 项目包含 apps/ 和 packages/ 两级目录：
+
 ```yaml
 packages:
+  - "apps/*"
   - "packages/*"
 ```
 
-这会自动发现 `packages/` 下的所有含 `package.json` 的目录。
+这会自动发现 `apps/` 和 `packages/` 下所有含 `package.json` 的目录。
 
 ---
 
@@ -112,28 +115,28 @@ packages:
 
 | 操作 | 命令 | 说明 |
 |------|------|------|
-| **启动开发** | `turbo run dev` | 所有包并行启动 |
-| **仅启动 web** | `turbo run dev --filter=@<project>/web` | 单独开发网站 |
-| **全量构建** | `turbo run build` | 先 build content，再并行 web+book |
-| **仅构建 PDF** | `turbo run build:book` | 只生成电子书 |
-| **添加新包** | `turbo gen workspace --name ... --type package` | 官方命令 |
-| **查看包图** | `turbo run devtools` | 浏览器可视化依赖图 |
+| **启动开发** | `bun run dev` | 所有包并行启动（调用 turbo）|
+| **仅启动 tutorial** | `bun run --filter @repo/tutorial dev` | 单独开发教程网站 |
+| **全量构建** | `bun run build` | 先 build content，再并行 tutorial + book |
+| **仅构建 PDF** | `bun run --filter @repo/book build:pdf` | 只生成电子书 |
+| **添加新包** | `bunx turbo gen workspace --name ... --type package` | 官方命令 |
+| **查看包图** | `bunx turbo run devtools` | 浏览器可视化依赖图 |
 
 ### 3.2 内容创作流程
 
 1. 在 `packages/content/src/chapters/` 创建 `.md` 文件
 2. 按照 [/content](../skills/tutorial-writer-content/SKILL.md) 的 Schema 编写 Frontmatter
-3. 运行 `turbo run dev` 预览效果
-4. 内容变更后 web 和 book 自动热重载
+3. 运行 `bun run dev` 预览效果
+4. 内容变更后 tutorial 和 book 自动热重载
 
 ### 3.3 并行构建优势
 
 ```
 # 传统方式: 串行构建
-build content (5s) → build web (30s) → build book (20s) = 55s 总计
+build content (5s) → build tutorial (30s) → build book (20s) = 55s 总计
 
 # Turborepo 方式: 并行构建
-build content (5s) → [build web (30s) || build book (20s)] = 35s 总计
+build content (5s) → [build tutorial (30s) || build book (20s)] = 35s 总计
 # 节省: 36% (假设双核 CPU)
 ```
 
@@ -143,19 +146,19 @@ build content (5s) → [build web (30s) || build book (20s)] = 35s 总计
 
 ### Q1: content 包的章节如何被 web 和 book 共享？
 
-A: 通过 Astro Content Collections。web 包在 `astro.config.mjs` 中通过 `contentDirs` 引用 content 包路径。book 包通过 Pandoc 直接读取 Markdown 文件。两者消费同一数据源但互不影响。
+A: 通过 Astro Content Collections。tutorial 应用在 `astro.config.mjs` 中通过 `contentDir` 引用 content 包路径。book 包通过 Pandoc 直接读取 Markdown 文件。两者消费同一数据源但互不影响。
 
 ### Q2: 如何只更新一个包而不重建全部？
 
 A: Turborepo 自动检测变更，只重建受影响的包及其下游依赖。例如：
-- 只改了 content → 重建 content + web + book
-- 只改了 web → 仅重建 web
+- 只改了 content → 重建 content + tutorial + book
+- 只改了 tutorial → 仅重建 tutorial
 - 只改了 book → 仅重建 book
 
 ### Q3: 添加第四种格式（如 EPUB）？
 
 A:
-1. `turbo gen workspace --name @<project>/epub --type package`
+1. `turbo gen workspace --name @repo/epub --type package`
 2. 在新包中实现转换逻辑
 3. 更新 turbo.json 的 build 任务（如有需要）
 4. （可选）创建对应的子技能
@@ -186,13 +189,13 @@ A:
 | **turbo gen** | https://turborepo.org/docs/guides/generating-code | 代码生成 |
 | **Astro** | https://docs.astro.build | 静态站点框架 |
 | **Starlight** | https://starlight.astro.build | 文档主题 |
-| **pnpm workspaces** | https://pnpm.io/workspaces | 包管理器配置 |
+| **npm workspaces** | https://docs.npmjs.com/cli/v11/using-npm/workspaces | 工作区配置 |
 
 ### Skill 内部文档
 
 | 文档 | 路径 | 内容 |
 |------|------|------|
-| 根路由器 | `SKILL.md` | 7-Sub 路由 + 初始化流程 |
+| 根路由器 | `SKILL.md` | 8-Sub 路由 + 初始化流程 |
 | Content 技能 | `skills/tutorial-writer-content/SKILL.md` | Schema、命名规范 |
 | Web 技能 | `skills/tutorial-writer-web/SKILL.md` | Astro + Starlight 配置 |
 | Book 技能 | `skills/tutorial-writer-book/SKILL.md` | PDF/ePub 生成 |
@@ -201,4 +204,4 @@ A:
 ---
 
 *本指南仅覆盖 Tutorial Writer 特有的 Monorepo 约定和最佳实践。*
-*通用的 Turborepo/Astro/pnpm 使用请参考上方官方文档。*
+*通用的 Turborepo/Astro/bun 使用请参考上方官方文档。*

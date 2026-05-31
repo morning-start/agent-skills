@@ -8,9 +8,9 @@ description: >
   managing build-time enhancement pipelines (Mermaid pre-rendering, component injection),
   or optimizing web package performance. Triggers on "Astro 配置", "Starlight 定制",
   "组件开发", "Islands Architecture", "内容增强管道", "构建优化", or "Web 包配置".
-  Assumes Monorepo initialized with packages/web/ and packages/content/.
+  Assumes standard Turbo project with apps/tutorial/ and packages/content/.
   This is a high-frequency skill called repeatedly during development iterations.
-tags: [astro, starlight, monorepo, web-package, islands-architecture, enhancement-pipeline, component-development, build-optimization, tutorial]
+tags: [astro, starlight, monorepo, tutorial-app, islands-architecture, enhancement-pipeline, component-development, build-optimization, tutorial]
 dependency:
   parent: tutorial-writer
   structure: "Type 3 Sub-skill: self-contained with references"
@@ -27,11 +27,11 @@ meta:
   requires_init: true
 ---
 
-# 🌐 Tutorial Writer Web — Monorepo Web 包配置指南 v1.0
+# 🌐 Tutorial Writer Web — Tutorial 应用配置指南 v1.0
 
 > **父技能**: [tutorial-writer](../SKILL.md)
 > **独立可用**: ✅ 可通过 `/web` 或 `/tutorial-writer/web` 直接触发（L1 直达）
-> **架构**: L1 独立子技能 — **Monorepo Web 包专用**
+> **架构**: L1 独立子技能 — **标准 Turbo 结构 (apps/tutorial)**
 > **基于版本**: Astro 6.3（2026年5月最新版）+ Starlight 最新版
 > **使用频率**: 🔴 **高频** — 开发过程中反复迭代调用
 > **前置依赖**: 需要先使用官方工具完成项目初始化（见根路由器"🚀 项目初始化"章节 Step 1-3）
@@ -42,13 +42,13 @@ meta:
 
 - [ ] Monorepo 项目已初始化（含 `turbo.json`, `pnpm-workspace.yaml`）
   详见根路由器 SKILL.md **Step 1**
-- [ ] `packages/web/` 已通过 Starlight 模板创建
-  - 推荐命令: 在 `packages/web/` 下运行
+- [ ] `apps/tutorial/` 已通过 Starlight 模板创建
+  - 推荐命令: 在 `apps/tutorial/` 下运行
     `bunx create astro@latest . --template starlight`
   - 详见根路由器 SKILL.md **Step 3**
-- [ ] `@<project>/content` 包存在且已在 web/package.json 中声明依赖
+- [ ] `@repo/content` 包存在且已在 package.json 中声明依赖
   ```json
-  { "dependencies": { "@<project>/content": "workspace:*" } }
+  { "dependencies": { "@repo/content": "workspace:*" } }
   ```
 
 > **注意**: 本子技能专注于 **Astro + Starlight 配置和组件开发**，
@@ -60,18 +60,20 @@ meta:
 
 ```
 tutorial-project/
-├── packages/
-│   ├── content/                  ← 📝 内容包（由 content 子技能管理）
-│   │   ├── chapters/
-│   │   ├── config.ts
-│   │   └── package.json
-│   └── web/                      ← 🌐 Web 包（本技能聚焦）
+├── apps/                            ← 应用层
+│   └── tutorial/                    ← 🌐 教程网站（本技能聚焦）
 │       ├── src/
 │       │   ├── components/
 │       │   ├── layouts/
 │       │   ├── styles/
 │       ├── astro.config.mjs
 │       └── package.json
+├── packages/                        ← 库层
+│   ├── content/                     ← 📝 内容包（由 content 子技能管理）
+│   │   ├── chapters/
+│   │   ├── config.ts
+│   │   └── package.json
+│   └── book/                        ← 📖 电子书（由 book 子技能管理）
 ├── pnpm-workspace.yaml
 └── package.json
 ```
@@ -79,7 +81,7 @@ tutorial-project/
 ### 与 Content 包的集成
 
 ```typescript
-// packages/web/astro.config.mjs
+// apps/tutorial/astro.config.mjs
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
@@ -107,7 +109,7 @@ export default defineConfig({
 |--------|------|---------|
 | 内容源 | 引用 `packages/content/` 目录 | `contentDir` 字段 |
 | Schema 定义 | 由 content 包的 `config.ts` 管理 | 无需重复定义 |
-| Workspace 依赖 | `@tutorial/content` 在 `package.json` 声明 | `dependencies` |
+| Workspace 依赖 | `@repo/content` 在 `package.json` 声明 | `dependencies` |
 
 ---
 
@@ -117,8 +119,8 @@ export default defineConfig({
 |---------|----------|
 | Astro + Starlight 配置与定制 | 项目初始化 → 官方工具链 (create-astro) |
 | 组件开发（Islands + 静态，按功能分组） | Content Collections schema → content 子技能 |
-| 内容增强管道（Mermaid 预渲染、组件注入） | 部署配置 → `/publish` |
-| 样式系统（全局样式、主题变量、响应式） | CI/CD 流水线 → `/publish` |
+| 内容增强管道（Mermaid 预渲染、组件注入） | 部署配置 → `/github-pages` |
+| 样式系统（全局样式、主题变量、响应式） | CI/CD 流水线 → `/github-pages` |
 | 构建优化（性能调优、图片优化、Lighthouse） | 多格式发布 → 可选 |
 | 本地开发和调试（Dev Server、HMR、DevTools） | 文件命名规范 → content 子技能 |
 
@@ -131,7 +133,7 @@ export default defineConfig({
 ### astro.config.mjs 完整示例
 
 ```javascript
-// packages/web/astro.config.mjs
+// apps/tutorial/astro.config.mjs
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
@@ -184,7 +186,7 @@ export default defineConfig({
 
 ```json
 {
-  "name": "@tutorial/web",
+  "name": "@repo/tutorial",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -196,7 +198,7 @@ export default defineConfig({
   "dependencies": {
     "@astrojs/starlight": "^0.30.0",
     "astro": "^6.3.0",
-    "@tutorial/content": "workspace:*"
+    "@repo/content": "workspace:*"
   }
 }
 ```
@@ -208,7 +210,7 @@ export default defineConfig({
 ### 推荐的组件目录结构
 
 ```
-packages/web/src/components/
+apps/tutorial/src/components/
 ├── interactive/              ← 🎮 3D、可视化、交互式组件
 │   ├── Architecture3D.tsx    # 3D 架构展示
 │   ├── DataPipeline3D.tsx    # 数据流 3D 动画
@@ -314,7 +316,7 @@ import InteractiveDemo from '../components/code/InteractiveCodeDemo.tsx';
 ### 全局样式结构
 
 ```
-packages/web/src/styles/
+apps/tutorial/src/styles/
 ├── global.css              ← 全局重置和基础样式
 ├── variables.css            ← CSS 自定义属性（主题变量）
 ├── typography.css           ← 排版系统
@@ -442,10 +444,10 @@ flowchart LR
 <!-- @mermaid-end -->
 ```
 
-**构建时处理** (`packages/web/src/scripts/enhance-content.mts`)：
+**构建时处理** (`apps/tutorial/src/scripts/enhance-content.mts`)：
 
 ```typescript
-// packages/web/src/scripts/enhance-content.mts
+// apps/tutorial/src/scripts/enhance-content.mts
 import type { AstroConfig } from 'astro/config';
 
 export default function enhanceContent(astroConfig: AstroConfig) {
@@ -473,20 +475,20 @@ export default function enhanceContent(astroConfig: AstroConfig) {
 
 ```bash
 # 安装 mermaid CLI
-pnpm add -D @mermaid-js/mermaid-cli --filter @tutorial/web
+cd apps/tutorial && bun add -D @mermaid-js/mermaid-cli
 
-# 在 packages/web/package.json 中添加脚本
+# 在 apps/tutorial/package.json 中添加脚本
 {
   "scripts": {
     "enhance": "mmd2svg -i ../../packages/content/chapters -o .enhanced",
-    "prebuild": "pnpm run enhance && astro build"
+    "prebuild": "bun run enhance && astro build"
   }
 }
 ```
 
 ### 核心功能 3：组件自动注入
 
-**布局级别处理** (`packages/web/src/layouts/BaseLayout.astro`)：
+**布局级别处理** (`apps/tutorial/src/layouts/BaseLayout.astro`)：
 
 ```astro
 ---
@@ -570,7 +572,7 @@ packages/content/
     └── index.mdx
 ```
 
-**packages/web/astro.config.mjs**：
+**apps/tutorial/astro.config.mjs**：
 
 ```javascript
 starlight({
@@ -596,11 +598,11 @@ starlight({
 
 ```bash
 # 在项目根目录
-pnpm --filter @tutorial/web dev
+bun run --filter @repo/tutorial dev
 
-# 或进入 web 包目录
-cd packages/web
-pnpm dev
+# 或进入 tutorial 应用目录
+cd apps/tutorial
+bun run dev
 ```
 
 **访问地址**: http://localhost:4321
@@ -646,7 +648,7 @@ export default defineConfig({
 
 ```bash
 # 安装分析工具
-pnpm add -D rollup-plugin-visualizer --filter @tutorial/web
+cd apps/tutorial && bun add -D rollup-plugin-visualizer
 ```
 
 ```javascript
@@ -656,7 +658,7 @@ vite: {
 },
 ```
 
-运行 `pnpm --filter @tutorial/web build` 后自动打开可视化报告。
+运行构建后自动打开可视化报告。
 
 ---
 
@@ -760,22 +762,22 @@ npx lighthouse http://localhost:4321 --output html --output-path ./lighthouse-re
 ### 日常开发流程
 
 ```bash
-# 1. 启动开发服务器（监听 content 和 web 包的变化）
-pnpm --filter @tutorial/web dev
+# 1. 启动开发服务器（监听 content 和 tutorial 的变化）
+bun run --filter @repo/tutorial dev
 
 # 2. 编辑内容（在 packages/content/ 中）
 # vim packages/content/chapters/01-overview.md
 
-# 3. 编辑组件（在 packages/web/src/components/ 中）
-# vim packages/web/src/components/ui/FeatureGrid.astro
+# 3. 编辑组件（在 apps/tutorial/src/components/ 中）
+# vim apps/tutorial/src/components/ui/FeatureGrid.astro
 
 # 4. HMR 自动刷新，无需重启
 
 # 5. 构建验证
-pnpm --filter @tutorial/web build
+bun run --filter @repo/tutorial build
 
 # 6. 预览构建结果
-pnpm --filter @tutorial/web preview
+bun run --filter @repo/tutorial preview
 ```
 
 ### 从根目录运行命令
@@ -784,10 +786,10 @@ pnpm --filter @tutorial/web preview
 // package.json（根目录）
 {
   "scripts": {
-    "dev": "pnpm --filter @tutorial/web dev",
-    "build": "pnpm --filter @tutorial/web build",
-    "preview": "pnpm --filter @tutorial/web preview",
-    "build:all": "pnpm -r build"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "preview": "turbo run preview",
+    "build:all": "turbo run build"
   }
 }
 ```
@@ -796,23 +798,23 @@ pnpm --filter @tutorial/web preview
 
 | 操作 | 命令 | 说明 |
 |------|------|------|
-| 启动开发 | `pnpm dev` | 监听所有包变化 |
-| 构建 Web | `pnpm --filter @tutorial/web build` | 仅构建 web 包 |
-| 构建全部 | `pnpm -r build` | 构建所有包 |
-| 添加依赖 | `pnpm add <pkg> --filter @tutorial/web` | 添加到 web 包 |
-| 清理缓存 | `pnpm --filter @tutorial/web exec astro clean` | 清除 .astro 缓存 |
+| 启动开发 | `bun run dev` | 监听所有包变化（调用 turbo） |
+| 构建教程网站 | `bun run --filter @repo/tutorial build` | 仅构建 tutorial 应用 |
+| 构建全部 | `bun run build` | 构建所有包（调用 turbo）|
+| 添加依赖 | `cd apps/tutorial && bun add <pkg>` | 添加到 tutorial 应用 |
+| 清理缓存 | `cd apps/tutorial && bunx astro clean` | 清除 .astro 缓存 |
 
 ---
 
 ## 🔗 与发布阶段的衔接
 
-构建完成后，进入 **发布阶段** → 调用 `/publish`
+构建完成后，进入 **发布阶段** → 调用 `/github-pages`
 
 **构建阶段交付物**：
 
 | 交付物 | 说明 | 验证方式 |
 |--------|------|---------|
-| ✅ `packages/dist/` 目录 | 构建产物（HTML/CSS/JS）| `pnpm --filter @tutorial/web build` 成功 |
+| ✅ `apps/tutorial/dist/` 目录 | 构建产物（HTML/CSS/JS）| `bun run --filter @repo/tutorial build` 成功 |
 | ✅ 无构建错误 | 终端返回 exit 0 | CI 自动检查 |
 | ✅ 无内部死链 | 所有页面可互相访问 | Starlink links-validator |
 | ✅ 响应式布局 | 375px / 768px / 1280px 可用 | 浏览器 DevTools |
@@ -822,11 +824,11 @@ pnpm --filter @tutorial/web preview
 
 ```bash
 # 本地验证通过后
-pnpm --filter @tutorial/web build     # ✅ 成功
-pnpm --filter @tutorial/web preview   # ✅ 预览正常
+bun run --filter @repo/tutorial build     # ✅ 成功
+bun run --filter @repo/tutorial preview   # ✅ 预览正常
 
 # 准备就绪，调用发布技能
-→ /publish               # 进入 GitHub Pages 部署流程
+→ /github-pages               # 进入 GitHub Pages 部署流程
 ```
 
 ---
@@ -857,7 +859,7 @@ skills/tutorial-writer-web/
 |------|----------|------|
 | 父技能 | [../SKILL.md](../SKILL.md) | Tutorial Writer 主路由器 |
 | Content 子技能 | [../skills/tutorial-writer-content/SKILL.md](../skills/tutorial-writer-content/SKILL.md) | 内容包管理与 Schema 定义 |
-| 发布子技能 | [../skills/tutorial-writer-publish/SKILL.md](../skills/tutorial-writer-publish/SKILL.md) | GitHub Pages 发布流程 |
+| 发布子技能 | [../skills/tutorial-writer-github-pages/SKILL.md](../skills/tutorial-writer-github-pages/SKILL.md) | GitHub Pages 发布流程 |
 | 架构设计文档 | [.trae/documents/tutorial-writer-suggest.md](.trae/documents/tutorial-writer-suggest.md) | Monorepo 架构完整设计 |
 | Astro 官方文档 | https://docs.astro.build/ | 框架权威指南 |
 | Starlight 文档 | https://starlight.astro.build/ | 主题完整参考 |

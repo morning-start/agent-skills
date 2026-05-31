@@ -598,7 +598,7 @@ echo "✅ Batch conversion completed"
 
 ```bash
 # Turborepo 缓存
-turbo run build:book
+bun run --filter @repo/book build:pdf
 
 # 手动缓存（基于文件哈希）
 #!/bin/bash

@@ -60,12 +60,12 @@ Layer 2: 技能层 (skills/*)           → 每个技能只关注核心职责
 Layer 3: 工具层 (scripts+templates)  → 初始化、模板、共享工具
 
 apps/                            ← 应用层
-├── tutorial/ (表示层 A)         ← 网站 (Astro + Starlight, 依赖 content)
+├── web/ (表示层 A)         ← 网站 (Astro + Starlight, 依赖 content)
 packages/                        ← 库层
 ├── content/ (数据层)             ← 唯一真相源
 └── book/    (表示层 B)          ← 电子书 (Pandoc + PDF, 依赖 content)
 
-依赖关系: content ← tutorial, content ← book (禁止反向)
+依赖关系: content ← web, content ← book (禁止反向)
 ```
 
 ### 三大设计原则
@@ -80,11 +80,11 @@ packages/                        ← 库层
 
 | 子技能 | 最低版本 | 架构支持 |
 |--------|---------|---------|
-| **web** (apps/tutorial) | **v1.0.0+** | ✅ Monorepo (移除初始化逻辑) |
+| **web** (apps/web) | **v1.0.0+** | ✅ Monorepo (移除初始化逻辑) |
 | **book** (packages/book) | **v1.0.0+** | ✅ 全新电子书生成 |
 | **github-pages** | **v1.0.0+** | ✅ 仅部署 (移除 PDF/EPUB) |
 
-> **本路由器要求 web (apps/tutorial) ≥ v1.0.0、book ≥ v1.0.0、github-pages ≥ v1.0.0**。旧版子技能使用传统架构，与本版本不兼容。
+> **本路由器要求 web (apps/web) ≥ v1.0.0、book ≥ v1.0.0、github-pages ≥ v1.0.0**。旧版子技能使用传统架构，与本版本不兼容。
 
 ---
 
@@ -313,11 +313,11 @@ mkdir -p packages/content/src/chapters
 touch packages/content/src/chapters/.gitkeep
 ```
 
-### Step 3: 创建 tutorial 应用（网站层）
+### Step 3: 创建 web 应用（网站层）
 
 ```bash
-# 在 apps/tutorial 下创建 Astro + Starlight 项目
-mkdir -p apps/tutorial && cd apps/tutorial
+# 在 apps/web 下创建 Astro + Starlight 项目
+mkdir -p apps/web && cd apps/web
 
 # 使用 Astro 官方脚手架（自动获取最新 Starlight 模板）
 bunx create astro@latest . --template starlight
@@ -329,7 +329,7 @@ cd ../..
 > **注意**: `create-astro` 会生成完整的 Astro 项目结构。
 > 我们不需要手动复制任何模板文件！
 >
-> **Turbo 约定**: 可运行的应用放在 `apps/` 目录，共享库放在 `packages/` 目录。`apps/tutorial` 是新增的教程站点，与 `create-turbo` 默认生成的 `apps/web`、`apps/docs` 并列。
+> **Turbo 约定**: 可运行的应用放在 `apps/` 目录，共享库放在 `packages/` 目录。`apps/web` 是新增的教程站点，与 `create-turbo` 默认生成的 `apps/web`、`apps/docs` 并列。
 
 ### Step 4: 添加 book 包（电子书层）
 
@@ -345,7 +345,7 @@ turbo gen workspace \
 编辑各包的 `package.json`，声明依赖关系：
 
 ```json
-// apps/tutorial/package.json
+// apps/web/package.json
 {
   "dependencies": {
     "@repo/content": "workspace:*"
@@ -409,8 +409,8 @@ EOF
 - [ ] `package.json` 包含 `workspaces: ["apps/*", "packages/*"]`
 - [ ] `packages/content/package.json`
 - [ ] `packages/content/src/config.ts`
-- [ ] `apps/tutorial/package.json`
-- [ ] `apps/tutorial/astro.config.mjs` (Starlight 配置)
+- [ ] `apps/web/package.json`
+- [ ] `apps/web/astro.config.mjs` (Starlight 配置)
 - [ ] `packages/book/package.json`
 
 ### 常见问题

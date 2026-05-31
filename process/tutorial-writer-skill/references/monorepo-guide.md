@@ -35,7 +35,7 @@
 
 | 包 | 位置 | 职责 | 技术栈 | 说明 |
 |----|------|------|--------|------|
-| **tutorial** | `apps/tutorial/` | 展示层：网站渲染 | Astro + Starlight | 消费 content |
+| **web** | `apps/web/` | 展示层：网站渲染 | Astro + Starlight | 消费 content |
 | **content** | `packages/content/` | 数据层：内容 + Schema | Astro Content Collections | 唯一真相源 |
 | **book** | `packages/book/` | 格式层：PDF/ePub | Pandoc + XeLaTeX | 消费 content |
 
@@ -68,9 +68,9 @@
 ### 2.1 正确的依赖声明
 
 ```json
-// apps/tutorial/package.json
+// apps/web/package.json
 {
-  "name": "@repo/tutorial",
+  "name": "@repo/web",
   "dependencies": {
     "@repo/content": "workspace:*"
   }
@@ -116,8 +116,8 @@ packages:
 | 操作 | 命令 | 说明 |
 |------|------|------|
 | **启动开发** | `bun run dev` | 所有包并行启动（调用 turbo）|
-| **仅启动 tutorial** | `bun run --filter @repo/tutorial dev` | 单独开发教程网站 |
-| **全量构建** | `bun run build` | 先 build content，再并行 tutorial + book |
+| **仅启动 web** | `bun run --filter @repo/web dev` | 单独开发教程网站 |
+| **全量构建** | `bun run build` | 先 build content，再并行 web + book |
 | **仅构建 PDF** | `bun run --filter @repo/book build:pdf` | 只生成电子书 |
 | **添加新包** | `bunx turbo gen workspace --name ... --type package` | 官方命令 |
 | **查看包图** | `bunx turbo run devtools` | 浏览器可视化依赖图 |
@@ -127,16 +127,16 @@ packages:
 1. 在 `packages/content/src/chapters/` 创建 `.md` 文件
 2. 按照 [/content](../skills/tutorial-writer-content/SKILL.md) 的 Schema 编写 Frontmatter
 3. 运行 `bun run dev` 预览效果
-4. 内容变更后 tutorial 和 book 自动热重载
+4. 内容变更后 web 和 book 自动热重载
 
 ### 3.3 并行构建优势
 
 ```
 # 传统方式: 串行构建
-build content (5s) → build tutorial (30s) → build book (20s) = 55s 总计
+build content (5s) → build web (30s) → build book (20s) = 55s 总计
 
 # Turborepo 方式: 并行构建
-build content (5s) → [build tutorial (30s) || build book (20s)] = 35s 总计
+build content (5s) → [build web (30s) || build book (20s)] = 35s 总计
 # 节省: 36% (假设双核 CPU)
 ```
 
@@ -146,13 +146,13 @@ build content (5s) → [build tutorial (30s) || build book (20s)] = 35s 总计
 
 ### Q1: content 包的章节如何被 web 和 book 共享？
 
-A: 通过 Astro Content Collections。tutorial 应用在 `astro.config.mjs` 中通过 `contentDir` 引用 content 包路径。book 包通过 Pandoc 直接读取 Markdown 文件。两者消费同一数据源但互不影响。
+A: 通过 Astro Content Collections。web 应用在 `astro.config.mjs` 中通过 `contentDir` 引用 content 包路径。book 包通过 Pandoc 直接读取 Markdown 文件。两者消费同一数据源但互不影响。
 
 ### Q2: 如何只更新一个包而不重建全部？
 
 A: Turborepo 自动检测变更，只重建受影响的包及其下游依赖。例如：
-- 只改了 content → 重建 content + tutorial + book
-- 只改了 tutorial → 仅重建 tutorial
+- 只改了 content → 重建 content + web + book
+- 只改了 web → 仅重建 web
 - 只改了 book → 仅重建 book
 
 ### Q3: 添加第四种格式（如 EPUB）？

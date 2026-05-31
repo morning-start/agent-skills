@@ -703,7 +703,7 @@ Error: Invalid enum value. Expected 'beginner' | 'intermediate' | 'advanced', re
 Starlight 会根据 `chapters/` 目录自动生成侧边栏：
 
 ```javascript
-// apps/tutorial/astro.config.mjs
+// apps/web/astro.config.mjs
 starlight({
   sidebar: [
     {
@@ -803,11 +803,11 @@ Mermaid 图表在服务端渲染（SSR）场景下可能失败，预渲染可确
 **方案 A: 使用 astro-mermaid 集成** (推荐)
 
 ```bash
-cd apps/tutorial && bun add astro-mermaid
+cd apps/web && bun add astro-mermaid
 ```
 
 ```javascript
-// apps/tutorial/astro.config.mjs
+// apps/web/astro.config.mjs
 import mermaid from 'astro-mermaid';
 
 export default defineConfig({
@@ -892,7 +892,7 @@ Astro Content Loader 加载
 
 ```astro
 ---
-// apps/tutorial/src/components/InteractiveSlot.astro
+// apps/web/src/components/InteractiveSlot.astro
 interface Props {
   type: string;
   options?: Record<string, string>;
@@ -986,7 +986,7 @@ enhanceContent().catch(console.error);
 #### Astro 集成钩子
 
 ```typescript
-// apps/tutorial/src/enhance-plugin.ts
+// apps/web/src/enhance-plugin.ts
 import type { AstroIntegration } from 'astro';
 
 export function createEnhancePlugin(): AstroIntegration {
@@ -1386,7 +1386,7 @@ review 技能需要检查的内容维度：
 #### web 技能如何使用 content
 
 ```javascript
-// apps/tutorial/astro.config.mjs
+// apps/web/astro.config.mjs
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 

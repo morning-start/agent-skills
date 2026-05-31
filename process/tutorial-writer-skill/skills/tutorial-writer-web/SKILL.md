@@ -8,7 +8,7 @@ description: >
   managing build-time enhancement pipelines (Mermaid pre-rendering, component injection),
   or optimizing web package performance. Triggers on "Astro 配置", "Starlight 定制",
   "组件开发", "Islands Architecture", "内容增强管道", "构建优化", or "Web 包配置".
-  Assumes standard Turbo project with apps/tutorial/ and packages/content/.
+  Assumes standard Turbo project with apps/web/ and packages/content/.
   This is a high-frequency skill called repeatedly during development iterations.
 tags: [astro, starlight, monorepo, tutorial-app, islands-architecture, enhancement-pipeline, component-development, build-optimization, tutorial]
 dependency:
@@ -27,11 +27,11 @@ meta:
   requires_init: true
 ---
 
-# 🌐 Tutorial Writer Web — Tutorial 应用配置指南 v1.0
+# 🌐 Tutorial Writer Web — Web 应用配置指南 v1.0
 
 > **父技能**: [tutorial-writer](../SKILL.md)
 > **独立可用**: ✅ 可通过 `/web` 或 `/tutorial-writer/web` 直接触发（L1 直达）
-> **架构**: L1 独立子技能 — **标准 Turbo 结构 (apps/tutorial)**
+> **架构**: L1 独立子技能 — **标准 Turbo 结构 (apps/web)**
 > **基于版本**: Astro 6.3（2026年5月最新版）+ Starlight 最新版
 > **使用频率**: 🔴 **高频** — 开发过程中反复迭代调用
 > **前置依赖**: 需要先使用官方工具完成项目初始化（见根路由器"🚀 项目初始化"章节 Step 1-3）
@@ -42,8 +42,8 @@ meta:
 
 - [ ] Monorepo 项目已初始化（含 `turbo.json`, `pnpm-workspace.yaml`）
   详见根路由器 SKILL.md **Step 1**
-- [ ] `apps/tutorial/` 已通过 Starlight 模板创建
-  - 推荐命令: 在 `apps/tutorial/` 下运行
+- [ ] `apps/web/` 已通过 Starlight 模板创建
+  - 推荐命令: 在 `apps/web/` 下运行
     `bunx create astro@latest . --template starlight`
   - 详见根路由器 SKILL.md **Step 3**
 - [ ] `@repo/content` 包存在且已在 package.json 中声明依赖
@@ -61,7 +61,7 @@ meta:
 ```
 tutorial-project/
 ├── apps/                            ← 应用层
-│   └── tutorial/                    ← 🌐 教程网站（本技能聚焦）
+│   └── web/                    ← 🌐 教程网站（本技能聚焦）
 │       ├── src/
 │       │   ├── components/
 │       │   ├── layouts/
@@ -81,7 +81,7 @@ tutorial-project/
 ### 与 Content 包的集成
 
 ```typescript
-// apps/tutorial/astro.config.mjs
+// apps/web/astro.config.mjs
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
@@ -133,7 +133,7 @@ export default defineConfig({
 ### astro.config.mjs 完整示例
 
 ```javascript
-// apps/tutorial/astro.config.mjs
+// apps/web/astro.config.mjs
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
@@ -186,7 +186,7 @@ export default defineConfig({
 
 ```json
 {
-  "name": "@repo/tutorial",
+  "name": "@repo/web",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -210,7 +210,7 @@ export default defineConfig({
 ### 推荐的组件目录结构
 
 ```
-apps/tutorial/src/components/
+apps/web/src/components/
 ├── interactive/              ← 🎮 3D、可视化、交互式组件
 │   ├── Architecture3D.tsx    # 3D 架构展示
 │   ├── DataPipeline3D.tsx    # 数据流 3D 动画
@@ -316,7 +316,7 @@ import InteractiveDemo from '../components/code/InteractiveCodeDemo.tsx';
 ### 全局样式结构
 
 ```
-apps/tutorial/src/styles/
+apps/web/src/styles/
 ├── global.css              ← 全局重置和基础样式
 ├── variables.css            ← CSS 自定义属性（主题变量）
 ├── typography.css           ← 排版系统
@@ -444,10 +444,10 @@ flowchart LR
 <!-- @mermaid-end -->
 ```
 
-**构建时处理** (`apps/tutorial/src/scripts/enhance-content.mts`)：
+**构建时处理** (`apps/web/src/scripts/enhance-content.mts`)：
 
 ```typescript
-// apps/tutorial/src/scripts/enhance-content.mts
+// apps/web/src/scripts/enhance-content.mts
 import type { AstroConfig } from 'astro/config';
 
 export default function enhanceContent(astroConfig: AstroConfig) {
@@ -475,9 +475,9 @@ export default function enhanceContent(astroConfig: AstroConfig) {
 
 ```bash
 # 安装 mermaid CLI
-cd apps/tutorial && bun add -D @mermaid-js/mermaid-cli
+cd apps/web && bun add -D @mermaid-js/mermaid-cli
 
-# 在 apps/tutorial/package.json 中添加脚本
+# 在 apps/web/package.json 中添加脚本
 {
   "scripts": {
     "enhance": "mmd2svg -i ../../packages/content/chapters -o .enhanced",
@@ -488,7 +488,7 @@ cd apps/tutorial && bun add -D @mermaid-js/mermaid-cli
 
 ### 核心功能 3：组件自动注入
 
-**布局级别处理** (`apps/tutorial/src/layouts/BaseLayout.astro`)：
+**布局级别处理** (`apps/web/src/layouts/BaseLayout.astro`)：
 
 ```astro
 ---
@@ -572,7 +572,7 @@ packages/content/
     └── index.mdx
 ```
 
-**apps/tutorial/astro.config.mjs**：
+**apps/web/astro.config.mjs**：
 
 ```javascript
 starlight({
@@ -598,10 +598,10 @@ starlight({
 
 ```bash
 # 在项目根目录
-bun run --filter @repo/tutorial dev
+bun run --filter @repo/web dev
 
-# 或进入 tutorial 应用目录
-cd apps/tutorial
+# 或进入 web 应用目录
+cd apps/web
 bun run dev
 ```
 
@@ -648,7 +648,7 @@ export default defineConfig({
 
 ```bash
 # 安装分析工具
-cd apps/tutorial && bun add -D rollup-plugin-visualizer
+cd apps/web && bun add -D rollup-plugin-visualizer
 ```
 
 ```javascript
@@ -762,22 +762,22 @@ npx lighthouse http://localhost:4321 --output html --output-path ./lighthouse-re
 ### 日常开发流程
 
 ```bash
-# 1. 启动开发服务器（监听 content 和 tutorial 的变化）
-bun run --filter @repo/tutorial dev
+# 1. 启动开发服务器（监听 content 和 web 的变化）
+bun run --filter @repo/web dev
 
 # 2. 编辑内容（在 packages/content/ 中）
 # vim packages/content/chapters/01-overview.md
 
-# 3. 编辑组件（在 apps/tutorial/src/components/ 中）
-# vim apps/tutorial/src/components/ui/FeatureGrid.astro
+# 3. 编辑组件（在 apps/web/src/components/ 中）
+# vim apps/web/src/components/ui/FeatureGrid.astro
 
 # 4. HMR 自动刷新，无需重启
 
 # 5. 构建验证
-bun run --filter @repo/tutorial build
+bun run --filter @repo/web build
 
 # 6. 预览构建结果
-bun run --filter @repo/tutorial preview
+bun run --filter @repo/web preview
 ```
 
 ### 从根目录运行命令
@@ -799,10 +799,10 @@ bun run --filter @repo/tutorial preview
 | 操作 | 命令 | 说明 |
 |------|------|------|
 | 启动开发 | `bun run dev` | 监听所有包变化（调用 turbo） |
-| 构建教程网站 | `bun run --filter @repo/tutorial build` | 仅构建 tutorial 应用 |
+| 构建教程网站 | `bun run --filter @repo/web build` | 仅构建 web 应用 |
 | 构建全部 | `bun run build` | 构建所有包（调用 turbo）|
-| 添加依赖 | `cd apps/tutorial && bun add <pkg>` | 添加到 tutorial 应用 |
-| 清理缓存 | `cd apps/tutorial && bunx astro clean` | 清除 .astro 缓存 |
+| 添加依赖 | `cd apps/web && bun add <pkg>` | 添加到 web 应用 |
+| 清理缓存 | `cd apps/web && bunx astro clean` | 清除 .astro 缓存 |
 
 ---
 
@@ -814,7 +814,7 @@ bun run --filter @repo/tutorial preview
 
 | 交付物 | 说明 | 验证方式 |
 |--------|------|---------|
-| ✅ `apps/tutorial/dist/` 目录 | 构建产物（HTML/CSS/JS）| `bun run --filter @repo/tutorial build` 成功 |
+| ✅ `apps/web/dist/` 目录 | 构建产物（HTML/CSS/JS）| `bun run --filter @repo/web build` 成功 |
 | ✅ 无构建错误 | 终端返回 exit 0 | CI 自动检查 |
 | ✅ 无内部死链 | 所有页面可互相访问 | Starlink links-validator |
 | ✅ 响应式布局 | 375px / 768px / 1280px 可用 | 浏览器 DevTools |
@@ -824,8 +824,8 @@ bun run --filter @repo/tutorial preview
 
 ```bash
 # 本地验证通过后
-bun run --filter @repo/tutorial build     # ✅ 成功
-bun run --filter @repo/tutorial preview   # ✅ 预览正常
+bun run --filter @repo/web build     # ✅ 成功
+bun run --filter @repo/web preview   # ✅ 预览正常
 
 # 准备就绪，调用发布技能
 → /github-pages               # 进入 GitHub Pages 部署流程

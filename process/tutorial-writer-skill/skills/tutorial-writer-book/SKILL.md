@@ -1393,7 +1393,7 @@ v<主版本>.<次版本>.<修订>-pdf
 bun run build
 
 # 或分别启动
-bun run --filter @repo/tutorial build &
+bun run --filter @repo/web build &
 bun run --filter @repo/book build &
 wait
 ```
@@ -1406,7 +1406,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - ...
-      - run: bun run --filter @repo/tutorial build
+      - run: bun run --filter @repo/web build
       
   build-book:
     runs-on: ubuntu-latest
@@ -1521,7 +1521,7 @@ CHAPTERS=$(find "$CONTENT_DIR" -name "*.md" -type f | sort)
 bun run --filter @repo/book build:pdf
 
 # Step 2: 构建网站
-bun run --filter @repo/tutorial build
+bun run --filter @repo/web build
 
 # Step 3: 部署到 GitHub Pages
 bun run --filter @repo/github-pages deploy

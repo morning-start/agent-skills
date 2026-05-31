@@ -148,12 +148,12 @@ classDiagram
 
 **安装**:
 ```bash
-cd apps/tutorial && bun add astro-mermaid
+cd apps/web && bun add astro-mermaid
 ```
 
 **配置**:
 ```javascript
-// apps/tutorial/astro.config.mjs
+// apps/web/astro.config.mjs
 import mermaid from 'astro-mermaid';
 
 export default defineConfig({
@@ -224,7 +224,7 @@ node scripts/pre-render-mermaid.ts packages/content/src/chapters/*.md
 
 ```astro
 ---
-// apps/tutorial/src/layouts/ChapterLayout.astro
+// apps/web/src/layouts/ChapterLayout.astro
 const { chapter } = Astro.props;
 ---
 
@@ -530,7 +530,7 @@ $$
 
 **安装**:
 ```bash
-cd apps/tutorial && bun add @astrojs/katex
+cd apps/web && bun add @astrojs/katex
 ```
 
 **Astro 配置**:
@@ -770,7 +770,7 @@ bunx turbo run enhance build:web
 ### 6.1 Astro Integration 钩子
 
 ```typescript
-// apps/tutorial/src/enhance-plugin.ts
+// apps/web/src/enhance-plugin.ts
 import type { AstroIntegration, HookParameters } from 'astro';
 import { execSync } from 'child_process';
 
@@ -826,7 +826,7 @@ function generateEnhanceReport(logger: any) {
 ### 6.2 使用方式
 
 ```javascript
-// apps/tutorial/astro.config.mjs
+// apps/web/astro.config.mjs
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import { createEnhancePlugin } from '../src/enhance-plugin.ts';

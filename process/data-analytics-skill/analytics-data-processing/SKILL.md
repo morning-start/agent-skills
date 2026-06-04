@@ -1,6 +1,8 @@
 ---
 name: analytics-data-processing
+version: 1.0.0
 description: 数据获取与处理技能，掌握数据采集、清洗、转换、建模全链路，具备构建高质量分析数据的能力
+tags: [data-processing, data-cleaning, etl, data-modeling, python-pandas]
 ---
 
 # Analytics Data Processing

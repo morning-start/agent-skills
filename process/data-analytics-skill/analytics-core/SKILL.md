@@ -1,6 +1,8 @@
 ---
 name: analytics-core
+version: 1.0.0
 description: 数据分析核心流程技能，掌握七阶段标准分析流程、目标设定方法、价值实现路径，是数据分析的基础方法论指南
+tags: [analytics, analysis-framework, methodology, data-analysis-process]
 ---
 
 # Analytics Core

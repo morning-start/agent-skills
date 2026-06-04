@@ -1,6 +1,8 @@
 ---
 name: analytics-visualization
+version: 1.0.0
 description: 数据可视化技能，掌握多维度变量展示方法、图表选型原则、交互设计，实现复杂数据的直观呈现与洞察
+tags: [visualization, charting, plotly, dashboard, data-presentation]
 ---
 
 # Analytics Visualization

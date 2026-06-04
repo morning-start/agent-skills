@@ -1,6 +1,8 @@
 ---
 name: analytics-report
+version: 1.0.0
 description: 数据分析报告技能，掌握标准报告结构、输出模板、分层呈现方法，实现专业的分析结论输出
+tags: [reporting, analysis-report, presentation, documentation]
 ---
 
 # Analytics Report

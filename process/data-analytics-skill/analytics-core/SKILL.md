@@ -1,7 +1,7 @@
 ---
 name: analytics-core
-version: 1.0.0
-description: 数据分析核心流程技能，掌握七阶段标准分析流程、目标设定方法、价值实现路径，是数据分析的基础方法论指南
+version: 1.0.1
+description: Use when the user needs a standard data analysis workflow, goal definition guidance, value realization steps, or analysis taxonomy.
 tags: [analytics, analysis-framework, methodology, data-analysis-process]
 ---
 
@@ -11,6 +11,11 @@ tags: [analytics, analysis-framework, methodology, data-analysis-process]
 - 本 Skill 用于：建立标准化的数据分析流程框架
 - 能力包含：七阶段流程、目标设定、价值实现、分析分类
 - 触发条件：需要进行数据分析项目时
+
+## 适用场景
+- 明确分析问题之前，需要先把目标和边界定清楚
+- 需要把分析流程拆成可执行的阶段
+- 需要判断分析属于战略、运营、业务分析还是数据分析
 
 ## 操作步骤
 

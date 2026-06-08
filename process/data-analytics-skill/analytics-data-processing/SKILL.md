@@ -1,7 +1,7 @@
 ---
 name: analytics-data-processing
-version: 1.0.0
-description: 数据获取与处理技能，掌握数据采集、清洗、转换、建模全链路，具备构建高质量分析数据的能力
+version: 1.0.1
+description: Use when the user needs data acquisition, cleaning, transformation, quality checks, or analysis-ready modeling data.
 tags: [data-processing, data-cleaning, etl, data-modeling, python-pandas]
 ---
 
@@ -12,6 +12,11 @@ tags: [data-processing, data-cleaning, etl, data-modeling, python-pandas]
 - 能力包含：数据获取、数据清洗、数据转换、数据建模
 - 触发条件：需要准备分析数据、构建数据模型时
 
+## 适用场景
+- 需要从业务系统、API、文件或日志中取数
+- 需要修复缺失值、异常值、重复值或脏字段
+- 需要把原始数据转换成可分析、可建模的结构
+
 ## 数据获取
 
 ### 数据源类型
@@ -19,7 +24,7 @@ tags: [data-processing, data-cleaning, etl, data-modeling, python-pandas]
 | 类型 | 来源 | 获取方式 |
 |------|------|----------|
 | 业务系统 | CRM、ERP、电商等 | 数据库直连、API |
-| 用户行为 | APP、Web、小程序 |埋点数据、日志 |
+| 用户行为 | APP、Web、小程序 | 埋点数据、日志 |
 | 外部数据 | 第三方、公开数据 | 文件导入、爬虫 |
 | 实时数据 | IoT、传感器 | 流式采集 |
 
@@ -101,7 +106,7 @@ df_dropna = df.dropna()
 
 df_fill_mean = df.fillna(df.mean())
 
-df_fill_forward = df.fillna(method='ffill')
+df_fill_forward = df.ffill()
 
 df_interpolate = df.interpolate()
 ```
@@ -236,9 +241,8 @@ fact_orders['order_date'] = pd.to_datetime(fact_orders['order_date'])
 ```python
 fact_orders['unit_price'] = fact_orders['amount'] / fact_orders['quantity']
 
-fact_orders['is_vip_order'] = fact_orders['user_id'].map(
-    dim_user.set_index('user_id')['user_type'] == 'VIP'
-)
+vip_user_ids = dim_user.loc[dim_user['user_type'] == 'VIP', 'user_id']
+fact_orders['is_vip_order'] = fact_orders['user_id'].isin(vip_user_ids)
 
 fact_orders['order_month'] = fact_orders['order_date'].dt.to_period('M')
 ```

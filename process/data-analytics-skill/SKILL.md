@@ -1,118 +1,54 @@
 ---
 name: data-analytics
-version: 1.0.0
-description: 数据分析技能库，掌握从数据中发现业务价值的完整技能体系，涵盖分析流程、数据处理、可视化、报告输出等核心能力
-tags: [analytics, data-analysis, data-science, visualization, reporting]
+version: 1.1.0
+description: Use when the user needs a data analysis skill entry point, a recommended analytics sub-skill, or a guided overview of the analysis workflow.
+tags: [analytics, data-analysis, visualization, reporting, workflow]
 ---
 
 # Data Analytics Skills
 
 ## 任务目标
-- 本 Skill 用于：系统化掌握数据分析方法论和实践技能
-- 能力包含：分析流程设计、数据获取处理、建模方法、可视化呈现、报告撰写
-- 触发条件：需要进行数据分析、解决业务问题、输出数据洞察时
+- 作为数据分析技能库的入口，帮助用户快速选到正确的子技能
+- 提供统一的分析流程视图，避免把流程、处理、可视化和报告混在一起
+- 触发条件：用户提到数据分析、数据处理、可视化、分析报告，或需要推荐该用哪个子技能
 
 ## 技能地图
 
-### 核心技能
-- [analytics-core](analytics-core/) - 分析流程：七阶段标准流程、目标设定、价值实现
-- [analytics-data-processing](analytics-data-processing/) - 数据处理：获取、清洗、建模全链路
+### 核心流程
+- [analytics-core](analytics-core/) - 分析流程：目标设定、七阶段流程、价值实现
 
-### 输出技能
-- [analytics-visualization](analytics-visualization/) - 可视化：多维度变量展示、图表选型、交互设计
-- [analytics-report](analytics-report/) - 报告模板：标准分析报告结构、输出规范
+### 数据处理
+- [analytics-data-processing](analytics-data-processing/) - 数据处理：获取、清洗、转换、建模准备
 
-## 学习路径
+### 结果呈现
+- [analytics-visualization](analytics-visualization/) - 可视化：多维度展示、图表选型、交互设计
+- [analytics-report](analytics-report/) - 报告：结构化输出、受众分层、模板化交付
 
-### 基础阶段
-1. [analytics-core](analytics-core/) - 理解数据分析全流程
-2. [analytics-data-processing](analytics-data-processing/) - 掌握数据处理方法
+## 使用方式
 
-### 进阶阶段
-3. [analytics-visualization](analytics-visualization/) - 提升可视化能力
-4. [analytics-report](analytics-report/) - 规范报告输出
+### 1. 先判断用户需求
+| 用户说法 | 优先子技能 |
+|----------|------------|
+| 想知道分析该怎么做 | analytics-core |
+| 需要拉数据、清洗或建模前处理 | analytics-data-processing |
+| 需要图表、仪表盘、交互展示 | analytics-visualization |
+| 需要报告、周报、专题分析稿 | analytics-report |
 
-## 核心概念
+### 2. 再进入对应技能
+- 单一任务：直接使用对应子技能
+- 组合任务：先用 `analytics-core` 定义目标，再接 `analytics-data-processing`、`analytics-visualization` 或 `analytics-report`
+- 不明确时：先从 `analytics-core` 开始，它负责把分析问题拆清楚
 
-### 数据分析定义
-数据分析是一个从数据中通过分析手段发现业务价值的过程。
-
-```
-起点：获取数据 → 中间：分析处理 → 终点：业务价值实现
-```
-
-### 数据分析七阶段流程
-1. **数据获取** - 确定分析目标，采集相关数据
-2. **数据清洗** - 处理异常值、缺失值、一致性
-3. **数据处理** - 汇总、转换以适用建模
-4. **数据建模** - 统计分析或机器学习
-5. **结果呈现** - 可视化与沟通
-6. **价值发现** - 分析师与业务方共同认知
-7. **价值实现** - 分析结论转化为业务行动
-
-### 数据分析分类
-| 维度 | 类型 | 说明 |
-|------|------|------|
-| 问题类型 | 战略分析 | 回答向哪里去的问题，宏观视角 |
-| | 运营分析 | 解决实际运营问题，微观视角 |
-| 服务对象 | 业务分析 | 业务部门发起，效率较高 |
-| | 数据分析 | 数据部门发起，视角更全面 |
-| 分析范围 | 行业分析 | 行业发展趋势，1年以上 |
-| | 公司分析 | 业务发展诊断，1年内 |
-| | 部门分析 | 职能范围业务诊断 |
-| | 业务环节分析 | 最细粒度的应用 |
-
-### 分析目标设定
-合理分析目标的特征：
-- 有业务视角，能折射业务痛点
-- 有数据支持
-- 量化表达
-- 体现在具体指标上
-
-### 数据分析三元论
-- **势**：行业趋势、公司数据环境
-- **道**：分析体系和框架、目的和价值
-- **术**：分析思维和分析技术
-
-## 快速开始
-
-### 标准分析流程
-```
-1. 明确分析目标
-   ↓
-2. 数据获取与理解
-   ↓
-3. 数据清洗与处理
-   ↓
-4. 数据建模与分析
-   ↓
-5. 结果可视化呈现
-   ↓
-6. 业务价值发现
-   ↓
-7. 价值实现与迭代
-```
-
-### 分析报告标准结构
-```
-1. 结论/建议前置
-2. 业务背景
-3. 分析目标
-4. 数据说明
-5. 分析方法
-6. 分析过程
-7. 结论与建议
-8. 附录
-```
-
-## 资源索引
-- 数据分析思维：业务思维与数据思维并重
-- 指标设计：原子指标、衍生指标、复合指标
-- 可视化原则：选择合适的图表展示多维度数据
+## 分析流程总览
+1. 明确问题和目标
+2. 获取并理解数据
+3. 清洗与转换数据
+4. 建模或分析
+5. 可视化呈现结果
+6. 提炼业务结论
+7. 形成报告或行动建议
 
 ## 注意事项
-- 分析前必须明确目标，目标，目标！（重要的事情说三遍）
-- 过程不是单向的，发现问题可以跳回前一阶段
-- 过程是循环往复的，上一分析的终点是下一分析的起点
-- 不是每个阶段都必须经历，根据实际情况调整
-- 分析师与业务人员的密切合作贯穿全程
+- 这个技能库是入口，不负责替代具体子技能的详细方法
+- 分析任务优先明确目标，再选择工具和表现形式
+- 报告和可视化的质量，取决于前面的数据处理是否可靠

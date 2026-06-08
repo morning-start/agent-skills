@@ -1,7 +1,7 @@
 ---
 name: analytics-report
-version: 1.0.0
-description: 数据分析报告技能，掌握标准报告结构、输出模板、分层呈现方法，实现专业的分析结论输出
+version: 1.0.1
+description: Use when the user needs a structured data analysis report, audience-specific reporting, or delivery templates.
 tags: [reporting, analysis-report, presentation, documentation]
 ---
 
@@ -11,6 +11,11 @@ tags: [reporting, analysis-report, presentation, documentation]
 - 本 Skill 用于：规范数据分析报告输出标准
 - 能力包含：标准报告结构、读者分层策略、输出模板、撰写规范
 - 触发条件：需要输出分析报告、呈现分析结论时
+
+## 适用场景
+- 需要把分析结果写成面向管理层、执行层或学习者的报告
+- 需要统一报告结构、图表表达和行动建议格式
+- 需要把结论、证据和建议组织成可交付文本
 
 ## 标准报告结构
 
@@ -486,7 +491,7 @@ tags: [reporting, analysis-report, presentation, documentation]
 - [ ] 建议是否可落地执行？
 - [ ] 图表是否清晰易懂？
 - [ ] 数据来源是否标注？
-- [ [ ] 术语是否一致？
+- [ ] 术语是否一致？
 - [ ] 是否有拼写/格式错误？
 
 ### 结构检查

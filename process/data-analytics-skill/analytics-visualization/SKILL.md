@@ -1,7 +1,7 @@
 ---
 name: analytics-visualization
-version: 1.0.0
-description: 数据可视化技能，掌握多维度变量展示方法、图表选型原则、交互设计，实现复杂数据的直观呈现与洞察
+version: 1.0.1
+description: Use when the user needs multi-dimensional data visualization, chart selection guidance, or interactive presentation patterns.
 tags: [visualization, charting, plotly, dashboard, data-presentation]
 ---
 
@@ -11,6 +11,11 @@ tags: [visualization, charting, plotly, dashboard, data-presentation]
 - 本 Skill 用于：掌握复杂数据的多维度可视化呈现
 - 能力包含：多维度变量展示、图表选型、交互设计、可视化原则
 - 触发条件：需要展示多维度数据、呈现分析结果时
+
+## 适用场景
+- 需要把多维数据压缩成容易理解的图表
+- 需要在趋势、对比、分布、关系和路径之间选图
+- 需要做交互式图表或分析仪表盘
 
 ## 核心原则
 
@@ -278,7 +283,7 @@ fig.show()
 ```python
 import plotly.express as px
 
-df = px.data.gapminder().query("year == 2024")
+df = px.data.gapminder().query("year == 2007")
 
 fig = px.scatter_geo(
     df,
@@ -348,9 +353,9 @@ fig.update_layout(
         bgcolor="white",
         font_size=12
     ),
-    dragmode="pan",              # 拖拽平移
-    scrollzoom=True              # 滚轮缩放
+    dragmode="pan"              # 拖拽平移
 )
+fig.show(config={"scrollZoom": True})
 ```
 
 ## 图表选型速查表

@@ -1,7 +1,8 @@
 ---
 name: wxt
-description: WXT 是现代化浏览器扩展开发框架，支持 Chrome、Firefox、Safari、Edge；提供 TypeScript 支持、HMR 热更新、多框架支持（Vanilla/Vue/React/Svelte/Solid）；适用于快速开发跨浏览器扩展。
 version: 2.0.3
+description: Use when the user asks about WXT browser extension development, project setup, entrypoints, content scripts, storage, messaging, i18n, lifecycle hooks, framework setup, browser compatibility, or publishing.
+tags: [wxt, browser-extension, vite, typescript, manifest-v3, web-extension, chrome, firefox, safari, edge]
 ---
 # WXT 浏览器扩展开发框架
 
@@ -76,30 +77,6 @@ WXT（Web eXtensions Tools）是一个基于 Vite 构建的现代化浏览器扩
 **[配置 API](api/config.md)**：defineConfig、defineManifest 等。
 
 **[工具函数](api/utilities.md)**：存储、脚本注入、匹配模式等。
-
-### 5. 示例（examples/）
-
-**[Vanilla 示例](examples/vanilla/)**：原生 JavaScript/TypeScript 项目。
-
-**[Vue 示例](examples/vue/)**：Vue 3 项目示例。
-
-**[React 示例](examples/react/)**：React 项目示例。
-
-**[Svelte 示例](examples/svelte/)**：Svelte 项目示例（推荐）。
-
-**[Solid 示例](examples/solid/)**：SolidJS 项目示例（推荐）。
-
-### 4. API（api/）
-
-**[接口文档](api/interfaces.md)**：WXT 核心接口详细说明，包括入口点接口、配置接口、构建接口、开发服务器接口等。
-
-**[类型文档](api/types.md)**：WXT 类型别名文档，包括配置类型、入口点类型、浏览器类型、模块类型等。
-
-**[入口点 API](api/entrypoints.md)**：defineBackground、defineContentScript 等入口点定义函数。
-
-**[配置 API](api/config.md)**：defineConfig、defineManifest 等配置函数。
-
-**[工具函数](api/utilities.md)**：存储、脚本注入、匹配模式等工具函数。
 
 ### 5. 示例（examples/）
 

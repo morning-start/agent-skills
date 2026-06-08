@@ -2,7 +2,7 @@
 name: rust
 version: v2.0.0
 author: book-skills
-description: Rust 全栈开发指导技能 — 覆盖 CLI/Web/桌面/嵌入式/区块链等 10 大应用领域的架构决策、生产级最佳实践与反模式避免，从项目初始化到部署运维的完整开发指南
+description: Use when the user asks about Rust project setup, architecture decisions, crate selection, ownership, lifetimes, concurrency, async, error handling, performance, deployment, or production patterns.
 tags: [rust, systems-programming, cli, web, embedded, blockchain, game-dev, desktop, performance, concurrency, async]
 dependency:
   parent: none

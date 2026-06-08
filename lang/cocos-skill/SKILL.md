@@ -1,7 +1,8 @@
 ---
 name: cocos
 version: 1.0.0
-description: Cocos Creator 3.8 游戏引擎的完整技能体系，共 18 个子技能，覆盖引擎所有核心功能模块
+description: Use when the user asks about Cocos Creator 3.8 project setup, scene and asset workflows, scripting, UI, animation, physics, rendering, localization, editor extensions, or publishing.
+tags: [cocos, cocos-creator, game-dev, engine, scene, assets, scripting, ui, animation, physics, rendering, localization, publishing]
 ---
 
 # Cocos Creator 3.8 Skills

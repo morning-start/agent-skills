@@ -1,6 +1,8 @@
 ---
 name: svelte
-description: Svelte 技术栈完整技能库，涵盖 Svelte 5 核心概念、Runes 系统、模板语法、控制流、指令、样式、状态管理等，助力构建现代 Web 应用
+version: 1.0.0
+description: Use when the user asks about Svelte 5, Runes, component development, template syntax, control flow, state management, styling, lifecycle, testing, migration, or SvelteKit app setup.
+tags: [svelte, sveltekit, frontend, web, runes, components, state-management, styling, testing, migration]
 ---
 
 # Svelte Skills

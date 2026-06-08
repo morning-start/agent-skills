@@ -1,10 +1,8 @@
 ---
 name: flutter
 version: 1.0.0
-description: Flutter开发完整指南：Clean Architecture架构规范、TDD测试工作流、BLoC状态管理、故障排除与代码生成
-dependency:
-  python:
-    - argparse
+description: Use when the user asks about Flutter architecture, TDD, BLoC state management, project structure, code generation, diagnostics, package selection, or release workflows.
+tags: [flutter, dart, clean-architecture, tdd, bloc, codegen, diagnostics, package-selection, mobile-app]
 ---
 
 # Flutter Skills

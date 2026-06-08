@@ -1,7 +1,8 @@
 ---
 name: data-producer
-version: 0.1.0
-description: 生成数据类文档（数据库设计、数据字典、通信协议）
+version: 0.1.1
+description: Use when the user needs database design, data dictionary, or communication protocol documentation.
+tags: [data-modeling, database-design, protocol, documentation]
 ---
 
 # Data Producer

@@ -1,7 +1,8 @@
 ---
 name: doc-phase-production
-version: 0.1.0
-description: 生产阶段协调器，负责按规划生成各类文档，包括需求、架构、API、数据、质量运维文档和图示
+version: 0.1.1
+description: Use when the user needs document generation, diagram generation, or a production step for a planned document set.
+tags: [production, document-generation, diagramming, documentation]
 ---
 
 # Production Phase Coordinator

@@ -1,7 +1,8 @@
 ---
 name: template-selector
-version: 0.1.0
-description: 根据文档类型和项目上下文选择合适的模板
+version: 0.1.1
+description: Use when the user needs to choose the right documentation template for a document type or project context.
+tags: [template-selection, planning, documentation]
 ---
 
 # Template Selector

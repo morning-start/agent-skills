@@ -1,7 +1,8 @@
 ---
 name: project-analyzer
-version: 0.1.0
-description: 分析项目类型、规模和技术栈，为文档规划提供基础数据
+version: 0.1.1
+description: Use when the user needs to identify project type, scale, tech stack, or platform scope for documentation planning.
+tags: [project-analysis, documentation, planning]
 ---
 
 # Project Analyzer

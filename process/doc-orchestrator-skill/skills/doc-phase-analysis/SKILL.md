@@ -1,7 +1,8 @@
 ---
 name: doc-phase-analysis
-version: 0.1.0
-description: 分析阶段协调器，负责项目分析、需求解析、现状扫描，为后续文档生成提供基础数据
+version: 0.1.1
+description: Use when the user needs project analysis, requirement parsing, or a scan of existing documentation before generating new docs.
+tags: [analysis, requirement-parsing, project-scanning, documentation]
 ---
 
 # Analysis Phase Coordinator

@@ -1,7 +1,8 @@
 ---
 name: diagram-producer
-version: 0.1.0
-description: 智能绘图执行者，根据内容复杂度自适应选择 TXT 字符图或 Mermaid 图表
+version: 0.1.1
+description: Use when the user needs documentation diagrams and wants the right format selected automatically, such as TXT or Mermaid.
+tags: [diagramming, mermaid, txt, documentation]
 ---
 
 # Diagram Producer

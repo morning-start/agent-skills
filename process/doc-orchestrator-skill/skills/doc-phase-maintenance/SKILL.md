@@ -1,7 +1,8 @@
 ---
 name: doc-phase-maintenance
-version: 0.1.0
-description: 维护阶段协调器，负责变更分析、文档同步、版本管理和导出管理
+version: 0.1.1
+description: Use when the user needs document maintenance, change impact analysis, synchronization, versioning, or export management.
+tags: [maintenance, versioning, synchronization, documentation]
 ---
 
 # Maintenance Phase Coordinator

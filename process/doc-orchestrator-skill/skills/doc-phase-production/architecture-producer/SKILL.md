@@ -1,7 +1,8 @@
 ---
 name: architecture-producer
-version: 0.1.0
-description: 生成架构类文档（SAD、TDD、平台专项架构）
+version: 0.1.1
+description: Use when the user needs architecture documents such as SAD, TDD, or platform-specific architecture writeups.
+tags: [architecture, sad, tdd, documentation]
 ---
 
 # Architecture Producer

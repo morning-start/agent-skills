@@ -1,7 +1,8 @@
 ---
 name: completeness-checker
-version: 0.1.0
-description: 检查文档章节完整性和示例完整性
+version: 0.1.1
+description: Use when the user needs to check whether a document has all required sections, examples, and supporting material.
+tags: [completeness, sections, examples, documentation]
 ---
 
 # Completeness Checker

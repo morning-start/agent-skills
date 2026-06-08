@@ -1,9 +1,8 @@
 ---
 name: doc-orchestrator
-version: 0.2.0
-author: doc-orchestrator
-description: 文档编排操盘手，全生命周期管理软件开发文档。从需求分析、文档生成、质量校验到变更维护，支持全规模项目自适应、双轨格式（Agent结构化+人类可读）、智能绘图（TXT/Mermaid自适应）。已合并 project-wiki（20+模板、知识库、工作流）
-tags: [documentation, orchestration, lifecycle, quality, automation, templates, project-wiki]
+version: 0.3.0
+description: Use when the user needs a document orchestration entry point, a workflow router for document phases, or a guided overview of software documentation generation and maintenance.
+tags: [documentation, orchestration, lifecycle, quality, automation, templates, diagrams]
 ---
 
 # DocOrchestrator - 文档编排操盘手

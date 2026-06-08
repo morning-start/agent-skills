@@ -1,7 +1,8 @@
 ---
 name: doc-syncer
-version: 0.1.0
-description: 同步更新受变更影响的文档，保持追溯关系一致
+version: 0.1.1
+description: Use when the user needs to synchronize related documents after a change and preserve traceability.
+tags: [sync, traceability, documentation]
 ---
 
 # Doc Syncer

@@ -1,7 +1,8 @@
 ---
 name: doc-phase-planning
-version: 0.1.0
-description: 规划阶段协调器，根据分析结果规划文档清单、选择模板、生成执行计划
+version: 0.1.1
+description: Use when the user needs document planning, template selection, or execution order design after project analysis.
+tags: [planning, document-plan, template-selection, documentation]
 ---
 
 # Planning Phase Coordinator

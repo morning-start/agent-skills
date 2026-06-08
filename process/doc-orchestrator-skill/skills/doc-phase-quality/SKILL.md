@@ -1,7 +1,8 @@
 ---
 name: doc-phase-quality
-version: 0.1.0
-description: 质量阶段协调器，负责文档的一致性检查、完整性检查和质量评分
+version: 0.1.1
+description: Use when the user needs document consistency checks, completeness checks, or overall quality scoring.
+tags: [quality, consistency, completeness, documentation]
 ---
 
 # Quality Phase Coordinator

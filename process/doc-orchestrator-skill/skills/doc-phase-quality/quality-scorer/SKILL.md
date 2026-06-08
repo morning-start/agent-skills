@@ -1,7 +1,8 @@
 ---
 name: quality-scorer
-version: 0.1.0
-description: 综合各维度评分，计算文档整体质量分数
+version: 0.1.1
+description: Use when the user needs a computed document quality score or a weighted scoring breakdown.
+tags: [scoring, quality-metrics, documentation]
 ---
 
 # Quality Scorer

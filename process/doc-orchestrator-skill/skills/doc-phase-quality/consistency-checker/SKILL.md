@@ -1,7 +1,8 @@
 ---
 name: consistency-checker
-version: 0.1.0
-description: 检查文档间的术语、追溯关系、格式一致性
+version: 0.1.1
+description: Use when the user needs terminology, traceability, or formatting consistency checks across documents.
+tags: [consistency, terminology, traceability, documentation]
 ---
 
 # Consistency Checker

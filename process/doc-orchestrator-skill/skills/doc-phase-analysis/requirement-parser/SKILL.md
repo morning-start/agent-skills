@@ -1,7 +1,8 @@
 ---
 name: requirement-parser
-version: 0.1.0
-description: 将用户描述的需求解析为结构化数据，支持交互补充和信息提取
+version: 0.1.1
+description: Use when the user needs to turn a requirement description into structured documentation inputs or extract key requirement fields.
+tags: [requirement-analysis, parsing, documentation]
 ---
 
 # Requirement Parser

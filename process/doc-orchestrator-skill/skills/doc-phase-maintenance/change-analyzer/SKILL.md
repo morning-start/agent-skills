@@ -1,7 +1,8 @@
 ---
 name: change-analyzer
-version: 0.1.0
-description: 分析需求变更对文档链路的影响范围
+version: 0.1.1
+description: Use when the user needs to analyze how a requirement or product change affects the document chain.
+tags: [change-analysis, impact-analysis, documentation]
 ---
 
 # Change Analyzer

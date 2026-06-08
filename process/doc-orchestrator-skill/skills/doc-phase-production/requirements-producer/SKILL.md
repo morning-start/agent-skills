@@ -1,7 +1,8 @@
 ---
 name: requirements-producer
-version: 0.1.0
-description: 生成需求类文档（SRS、PRD、功能需求、非功能需求）
+version: 0.1.1
+description: Use when the user needs requirement documents such as SRS, PRD, functional requirements, or non-functional requirements.
+tags: [requirements, srs, prd, documentation]
 ---
 
 # Requirements Producer

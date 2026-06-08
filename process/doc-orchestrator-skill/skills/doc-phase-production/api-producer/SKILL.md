@@ -1,7 +1,8 @@
 ---
 name: api-producer
-version: 0.1.0
-description: 生成 API 接口文档，支持 RESTful/GraphQL/gRPC 多种协议
+version: 0.1.1
+description: Use when the user needs API documentation for RESTful, GraphQL, or gRPC interfaces.
+tags: [api, rest, graphql, grpc, documentation]
 ---
 
 # API Producer

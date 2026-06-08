@@ -1,7 +1,8 @@
 ---
 name: version-manager
-version: 0.1.0
-description: 管理文档版本号，语义化版本控制，生成 CHANGELOG
+version: 0.1.1
+description: Use when the user needs semantic version management or changelog generation for documentation.
+tags: [versioning, changelog, semver, documentation]
 ---
 
 # Version Manager

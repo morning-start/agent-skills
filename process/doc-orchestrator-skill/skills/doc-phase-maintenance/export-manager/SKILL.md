@@ -1,7 +1,8 @@
 ---
 name: export-manager
-version: 0.1.0
-description: 支持文档多格式导出（Markdown/PDF/HTML/ZIP）
+version: 0.1.1
+description: Use when the user needs to export documentation to Markdown, PDF, HTML, or ZIP formats.
+tags: [export, pdf, html, zip, documentation]
 ---
 
 # Export Manager

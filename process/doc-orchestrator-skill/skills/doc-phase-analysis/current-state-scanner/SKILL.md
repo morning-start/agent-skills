@@ -1,7 +1,8 @@
 ---
 name: current-state-scanner
-version: 0.1.0
-description: 扫描项目中现有文档和代码，评估文档完整性和质量现状
+version: 0.1.1
+description: Use when the user needs to scan an existing repository or document set and assess documentation coverage and quality.
+tags: [document-scanning, audit, documentation]
 ---
 
 # Current State Scanner

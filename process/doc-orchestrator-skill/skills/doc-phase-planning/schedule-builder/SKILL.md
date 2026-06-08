@@ -1,7 +1,8 @@
 ---
 name: schedule-builder
-version: 0.1.0
-description: 根据文档依赖关系生成执行计划
+version: 0.1.1
+description: Use when the user needs an execution schedule or dependency-aware document generation order.
+tags: [scheduling, dependency-planning, documentation]
 ---
 
 # Schedule Builder

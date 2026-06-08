@@ -1,7 +1,8 @@
 ---
 name: doc-planner
-version: 0.1.0
-description: 根据项目类型和规模规划需要生成的文档清单
+version: 0.1.1
+description: Use when the user needs a document list tailored to project type, scale, and documentation scope.
+tags: [document-planning, documentation]
 ---
 
 # Doc Planner

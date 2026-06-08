@@ -1,7 +1,8 @@
 ---
 name: quality-producer
-version: 0.1.0
-description: 生成质量运维类文档（测试策略、部署运维、安全合规）
+version: 0.1.1
+description: Use when the user needs quality, testing, deployment, operations, or security documentation.
+tags: [quality, testing, operations, security, documentation]
 ---
 
 # Quality Producer

@@ -1,8 +1,10 @@
 ---
-name: rust-lifecycle-skill
-description: Rust Layer 2 技能 - 生命周期管理，核心问题：何时创建、使用、清理？掌握 RAII、Drop、延迟初始化等资源管理模式
+name: rust-lifecycle
 version: 1.0.0
-layer: 2
+author: book-skills
+description: Rust Layer 2 技能 - 生命周期管理，核心问题：何时创建、使用、清理？掌握 RAII、Drop、延迟初始化等资源管理模式
+tags: [rust, lifetime, borrowing, hrtb, elision]
+layer: Layer 2 - Design Choices
 trigger: RAII, Drop, lifetime, lazy, initialization, cleanup, resource management
 ---
 

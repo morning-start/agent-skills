@@ -1,8 +1,10 @@
 ---
-name: rust-mutability-skill
-description: Rust Layer 1 技能 - 可变性设计，核心问题：为什么这个数据需要变化？掌握 mut、Cell、UnsafeCell 的使用场景
+name: rust-mutability
 version: 1.0.0
-layer: 1
+author: book-skills
+description: Rust Layer 1 技能 - 可变性设计，核心问题：为什么这个数据需要变化？掌握 mut、Cell、UnsafeCell 的使用场景
+tags: [rust, mutability, interior-mutability, cell, refcell]
+layer: Layer 1 - Language Mechanics
 trigger: mut, Cell, UnsafeCell, E0596, interior mutability, mutation
 ---
 

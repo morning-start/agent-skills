@@ -1,7 +1,11 @@
 ---
 name: rust-error-handling
-description: Rust 错误处理技能，掌握 Result 和 Option 类型、错误传播、自定义错误类型、panic 机制
 version: 1.0.0
+author: book-skills
+description: Rust 错误处理技能，掌握 Result 和 Option 类型、错误传播、自定义错误类型、panic 机制
+tags: [rust, error-handling, result, option, panic]
+layer: Layer 1 - Language Mechanics
+trigger: result, option, panic, thiserror, anyhow
 ---
 
 # Rust 错误处理

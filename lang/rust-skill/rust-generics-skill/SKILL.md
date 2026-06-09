@@ -1,7 +1,11 @@
 ---
 name: rust-generics
-description: Rust 泛型与 Trait 技能，掌握泛型数据类型、Trait 定义与实现、Trait  bounds、默认实现
 version: 1.0.0
+author: book-skills
+description: Rust 泛型与 Trait 技能，掌握泛型数据类型、Trait 定义与实现、Trait  bounds、默认实现
+tags: [rust, generics, trait, lifetimes, monomorphization]
+layer: Layer 1 - Language Mechanics
+trigger: generics, trait, associated types, bounds, monomorphization
 ---
 
 # Rust 泛型与 Trait

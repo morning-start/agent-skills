@@ -1,16 +1,14 @@
-# rust-web-skill
-
-## 前言区
-
-```
-name: rust-web-skill
-version: v1.0.0
+---
+name: rust-web
+version: 1.0.0
 author: book-skills
 description: Web开发领域Rust应用技能，涵盖Axum、Actix-web、Rocket等框架的API设计与性能优化
 tags: [web, api, rest, graphql, axum, actix-web, rocket]
 trigger: /rust-web
 layer: Layer 3 - Domain Extensions
-```
+---
+
+# Rust Web 开发
 
 ## 概述
 

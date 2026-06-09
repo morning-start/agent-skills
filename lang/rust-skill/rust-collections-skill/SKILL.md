@@ -1,7 +1,11 @@
 ---
 name: rust-collections
-description: Rust 集合类型技能，掌握 Vec、String、HashMap、HashSet 等常用集合的创建、操作和性能特点
 version: 1.0.0
+author: book-skills
+description: Rust 集合类型技能，掌握 Vec、String、HashMap、HashSet 等常用集合的创建、操作和性能特点
+tags: [rust, collections, vec, hashmap, btreemap]
+layer: Layer 1 - Language Mechanics
+trigger: collections, vec, hashmap, hashset, btreemap
 ---
 
 # Rust 集合类型

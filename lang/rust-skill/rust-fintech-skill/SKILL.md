@@ -1,16 +1,14 @@
-# rust-fintech-skill
-
-## 前言区
-
-```
-name: rust-fintech-skill
-version: v1.0.0
+---
+name: rust-fintech
+version: 1.0.0
 author: book-skills
 description: 金融科技领域Rust应用技能，涵盖安全计算、高性能交易系统、量化分析与风险管理
 tags: [fintech, trading, quantitative-analysis, risk-management, high-performance]
 trigger: /rust-fintech
 layer: Layer 3 - Domain Extensions
-```
+---
+
+# Rust 金融科技开发
 
 ## 概述
 
@@ -49,10 +47,10 @@ pub struct Order {
     pub timestamp: u64,
 }
 
-pub fn calculate_spread(book: &OrderBook) -> f64 {
-    let best_bid = book.bids.read().unwrap().first()
+pub async fn calculate_spread(book: &OrderBook) -> f64 {
+    let best_bid = book.bids.read().await.first()
         .map(|o| o.price).unwrap_or(0.0);
-    let best_ask = book.asks.read().unwrap().first()
+    let best_ask = book.asks.read().await.first()
         .map(|o| o.price).unwrap_or(f64::MAX);
     best_ask - best_bid
 }

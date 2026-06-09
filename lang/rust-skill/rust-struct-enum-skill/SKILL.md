@@ -1,7 +1,11 @@
 ---
 name: rust-struct-enum
-description: Rust 结构体与枚举技能，掌握定义、方法、关联函数、模式匹配和模块化编程
 version: 1.0.0
+author: book-skills
+description: Rust 结构体与枚举技能，掌握定义、方法、关联函数、模式匹配和模块化编程
+tags: [rust, struct, enum, modeling, pattern-matching]
+layer: Layer 1 - Language Mechanics
+trigger: struct, enum, pattern matching, modeling
 ---
 
 # Rust 结构体与枚举

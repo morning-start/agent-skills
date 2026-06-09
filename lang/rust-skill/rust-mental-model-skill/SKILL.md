@@ -1,8 +1,10 @@
 ---
-name: rust-mental-model-skill
-description: Rust Layer 2 技能 - 心智模型，核心问题：如何正确理解 Rust 的这些概念？掌握所有权、借用、生命周期等核心概念的心智模型
+name: rust-mental-model
 version: 1.0.0
-layer: 2
+author: book-skills
+description: Rust Layer 2 技能 - 心智模型，核心问题：如何正确理解 Rust 的这些概念？掌握所有权、借用、生命周期等核心概念的心智模型
+tags: [rust, mental-model, ownership, borrow-checker, memory]
+layer: Layer 2 - Design Choices
 trigger: learning, mental model, understanding, concept, beginner, why
 ---
 

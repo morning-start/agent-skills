@@ -1,8 +1,10 @@
 ---
-name: rust-ecosystem-skill
-description: Rust Layer 2 技能 - 生态选择，核心问题：哪个 crate 适合这个任务？掌握常用生态库的选择和使用
+name: rust-ecosystem
 version: 1.0.0
-layer: 2
+author: book-skills
+description: Rust Layer 2 技能 - 生态选择，核心问题：哪个 crate 适合这个任务？掌握常用生态库的选择和使用
+tags: [rust, ecosystem, crates, dependencies, versioning]
+layer: Layer 2 - Design Choices
 trigger: crate, library, ecosystem, dependency, selection, web, async, serialization
 ---
 

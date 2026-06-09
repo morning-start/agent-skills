@@ -1,8 +1,10 @@
 ---
-name: rust-performance-skill
-description: Rust Layer 2 技能 - 性能优化，核心问题：瓶颈在哪里？掌握 benchmark、profiling、热点分析等性能调优方法
+name: rust-performance
 version: 1.0.0
-layer: 2
+author: book-skills
+description: Rust Layer 2 技能 - 性能优化，核心问题：瓶颈在哪里？掌握 benchmark、profiling、热点分析等性能调优方法
+tags: [rust, performance, benchmark, profiling, optimization]
+layer: Layer 2 - Design Choices
 trigger: benchmark, profiling, performance, speed, optimize, flamegraph, cargo bench
 ---
 

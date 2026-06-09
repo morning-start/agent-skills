@@ -1,7 +1,11 @@
 ---
 name: rust-async
-description: Rust 异步编程技能，掌握 Future、async/await、Tokio 运行时、Stream 处理和取消
 version: 1.0.0
+author: book-skills
+description: Rust 异步编程技能，掌握 Future、async/await、Tokio 运行时、Stream 处理和取消
+tags: [rust, async, tokio, future, stream]
+layer: Layer 1 - Language Mechanics
+trigger: async, async/await, tokio, future, stream, cancellation
 ---
 
 # Rust 异步编程

@@ -1,7 +1,11 @@
 ---
 name: rust-ownership
-description: Rust 所有权系统核心技能，掌握所有权、借用规则和生命周期，确保内存安全
 version: 1.0.0
+author: book-skills
+description: Rust 所有权系统核心技能，掌握所有权、借用规则和生命周期，确保内存安全
+tags: [rust, ownership, borrowing, move, lifetime]
+layer: Layer 1 - Language Mechanics
+trigger: ownership, borrow, move, lifetime
 ---
 
 # Rust 所有权系统

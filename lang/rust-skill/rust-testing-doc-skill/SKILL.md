@@ -1,7 +1,11 @@
 ---
 name: rust-testing-doc
-description: Rust 测试与文档技能，掌握单元测试、集成测试、文档测试、文档注释和 rustdoc 使用
 version: 1.0.0
+author: book-skills
+description: Rust 测试与文档技能，掌握单元测试、集成测试、文档测试、文档注释和 rustdoc 使用
+tags: [rust, testing, doctest, mock, proptest]
+layer: Layer 2 - Design Choices
+trigger: testing, doctest, unit test, integration test, mock, proptest
 ---
 
 # Rust 测试与文档

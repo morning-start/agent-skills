@@ -1,7 +1,11 @@
 ---
 name: rust-cargo
-description: Rust Cargo 包管理技能，掌握项目创建、依赖管理、工作区、构建配置、发布到 crates.io
 version: 1.0.0
+author: book-skills
+description: Rust Cargo 包管理技能，掌握项目创建、依赖管理、工作区、构建配置、发布到 crates.io
+tags: [rust, cargo, workspace, build, publish]
+layer: Layer 2 - Design Choices
+trigger: cargo, workspace, dependency, feature flags, publish
 ---
 
 # Rust Cargo 包管理

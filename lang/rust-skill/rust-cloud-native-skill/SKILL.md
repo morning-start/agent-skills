@@ -1,16 +1,14 @@
-# rust-cloud-native-skill
-
-## 前言区
-
-```
-name: rust-cloud-native-skill
-version: v1.0.0
+---
+name: rust-cloud-native
+version: 1.0.0
 author: book-skills
 description: 云原生领域Rust应用技能，涵盖Kubernetes、容器化、微服务、Wasm及服务网格
 tags: [cloud-native, kubernetes, wasm, microservices, service-mesh, containers]
 trigger: /rust-cloud-native
 layer: Layer 3 - Domain Extensions
-```
+---
+
+# Rust 云原生开发
 
 ## 概述
 

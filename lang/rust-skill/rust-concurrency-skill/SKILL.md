@@ -1,7 +1,11 @@
 ---
 name: rust-concurrency
-description: Rust 并发编程技能，掌握线程创建、消息传递、共享状态、Send 和 Sync 等并发原语
 version: 1.0.0
+author: book-skills
+description: Rust 并发编程技能，掌握线程创建、消息传递、共享状态、Send 和 Sync 等并发原语
+tags: [rust, concurrency, thread, sync, channel]
+layer: Layer 1 - Language Mechanics
+trigger: concurrency, thread, channel, mutex, send, sync
 ---
 
 # Rust 并发编程

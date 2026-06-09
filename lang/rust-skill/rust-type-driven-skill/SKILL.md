@@ -1,8 +1,10 @@
 ---
-name: rust-type-driven-skill
-description: Rust Layer 1 技能 - 类型驱动设计，核心问题：如何用类型系统防止无效状态？掌握 newtype、PhantomData、类型状态模式
+name: rust-type-driven
 version: 1.0.0
-layer: 1
+author: book-skills
+description: Rust Layer 1 技能 - 类型驱动设计，核心问题：如何用类型系统防止无效状态？掌握 newtype、PhantomData、类型状态模式
+tags: [rust, type-state, newtype, phantom-data, type-safety]
+layer: Layer 1 - Language Mechanics
 trigger: newtype, PhantomData, type state, marker type, branding, self-referential
 ---
 

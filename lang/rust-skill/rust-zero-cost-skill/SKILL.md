@@ -1,8 +1,10 @@
 ---
-name: rust-zero-cost-skill
-description: Rust Layer 1 技能 - 零成本抽象，核心问题：编译时多态还是运行时多态？掌握泛型、Trait、trait object 的性能特点
+name: rust-zero-cost
 version: 1.0.0
-layer: 1
+author: book-skills
+description: Rust Layer 1 技能 - 零成本抽象，核心问题：编译时多态还是运行时多态？掌握泛型、Trait、trait object 的性能特点
+tags: [rust, zero-cost, generics, monomorphization, inline]
+layer: Layer 1 - Language Mechanics
 trigger: generic, trait, trait object, dyn, monomorphization, E0277
 ---
 

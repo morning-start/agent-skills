@@ -1,8 +1,10 @@
 ---
-name: rust-domain-design-skill
-description: Rust Layer 2 技能 - 领域设计，核心问题：这个概念在领域中扮演什么角色？掌握 DDD、Entity、Value Object 等领域建模概念
+name: rust-domain-design
 version: 1.0.0
-layer: 2
+author: book-skills
+description: Rust Layer 2 技能 - 领域设计，核心问题：这个概念在领域中扮演什么角色？掌握 DDD、Entity、Value Object 等领域建模概念
+tags: [rust, ddd, domain-modeling, aggregate, repository]
+layer: Layer 2 - Design Choices
 trigger: DDD, entity, value object, aggregate, domain model, bounded context
 ---
 

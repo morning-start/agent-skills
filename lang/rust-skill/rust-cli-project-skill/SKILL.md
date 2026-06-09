@@ -1,7 +1,11 @@
 ---
 name: rust-cli-project
-description: Rust CLI 项目开发技能，掌握命令行参数解析、文件操作、环境变量、错误处理和项目组织
 version: 1.0.0
+author: book-skills
+description: Rust CLI 项目开发技能，掌握命令行参数解析、文件操作、环境变量、错误处理和项目组织
+tags: [rust, cli, clap, tui, config]
+layer: Layer 3 - Domain Extensions
+trigger: cli, clap, tui, config, environment variables
 ---
 
 # Rust CLI 项目开发

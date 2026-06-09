@@ -1,16 +1,14 @@
-# rust-iot-skill
-
-## 前言区
-
-```
-name: rust-iot-skill
-version: v1.0.0
+---
+name: rust-iot
+version: 1.0.0
 author: book-skills
 description: 物联网领域Rust应用技能，涵盖嵌入式开发、实时系统、传感器通信与边缘计算
 tags: [iot, embedded, real-time, sensors, edge-computing, no_std]
 trigger: /rust-iot
 layer: Layer 3 - Domain Extensions
-```
+---
+
+# Rust 物联网开发
 
 ## 概述
 

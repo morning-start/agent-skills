@@ -1,7 +1,11 @@
 ---
 name: rust-smart-pointers
-description: Rust 智能指针技能，掌握 Box<T>、Rc<T>、Arc<T>、RefCell<T>、Cell<T> 等指针类型的使用场景
 version: 1.0.0
+author: book-skills
+description: Rust 智能指针技能，掌握 Box<T>、Rc<T>、Arc<T>、RefCell<T>、Cell<T> 等指针类型的使用场景
+tags: [rust, smart-pointers, rc, arc, refcell]
+layer: Layer 1 - Language Mechanics
+trigger: box, rc, arc, refcell, cow
 ---
 
 # Rust 智能指针

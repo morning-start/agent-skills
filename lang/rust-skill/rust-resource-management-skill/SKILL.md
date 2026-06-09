@@ -1,8 +1,10 @@
 ---
-name: rust-resource-management-skill
-description: Rust Layer 1 技能 - 资源管理模式，核心问题：什么所有权模式适合？掌握 Box、Rc、Arc、RefCell 等智能指针的选择
+name: rust-resource-management
 version: 1.0.0
-layer: 1
+author: book-skills
+description: Rust Layer 1 技能 - 资源管理模式，核心问题：什么所有权模式适合？掌握 Box、Rc、Arc、RefCell 等智能指针的选择
+tags: [rust, resource-management, drop, raai, cleanup]
+layer: Layer 1 - Language Mechanics
 trigger: Box, Rc, Arc, RefCell, Cow, ownership pattern, shared ownership
 ---
 

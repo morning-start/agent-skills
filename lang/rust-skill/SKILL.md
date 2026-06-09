@@ -1,6 +1,6 @@
 ---
 name: rust
-version: v2.0.0
+version: v2.1.0
 author: book-skills
 description: Use when the user asks about Rust project setup, architecture decisions, crate selection, ownership, lifetimes, concurrency, async, error handling, performance, deployment, or production patterns.
 tags: [rust, systems-programming, cli, web, embedded, blockchain, game-dev, desktop, performance, concurrency, async]
@@ -21,6 +21,13 @@ dependency:
 指导开发者使用 Rust 构建各领域生产级应用。聚焦**领域选择、架构决策、模式选择和陷阱避免**，而非语法教程或 API 文档。
 
 核心价值：帮助开发者在每个关键决策点做出正确选择。
+
+## 使用原则
+
+- 先判断问题落在哪一层：语言机制、设计选择，还是领域约束
+- 默认组合 `1` 个基础技能 + `1` 个领域或横切技能，避免一次加载过多技能
+- 遇到错误、性能、并发和安全问题时，优先切到对应专门技能，而不是在总技能里硬讲
+- 参考文档只承载补充信息，主技能负责路由和决策
 
 ## 触发条件
 
@@ -75,7 +82,7 @@ dependency:
 
 ## 项目架构决策
 
-### 模块 vs Crate：2026 共识
+### 模块 vs Crate：当前共识
 
 > **"Module First, Crate Last"** — 过度拆分 crate 会带来"编译税"
 
@@ -514,7 +521,7 @@ RUSTFLAGS="-C profile-use=/tmp/pgo-data" cargo build --release
 | [rust-testing-doc-skill](rust-testing-doc-skill/SKILL.md) | 测试策略、mock、属性测试 | "测试"、"mockall"、"proptest" |
 | [rust-smart-pointers-skill](rust-smart-pointers-skill/SKILL.md) | Rc/Arc/Weak/Cow/Cell | "智能指针"、"引用计数" |
 | [rust-collections-skill](rust-collections-skill/SKILL.md) | Vec/HashMap/BTreeSet 选择 | "集合"、"数据结构选择" |
-| [rust-generics-skill](rust-generics-Skill/SKILL.md) | 泛型、trait bound、关联类型 | "泛型"、"trait"、"monomorphization" |
+| [rust-generics-skill](rust-generics-skill/SKILL.md) | 泛型、trait bound、关联类型 | "泛型"、"trait"、"monomorphization" |
 | [rust-type-driven-skill](rust-type-driven-skill/SKILL.md) | 类型状态编程、newtype 模式 | "类型安全"、"type-state"、"phantom" |
 | [rust-domain-design-skill](rust-domain-design-skill/SKILL.md) | DDD 领域建模 | "领域驱动"、"实体"、"值对象" |
 | [rust-domain-error-skill](rust-domain-error-skill/SKILL.md) | 领域错误建模 | "领域错误"、"业务规则验证" |
@@ -535,22 +542,19 @@ RUSTFLAGS="-C profile-use=/tmp/pgo-data" cargo build --release
 | [rust-iot-skill](rust-iot-skill/SKILL.md) | IoT 设备开发 | "IoT"、"传感器"、"MQTT" |
 | [rust-ml-skill](rust-ml-skill/SKILL.md) | 机器学习/AI | "ML"、"神经网络"、"推理" |
 | [rust-anti-pattern-skill](rust-anti-pattern-skill/SKILL.md) | 反模式大全 | "反模式"、"常见错误"、"pitfall" |
-| [rust-meta-cognition-skill](rust-meta-cognition-SKILL.md) | 元认知/学习路线 | "怎么学Rust"、"进阶路径" |
-
 ## 参考文档
 
 - [architecture.md](references/architecture.md) — Rust 项目架构模式详解
 - [commands.md](references/commands.md) — Cargo/Rust 常用命令速查
-- [meta-cognition.md](references/meta-cognition.md) — Rust 学习元认知指南
+- [meta-cognition.md](references/meta-cognition.md) — Rust 学习元认知框架
 
 ## 注意事项
 
-### Rust 2024 Edition 关键变更
+### Edition / Toolchain 注意事项
 
-- **Async Closures 稳定化**：`async || {}` 可直接传递，无需 `Box<dyn Future>`
-- **精确生命周期捕获**：`impl Trait use<'a, T>` 语法解决隐藏生命周期 bug
-- **`gen` blocks**：稳定化的生成器语法
-- **`RawPtr` syntax changes**：原始指针语法调整
+- 以当前 stable 与项目 MSRV 为准，不要把临时特性写成默认前提
+- 升级 edition 或 toolchain 前，先验证 `cargo check`、`cargo clippy` 和测试套件
+- 若需要新语法或新 trait 行为，先确认 crate 的兼容边界，再决定是否采用
 
 ### MSRV (最低支持版本)
 

@@ -1,8 +1,10 @@
 ---
-name: rust-anti-pattern-skill
-description: Rust Layer 2 技能 - 反模式识别，核心问题：这个模式是否隐藏了设计问题？掌握常见的 Rust 代码坏味道和问题模式
+name: rust-anti-pattern
 version: 1.0.0
-layer: 2
+author: book-skills
+description: Rust Layer 2 技能 - 反模式识别，核心问题：这个模式是否隐藏了设计问题？掌握常见的 Rust 代码坏味道和问题模式
+tags: [rust, anti-pattern, code-smell, pitfalls, best-practices]
+layer: Layer 2 - Design Choices
 trigger: anti-pattern, code smell, mistake, common errors, bad practice
 ---
 

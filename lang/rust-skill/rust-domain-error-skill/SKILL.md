@@ -1,8 +1,10 @@
 ---
-name: rust-domain-error-skill
-description: Rust Layer 2 技能 - 领域错误处理，核心问题：谁来处理这个错误？掌握 retry、circuit breaker、错误传播等模式
+name: rust-domain-error
 version: 1.0.0
-layer: 2
+author: book-skills
+description: Rust Layer 2 技能 - 领域错误处理，核心问题：谁来处理这个错误？掌握 retry、circuit breaker、错误传播等模式
+tags: [rust, domain-error, error-handling, business-rules, recovery]
+layer: Layer 2 - Design Choices
 trigger: retry, circuit breaker, error handling, fault tolerance, backoff
 ---
 

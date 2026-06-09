@@ -1,16 +1,14 @@
-# rust-ml-skill
-
-## 前言区
-
-```
-name: rust-ml-skill
-version: v1.0.0
+---
+name: rust-ml
+version: 1.0.0
 author: book-skills
 description: 机器学习领域Rust应用技能，涵盖tch-rs、rustml、linfa等库的模型训练与部署
 tags: [machine-learning, deep-learning, neural-networks, data-science, tch-rs]
 trigger: /rust-ml
 layer: Layer 3 - Domain Extensions
-```
+---
+
+# Rust 机器学习开发
 
 ## 概述
 

@@ -1,16 +1,14 @@
-# rust-embedded-skill
-
-## 前言区
-
-```
-name: rust-embedded-skill
-version: v1.0.0
+---
+name: rust-embedded
+version: 1.0.0
 author: book-skills
 description: 嵌入式领域Rust应用技能，涵盖no_std开发、Cortex-M、ESP32、外设驱动与实时系统
 tags: [embedded, no_std, cortex-m, esp32, real-time, bare-metal, drivers]
 trigger: /rust-embedded
 layer: Layer 3 - Domain Extensions
-```
+---
+
+# Rust 嵌入式开发
 
 ## 概述
 
@@ -147,11 +145,12 @@ where
 ### 5. ESP32 WiFi应用
 
 ```rust
-use esp_idf_sys::{esp, wifi, nvs, esp_err};
+use esp_idf_sys::{esp, wifi, esp_err};
 
 pub fn connect_wifi(ssid: &str, password: &str) -> Result<(), esp_err> {
     unsafe {
-        let wifi_config = wifi::config_t {
+        // SAFETY: The config struct is initialized locally and all writes stay within array bounds.
+        let mut wifi_config = wifi::config_t {
             sta: wifi::sta_config_t {
                 ssid: [0u8; 32],
                 password: [0u8; 64],

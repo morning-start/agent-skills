@@ -1,7 +1,11 @@
 ---
 name: rust-core
-description: Rust 核心语法技能，涵盖变量、数据类型、函数定义、控制流和注释，是 Rust 编程的基础
 version: 1.0.0
+author: book-skills
+description: Rust 核心语法技能，涵盖变量、数据类型、函数定义、控制流和注释，是 Rust 编程的基础
+tags: [rust, core, trait, conversion, deref]
+layer: Layer 1 - Language Mechanics
+trigger: core traits, from, into, tryfrom, deref, asref
 ---
 
 # Rust 核心语法

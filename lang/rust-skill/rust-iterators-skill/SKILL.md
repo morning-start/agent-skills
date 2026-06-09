@@ -1,7 +1,11 @@
 ---
 name: rust-iterators
-description: Rust 迭代器与闭包技能，掌握迭代器惰性求值、适配器模式、闭包定义和捕获方式
 version: 1.0.0
+author: book-skills
+description: Rust 迭代器与闭包技能，掌握迭代器惰性求值、适配器模式、闭包定义和捕获方式
+tags: [rust, iterators, iterator-adapters, collect, closures]
+layer: Layer 1 - Language Mechanics
+trigger: iterator, closure, adapter, collect, lazy evaluation
 ---
 
 # Rust 迭代器与闭包

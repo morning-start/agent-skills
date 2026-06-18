@@ -112,6 +112,8 @@ version:
 
 # 参考文档链接
 reference_links:
+  account_authentication_guide: "references/account-authentication-guide.md"
+  registration_application_guide: "references/registration-application-guide.md"
   source_code_format: "references/source-code-format.md"
   user_manual_guide: "references/user-manual-guide.md"
   design_manual_guide: "references/design-manual-guide.md"

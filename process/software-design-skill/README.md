@@ -17,7 +17,7 @@
 ```
 software-design-skill/
 ├── SKILL.md                                    # 主入口：场景识别与调度
-├── sub-skills/
+├── skills/
 │   ├── design-initiator/SKILL.md               # 场景一：初始架构设计
 │   ├── architecture-evaluator/SKILL.md         # 场景二：现状评估
 │   └── pattern-advisor/SKILL.md                # 设计模式推荐

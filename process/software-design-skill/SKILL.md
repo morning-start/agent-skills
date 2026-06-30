@@ -45,9 +45,9 @@ network_search: enabled
 
 | 需要什么 | 调用子技能 |
 |----------|-----------|
-| 从零设计系统架构（含需求解析、技术选型、模块划分） | `design-initiator` ([sub-skills/design-initiator/SKILL.md](sub-skills/design-initiator/SKILL.md)) |
-| 评估现有架构（含反模式检测、质量指标打分、改进建议） | `architecture-evaluator` ([sub-skills/architecture-evaluator/SKILL.md](sub-skills/architecture-evaluator/SKILL.md)) |
-| 设计模式推荐与速查 | `pattern-advisor` ([sub-skills/pattern-advisor/SKILL.md](sub-skills/pattern-advisor/SKILL.md)) |
+| 从零设计系统架构（含需求解析、技术选型、模块划分） | `design-initiator` ([skills/design-initiator/SKILL.md](skills/design-initiator/SKILL.md)) |
+| 评估现有架构（含反模式检测、质量指标打分、改进建议） | `architecture-evaluator` ([skills/architecture-evaluator/SKILL.md](skills/architecture-evaluator/SKILL.md)) |
+| 设计模式推荐与速查 | `pattern-advisor` ([skills/pattern-advisor/SKILL.md](skills/pattern-advisor/SKILL.md)) |
 | 设计模式精简参考库 | [references/design_patterns_slim.md](references/design_patterns_slim.md) |
 
 ---

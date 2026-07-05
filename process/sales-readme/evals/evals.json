@@ -1,0 +1,59 @@
+{
+  "skill_name": "sales-readme",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "帮我写一个 README。项目叫 `json2toml`，是一个 Rust CLI 工具，能把 JSON 文件转成 TOML 格式...",
+      "expected_output": "一个推销员风格的 README.md，含徽章行、快速安装、使用示例、对比表格、功能亮点",
+      "files": [],
+      "assertions": [
+        "README has a one-line tagline describing what the tool does",
+        "README includes installation instructions",
+        "README has at least one runnable code example",
+        "README has a features/benefits section (not just technical spec)",
+        "README includes license information",
+        "README does NOT contain fabricated testimonials or fake data",
+        "Quickstart/setup appears before detailed API reference",
+        "Uses user-centered language ('you', 'your')",
+        "Has comparison with Python alternative",
+        "Includes performance benchmarks or speed comparison"
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "帮我优化一下这个项目的 README。项目叫 `react-simple-table`，一个 React 表格组件...",
+      "expected_output": "一个改写的 README.md，保持技术准确性但用推销员风格，含功能场景、对比、快速开始",
+      "files": [],
+      "assertions": [
+        "README has a one-line tagline describing the component",
+        "README includes installation instructions",
+        "README has at least one runnable code example",
+        "README has a features/benefits section (not just technical spec)",
+        "README includes license information",
+        "README does NOT contain fabricated testimonials or fake data",
+        "Quickstart/setup appears before detailed API reference",
+        "Uses user-centered language ('你', 'your')",
+        "Has comparison with react-table",
+        "Significantly improved over the original 5-line README provided"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我写了一个 Python 库叫 `pydataclean`，用于清洗 CSV 数据...",
+      "expected_output": "一个从零写的 README.md，面向数据工程师，强调不手写 pandas 脚本的核心价值",
+      "files": [],
+      "assertions": [
+        "README has a one-line tagline describing the library",
+        "README includes installation instructions",
+        "README has at least one runnable code example",
+        "README has a features/benefits section (not just technical spec)",
+        "README includes license information",
+        "README does NOT contain fabricated testimonials or fake data",
+        "Quickstart/setup appears before detailed API reference",
+        "Uses user-centered language ('you', 'your')",
+        "Has comparison with pandas",
+        "Has 'who this is for' / target audience section"
+      ]
+    }
+  ]
+}

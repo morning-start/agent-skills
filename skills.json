@@ -5,31 +5,31 @@
   "categories": {
     "lang": {
       "description": "语言与框架",
-      "skills": ["flutter-skill", "rust-skill", "moonbit-skill", "svelte-skill", "tauri-skill", "wxt-skill", "cocos-skill", "vsce-skill"]
+      "skills": ["flutter", "rust", "moonbit", "svelte", "tauri", "wxt", "cocos", "vsce"]
     },
     "tool": {
       "description": "工具",
-      "skills": ["git-skill", "drissonpage-skill", "scrapling-skill", "venvstacks-skill", "plotnine-skill", "echart-skill", "dashboard-skill", "agent-skill"]
+      "skills": ["git", "drissonpage", "scrapling", "venvstacks", "plotnine", "echart", "dashboard", "agent"]
     },
     "process": {
       "description": "流程与方法论",
-      "skills": ["project-management-skill", "six-layer-architect-skill", "software-design-skill", "python-team-skill", "pythonic-style-skill", "agents-writer-skill", "data-analytics-skill", "tutorial-writer-skill", "personal-software-dev-exploration-skill", "doc-orchestrator-skill"]
+      "skills": ["project-management", "six-layer-architect", "software-design", "python-team", "pythonic-style", "agents-writer", "data-analytics", "tutorial-writer", "personal-software-dev-exploration", "doc-orchestrator"]
     },
     "utility": {
       "description": "辅助工具",
-      "skills": ["tech-comparison-skill", "side-hustle-evaluator-skill", "recruitment-processor-skill", "copyright-assist-skill"]
+      "skills": ["tech-comparison", "side-hustle-evaluator", "recruitment-processor", "copyright-assist"]
     }
   },
   "total": 30,
   "merged": {
-    "planning-skill": "→ project-management-skill/skills/planning/",
-    "code-optimizer-skill": "→ software-design-skill/skills/code-optimizer/",
-    "design-pattern-advisor-skill": "→ software-design-skill/skills/design-pattern-advisor/",
-    "project-wiki-skill": "→ doc-orchestrator-skill/templates/project-wiki/",
-    "api-doc-generator-skill": "→ removed (deprecated)",
-    "architecture-doc-generator-skill": "→ removed (deprecated)",
-    "interface-data-doc-generator-skill": "→ removed (deprecated)",
-    "quality-ops-doc-gen-skill": "→ removed (deprecated)",
-    "requirements-doc-gen-skill": "→ removed (deprecated)"
+    "planning": "→ project-management/skills/planning/",
+    "code-optimizer": "→ software-design/skills/code-optimizer/",
+    "design-pattern-advisor": "→ software-design/skills/design-pattern-advisor/",
+    "project-wiki": "→ doc-orchestrator/templates/project-wiki/",
+    "api-doc-generator": "→ removed (deprecated)",
+    "architecture-doc-generator": "→ removed (deprecated)",
+    "interface-data-doc-generator": "→ removed (deprecated)",
+    "quality-ops-doc-gen": "→ removed (deprecated)",
+    "requirements-doc-gen": "→ removed (deprecated)"
   }
 }

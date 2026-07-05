@@ -32,15 +32,15 @@ description: AI Agent 技能集合仓库管理规范
 
 ## 命名规范
 
-- 目录名: `{short-name}-skill`（全小写，连字符分隔）
+- 目录名: `{short-name}`（全小写，连字符分隔）
 - 主文档: `SKILL.md`
-- 子技能: 放在父技能目录下，使用 `{parent}-{sub}-skill` 格式
-- SKILL.md 元数据 `name` 字段: 使用 `{short-name}`，与目录名去掉 `-skill` 后缀一致（例如目录 `flutter-skill` → name: `flutter`）
+- 子技能: 放在父技能目录下，使用 `{parent}-{sub}` 格式
+- SKILL.md 元数据 `name` 字段: 使用 `{short-name}`，与目录名一致
 
 ## 质量门禁
 
 - [ ] 技能目录在正确的分类下
-- [ ] 目录名符合 `{name}-skill` 格式
+- [ ] 目录名符合 `{name}` 格式
 - [ ] 包含 `SKILL.md` 主文档
 - [ ] SKILL.md 包含 name/version/description/tags 元数据
 - [ ] 无跨仓重复（旧仓库已废弃）

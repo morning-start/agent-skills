@@ -1,5 +1,5 @@
 ---
-name: sales-readme
+name: readme-writer
 description: |
   推销员式 README 写作。当你需要写新的 README、改写/优化现有 README、或把技术文档风格的项目介绍转为产品页面风格时，请使用本 skill。
   触发场景包括：用户说"帮我写个 README"、"优化一下 README"、"把我的项目介绍写得更有吸引力"、"重写 README"、"给 README 加点营销感"、"让 README 更像 landing page"、"写 GitHub 项目介绍"。
